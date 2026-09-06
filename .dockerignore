@@ -1,0 +1,17 @@
+node_modules
+.output
+dist
+.git
+.github
+.gitignore
+.env
+.env.local
+.env.*.local
+*.log
+npm-debug.log*
+.DS_Store
+.vscode
+.idea
+*.md
+!deploy/README.md
+!deploy/COOLIFY.md
