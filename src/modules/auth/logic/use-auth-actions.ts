@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { toast } from "sonner";
-import { translateAuthError } from "../logic/auth-error-translator";
+import { LocalAuthClient } from "./local-auth-client";
 
 export function useAuthActions() {
   const navigate = useNavigate();
@@ -11,90 +9,51 @@ export function useAuthActions() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [resending, setResending] = useState(false);
-  const [unconfirmedEmail, setUnconfirmedEmail] = useState<string | null>(null);
 
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
-    const cleanEmail = email.trim().toLowerCase();
     setLoading(true);
-    const { data, error } = await supabase.auth.signInWithPassword({ email: cleanEmail, password });
+    const { session, error } = await LocalAuthClient.signIn(email, password);
     setLoading(false);
 
-    if (error) {
-      const translated = translateAuthError(error);
-      if (translated.canResend) setUnconfirmedEmail(cleanEmail);
-      return toast.error(translated.title, { description: translated.description });
+    if (error || !session) {
+      return toast.error("Gagal Masuk", {
+        description: error?.message || "Email atau kata sandi tidak cocok.",
+      });
     }
 
-    if (data.session) {
-      toast.success("Selamat datang kembali!");
-      navigate({ to: "/dashboard", replace: true });
+    toast.success(`Selamat datang, ${session.user.user_metadata.nama}!`);
+    try {
+      await navigate({ to: "/dashboard", replace: true });
+    } catch {
+      window.location.href = "/dashboard";
     }
   }
 
   async function handleSignUp(e: React.FormEvent) {
     e.preventDefault();
-    const cleanEmail = email.trim().toLowerCase();
-    const cleanName = fullName.trim();
-    if (!cleanName) return toast.error("Nama lengkap wajib diisi");
-
     setLoading(true);
-    const { data, error } = await supabase.auth.signUp({
-      email: cleanEmail,
+    const { session, error } = await LocalAuthClient.signUp({
+      email,
       password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
-        data: { nama: cleanName, full_name: cleanName },
-      },
+      nama: fullName,
     });
     setLoading(false);
 
-    if (error) {
-      const translated = translateAuthError(error);
-      return toast.error(translated.title, { description: translated.description });
-    }
-
-    if (data.session) {
-      toast.success("Akun berhasil dibuat dan langsung aktif!");
-      navigate({ to: "/dashboard", replace: true });
-    } else {
-      setUnconfirmedEmail(cleanEmail);
-      toast.info("Aktivasi Diperlukan", {
-        description: "Tautan konfirmasi telah dikirimkan ke email kamu.",
+    if (error || !session) {
+      return toast.error("Pendaftaran Gagal", {
+        description: error?.message || "Gagal membuat akun.",
       });
     }
-  }
 
-  async function handleResendEmail() {
-    if (!unconfirmedEmail) return;
-    setResending(true);
-    const { error } = await supabase.auth.resend({
-      type: "signup",
-      email: unconfirmedEmail,
-      options: { emailRedirectTo: `${window.location.origin}/dashboard` },
+    toast.success("Akun Berhasil Dibuat!", {
+      description: "Kamu telah terdaftar dan langsung masuk ke dashboard.",
     });
-    setResending(false);
-
-    if (error) {
-      const translated = translateAuthError(error);
-      return toast.error(translated.title, { description: translated.description });
+    try {
+      await navigate({ to: "/dashboard", replace: true });
+    } catch {
+      window.location.href = "/dashboard";
     }
-    toast.success("Email aktivasi berhasil dikirim ulang! Silakan periksa inbox/spam.");
-  }
-
-  async function handleGoogle() {
-    setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}/auth`,
-    });
-    if (result.error) {
-      setLoading(false);
-      return toast.error("Google sign-in gagal", { description: result.error.message });
-    }
-    if (result.redirected) return;
-    setLoading(false);
-    navigate({ to: "/dashboard", replace: true });
   }
 
   return {
@@ -105,12 +64,7 @@ export function useAuthActions() {
     fullName,
     setFullName,
     loading,
-    resending,
-    unconfirmedEmail,
-    setUnconfirmedEmail,
     handleSignIn,
     handleSignUp,
-    handleResendEmail,
-    handleGoogle,
   };
 }

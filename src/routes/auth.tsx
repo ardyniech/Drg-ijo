@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
-import { supabase } from "@/integrations/supabase/client";
-import { AuthNoticeCard, AuthCardTabs, useAuthActions } from "@/modules/auth";
+import { LocalAuthClient, AuthCardTabs, useAuthActions } from "@/modules/auth";
 
 const searchSchema = z.object({ mode: z.enum(["signin", "signup"]).optional() });
 
@@ -25,9 +24,10 @@ function AuthPage() {
   const auth = useAuthActions();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
-    });
+    const session = LocalAuthClient.getSession();
+    if (session) {
+      navigate({ to: "/dashboard", replace: true });
+    }
   }, [navigate]);
 
   return (
@@ -40,29 +40,19 @@ function AuthPage() {
           <span className="font-display text-lg font-bold">DRG App</span>
         </Link>
 
-        {auth.unconfirmedEmail ? (
-          <AuthNoticeCard
-            email={auth.unconfirmedEmail}
-            onBackToSignIn={() => auth.setUnconfirmedEmail(null)}
-            onResendEmail={auth.handleResendEmail}
-            resending={auth.resending}
-          />
-        ) : (
-          <AuthCardTabs
-            tab={tab}
-            setTab={setTab}
-            email={auth.email}
-            setEmail={auth.setEmail}
-            password={auth.password}
-            setPassword={auth.setPassword}
-            fullName={auth.fullName}
-            setFullName={auth.setFullName}
-            loading={auth.loading}
-            onSignIn={auth.handleSignIn}
-            onSignUp={auth.handleSignUp}
-            onGoogle={auth.handleGoogle}
-          />
-        )}
+        <AuthCardTabs
+          tab={tab}
+          setTab={setTab}
+          email={auth.email}
+          setEmail={auth.setEmail}
+          password={auth.password}
+          setPassword={auth.setPassword}
+          fullName={auth.fullName}
+          setFullName={auth.setFullName}
+          loading={auth.loading}
+          onSignIn={auth.handleSignIn}
+          onSignUp={auth.handleSignUp}
+        />
 
         <div className="mt-4 text-center">
           <Link to="/" className="text-xs text-muted-foreground hover:text-foreground">

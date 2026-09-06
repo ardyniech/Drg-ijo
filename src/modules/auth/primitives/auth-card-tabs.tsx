@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Shield } from "lucide-react";
 import { SignInForm } from "./sign-in-form";
 import { SignUpForm } from "./sign-up-form";
 
@@ -15,7 +16,6 @@ interface Props {
   loading: boolean;
   onSignIn: (e: React.FormEvent) => void;
   onSignUp: (e: React.FormEvent) => void;
-  onGoogle: () => void;
 }
 
 export function AuthCardTabs({
@@ -30,14 +30,20 @@ export function AuthCardTabs({
   loading,
   onSignIn,
   onSignUp,
-  onGoogle,
 }: Props) {
   return (
     <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
+      <div className="mb-4 flex items-center justify-between">
+        <Badge variant="outline" className="gap-1.5 border-primary/30 bg-primary/5 text-primary text-[11px]">
+          <Shield className="h-3 w-3" /> Autentikasi Komunitas DRG
+        </Badge>
+        <span className="text-[11px] text-muted-foreground">Server Terenkripsi</span>
+      </div>
+
       <Tabs value={tab} onValueChange={(v) => setTab(v as "signin" | "signup")}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="signin">Masuk</TabsTrigger>
-          <TabsTrigger value="signup">Daftar</TabsTrigger>
+          <TabsTrigger value="signup">Daftar Baru</TabsTrigger>
         </TabsList>
         <TabsContent value="signin">
           <SignInForm
@@ -63,15 +69,8 @@ export function AuthCardTabs({
         </TabsContent>
       </Tabs>
 
-      <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
-        <span className="h-px flex-1 bg-border" /> atau <span className="h-px flex-1 bg-border" />
-      </div>
-
-      <Button type="button" variant="outline" className="w-full" onClick={onGoogle} disabled={loading}>
-        Lanjutkan dengan Google
-      </Button>
-      <p className="mt-5 text-center text-xs text-muted-foreground">
-        Dengan masuk, kamu setuju pada tata tertib Komunitas Driver Riang Gembira.
+      <p className="mt-5 text-center text-[11px] text-muted-foreground">
+        Hak akses dan data anggota dikelola sesuai tata tertib Komunitas Driver Riang Gembira.
       </p>
     </div>
   );
