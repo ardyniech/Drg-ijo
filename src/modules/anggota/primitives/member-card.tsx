@@ -1,76 +1,101 @@
-import { Phone, MapPin, Award } from "lucide-react";
+import { Phone, MapPin, Award, Bike, Copy, Check } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MemberRecord } from "../types";
+import { MemberStatusBadge } from "./member-status-badge";
 import { DigitalKtaModal } from "./digital-kta-modal";
+import { useState } from "react";
+import { toast } from "sonner";
 
-const ROLE_BADGES: Record<string, { label: string; color: string }> = {
-  ketua: { label: "Ketua Umum", color: "bg-amber-500/15 text-amber-700 border-amber-500/30" },
-  sekretaris: { label: "Sekretaris", color: "bg-blue-500/15 text-blue-700 border-blue-500/30" },
-  bendahara: {
-    label: "Bendahara",
-    color: "bg-emerald-500/15 text-emerald-700 border-emerald-500/30",
-  },
-  admin: { label: "Admin Sistem", color: "bg-purple-500/15 text-purple-700 border-purple-500/30" },
-  korlap: {
-    label: "Korlap Satgas",
-    color: "bg-orange-500/15 text-orange-700 border-orange-500/30",
-  },
-  satgas: { label: "Satgas Lapangan", color: "bg-rose-500/15 text-rose-700 border-rose-500/30" },
-  dewan_etik: {
-    label: "Dewan Etik",
-    color: "bg-indigo-500/15 text-indigo-700 border-indigo-500/30",
-  },
-  anggota: { label: "Anggota Driver", color: "bg-slate-500/15 text-slate-700 border-slate-500/30" },
-  driver: { label: "Anggota Driver", color: "bg-slate-500/15 text-slate-700 border-slate-500/30" },
-};
+interface MemberCardProps {
+  member: MemberRecord;
+  onSelect?: (member: MemberRecord) => void;
+}
 
-export function MemberCard({ member }: { member: MemberRecord }) {
-  const role = ROLE_BADGES[member.role] || {
-    label: member.role,
-    color: "bg-muted text-muted-foreground",
-  };
+export function MemberCard({ member, onSelect }: MemberCardProps) {
+  const [copied, setCopied] = useState(false);
   const initial = member.nama.charAt(0).toUpperCase();
 
+  const handleCopyKta = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(member.no_kta);
+    setCopied(true);
+    toast.success(`Nomor KTA ${member.no_kta} disalin`);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
-    <Card className="border-border/70 hover:border-primary/40 transition-colors">
+    <Card
+      onClick={() => onSelect?.(member)}
+      className="group relative border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/60 hover:border-primary/50 hover:shadow-sm transition-all duration-200 cursor-pointer flex flex-col justify-between"
+    >
       <CardHeader className="p-4 pb-2">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-10 w-10 border border-border">
+        <div className="flex items-start justify-between gap-2">
+          <div className="flex items-center gap-3 min-w-0">
+            <Avatar className="h-10 w-10 border border-slate-200 dark:border-slate-700 shrink-0 bg-primary/5">
               <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">
                 {initial}
               </AvatarFallback>
             </Avatar>
-            <div>
-              <h4 className="font-semibold text-sm leading-none">{member.nama}</h4>
-              <p className="text-xs text-muted-foreground font-mono mt-1">{member.no_kta}</p>
+            <div className="min-w-0">
+              <h4 className="font-semibold text-sm text-slate-900 dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                {member.nama}
+              </h4>
+              <button
+                type="button"
+                onClick={handleCopyKta}
+                className="inline-flex items-center gap-1 text-[11px] text-muted-foreground font-mono hover:text-foreground transition-colors mt-0.5"
+                title="Salin No KTA"
+              >
+                <span>{member.no_kta}</span>
+                {copied ? (
+                  <Check className="h-3 w-3 text-emerald-600" />
+                ) : (
+                  <Copy className="h-3 w-3 opacity-60" />
+                )}
+              </button>
             </div>
           </div>
-          <Badge className={role.color}>{role.label}</Badge>
+          <MemberStatusBadge status={member.status} size="sm" />
         </div>
       </CardHeader>
-      <CardContent className="p-4 pt-1 space-y-3 text-xs">
-        <div className="grid grid-cols-2 gap-2 text-muted-foreground pt-1">
-          <div className="flex items-center gap-1 truncate">
-            <MapPin className="h-3 w-3 text-primary shrink-0" />
-            <span className="truncate">{member.pangkalan}</span>
+
+      <CardContent className="p-4 pt-1 space-y-3 text-xs flex-1 flex flex-col justify-between">
+        <div className="space-y-1.5 pt-1 text-slate-600 dark:text-slate-300">
+          <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+            <span className="flex items-center gap-1 truncate">
+              <MapPin className="h-3 w-3 text-primary shrink-0" />
+              <span className="truncate">{member.pangkalan}</span>
+            </span>
+            <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium shrink-0">
+              <Award className="h-3 w-3 shrink-0" />
+              <span>{member.jenjang}</span>
+            </span>
           </div>
-          <div className="flex items-center gap-1">
-            <Award className="h-3 w-3 text-emerald-600 shrink-0" />
-            <span>Kader {member.jenjang}</span>
+
+          <div className="flex items-center justify-between text-[11px] text-muted-foreground pt-1 border-t border-slate-100 dark:border-slate-800">
+            <span className="flex items-center gap-1 truncate">
+              <Bike className="h-3 w-3 text-slate-400 shrink-0" />
+              <span className="truncate">{member.plat_nomor}</span>
+            </span>
+            <span className="text-[10px] text-slate-400 truncate max-w-[120px]">
+              {member.jenis_kendaraan}
+            </span>
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-2 border-t border-border/50">
+        <div
+          className="flex items-center justify-between pt-2.5 border-t border-slate-100 dark:border-slate-800"
+          onClick={(e) => e.stopPropagation()}
+        >
           <a
-            href={`https://wa.me/${member.no_hp}?text=Halo%20rekan%20${encodeURIComponent(member.nama)},%20salam%20satu%20aspal%20dari%20komunitas%20DRG.`}
+            href={`https://wa.me/${member.no_hp}?text=Halo%20rekan%20${encodeURIComponent(member.nama)},%20salam%20satu%20aspal%20DRG.`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
           >
-            <Phone className="h-3 w-3" /> WhatsApp
+            <Phone className="h-3 w-3" />
+            <span>WhatsApp</span>
           </a>
           <DigitalKtaModal member={member} />
         </div>

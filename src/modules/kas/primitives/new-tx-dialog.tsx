@@ -13,6 +13,7 @@ import {
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { enqueueOperation } from "@/core/sync";
+import { generatePrefixedId } from "@/shared/utils/id-generator";
 import { Tx } from "../types";
 import { NewTxFormFields } from "./new-tx-form-fields";
 
@@ -55,7 +56,7 @@ export function NewTxDialog() {
     onSuccess: (numJumlah) => {
       toast.success("Transaksi kas berhasil disimpan");
       enqueueOperation({
-        idempotencyKey: `kas-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        idempotencyKey: generatePrefixedId(`kas-${Date.now()}`),
         action: `Pencatatan Kas (${jenis.toUpperCase()})`,
         module: "kas",
         payload: { ledger, jenis, jumlah: numJumlah, deskripsi },

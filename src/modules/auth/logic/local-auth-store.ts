@@ -1,50 +1,45 @@
+import { z } from "zod";
 import { UserRole } from "@/hooks/use-me";
+import { SEED_DEFAULT_USERS } from "@/dev/seed";
+import { generatePrefixedId } from "@/shared/utils/id-generator";
 
-export interface LocalUser {
-  id: string;
-  email: string;
-  nama: string;
-  no_hp?: string;
-  role: UserRole;
-  jenjang: "calon" | "muda" | "madya" | "purna";
-  status: "aktif" | "nonaktif" | "cuti" | "pending_review";
-  passwordHash: string;
-  created_at: string;
-}
+export const LocalUserSchema = z.object({
+  id: z.string(),
+  email: z.string().email(),
+  nama: z.string(),
+  no_hp: z.string().optional(),
+  role: z.string() as z.ZodType<UserRole>,
+  jenjang: z.enum(["calon", "muda", "madya", "purna"]),
+  status: z.enum(["aktif", "nonaktif", "cuti", "pending_review"]),
+  passwordHash: z.string(),
+  created_at: z.string(),
+});
 
-export interface LocalSession {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  expires_at: number;
-  user: {
-    id: string;
-    email: string;
-    user_metadata: {
-      nama: string;
-      full_name: string;
-      role: string;
-    };
-  };
-}
+export const LocalSessionSchema = z.object({
+  access_token: z.string(),
+  token_type: z.string(),
+  expires_in: z.number(),
+  expires_at: z.number(),
+  user: z.object({
+    id: z.string(),
+    email: z.string(),
+    user_metadata: z.object({
+      nama: z.string(),
+      full_name: z.string(),
+      role: z.string(),
+    }),
+  }),
+});
 
-export const DEFAULT_USERS: LocalUser[] = [
-  {
-    id: "usr-superadmin",
-    email: "ardy.syafii@gmail.com",
-    nama: "Ardy Syafii",
-    no_hp: "08123456789",
-    role: "super_admin",
-    jenjang: "purna",
-    status: "aktif",
-    passwordHash: "admin12345",
-    created_at: "2026-01-01T00:00:00Z",
-  },
-];
+export type LocalUser = z.infer<typeof LocalUserSchema>;
+export type LocalSession = z.infer<typeof LocalSessionSchema>;
+
+export const DEFAULT_USERS: LocalUser[] = SEED_DEFAULT_USERS;
 
 export function createLocalSession(user: LocalUser): LocalSession {
+  const token = generatePrefixedId(`loc_tok_${user.id}`);
   return {
-    access_token: `loc_tok_${user.id}_${Date.now()}`,
+    access_token: token,
     token_type: "bearer",
     expires_in: 86400 * 30,
     expires_at: Math.floor(Date.now() / 1000) + 86400 * 30,

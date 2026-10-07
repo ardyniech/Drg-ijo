@@ -1,28 +1,33 @@
+import { z } from "zod";
 import { OutboxOperation } from "./types";
+import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
+import { generatePrefixedId } from "@/shared/utils/id-generator";
 
 const OUTBOX_KEY = "drg_outbox_queue_v1";
 let inMemoryQueue: OutboxOperation[] = [];
 
+const OutboxOperationSchema = z.object({
+  id: z.string(),
+  idempotencyKey: z.string(),
+  action: z.string(),
+  module: z.enum(["kas", "kejadian", "piket", "roles", "inventaris", "persetujuan"]),
+  payload: z.record(z.unknown()),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  status: z.enum(["pending", "syncing", "synced", "failed"]),
+  retryCount: z.number(),
+  lastError: z.string().optional(),
+});
+
 export function getOutboxQueue(): OutboxOperation[] {
-  if (typeof window === "undefined") return inMemoryQueue;
-  try {
-    const raw = localStorage.getItem(OUTBOX_KEY);
-    if (!raw) return inMemoryQueue;
-    return JSON.parse(raw);
-  } catch {
-    return inMemoryQueue;
-  }
+  const queue = safeReadStorage(OUTBOX_KEY, z.array(OutboxOperationSchema), inMemoryQueue);
+  inMemoryQueue = queue;
+  return queue;
 }
 
 export function saveOutboxQueue(queue: OutboxOperation[]) {
   inMemoryQueue = queue;
-  if (typeof window !== "undefined") {
-    try {
-      localStorage.setItem(OUTBOX_KEY, JSON.stringify(queue));
-    } catch {
-      // quota exceeded fallback
-    }
-  }
+  safeWriteStorage(OUTBOX_KEY, queue);
 }
 
 export function enqueueOperation(
@@ -35,7 +40,7 @@ export function enqueueOperation(
   const now = new Date().toISOString();
   const newOp: OutboxOperation = {
     ...op,
-    id: `op_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+    id: generatePrefixedId("op"),
     status: "pending",
     retryCount: 0,
     createdAt: now,

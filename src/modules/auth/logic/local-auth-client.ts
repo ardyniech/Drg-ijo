@@ -1,4 +1,15 @@
-import { DEFAULT_USERS, LocalSession, LocalUser, createLocalSession } from "./local-auth-store";
+import { z } from "zod";
+import {
+  DEFAULT_USERS,
+  LocalSession,
+  LocalUser,
+  LocalUserSchema,
+  LocalSessionSchema,
+  createLocalSession,
+} from "./local-auth-store";
+import { hashPassword, verifyPassword } from "./password-hasher";
+import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
+import { generatePrefixedId } from "@/shared/utils/id-generator";
 
 const USERS_KEY = "drg_local_users_v1";
 const SESSION_KEY = "drg_local_session_v1";
@@ -10,23 +21,15 @@ let inMemorySession: LocalSession | null = null;
 
 export class LocalAuthClient {
   static getUsers(): LocalUser[] {
-    if (typeof window === "undefined") return inMemoryUsers;
-    try {
-      const raw = localStorage.getItem(USERS_KEY);
-      if (!raw) {
-        localStorage.setItem(USERS_KEY, JSON.stringify(DEFAULT_USERS));
-        return DEFAULT_USERS;
-      }
-      return JSON.parse(raw);
-    } catch {
-      return inMemoryUsers;
-    }
+    const users = safeReadStorage(USERS_KEY, z.array(LocalUserSchema), DEFAULT_USERS);
+    inMemoryUsers = users;
+    return users;
   }
 
   static updateUser(userId: string, patch: Partial<LocalUser>) {
     const users = this.getUsers().map((u) => (u.id === userId ? { ...u, ...patch } : u));
     inMemoryUsers = users;
-    if (typeof window !== "undefined") localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    safeWriteStorage(USERS_KEY, users);
     const cur = this.getSession();
     if (cur?.user.id === userId) {
       if (patch.nama) cur.user.user_metadata.nama = patch.nama;
@@ -36,30 +39,23 @@ export class LocalAuthClient {
   }
 
   static getSession(): LocalSession | null {
-    if (typeof window === "undefined") return inMemorySession;
-    try {
-      const raw = localStorage.getItem(SESSION_KEY);
-      if (!raw) return inMemorySession;
-      const parsed: LocalSession = JSON.parse(raw);
-      if (parsed.expires_at && parsed.expires_at < Math.floor(Date.now() / 1000)) {
-        this.setSession(null);
-        return null;
-      }
-      return parsed;
-    } catch {
-      return inMemorySession;
+    const parsed = safeReadStorage<LocalSession | null>(
+      SESSION_KEY,
+      LocalSessionSchema.nullable(),
+      inMemorySession,
+    );
+    if (parsed?.expires_at && parsed.expires_at < Math.floor(Date.now() / 1000)) {
+      this.setSession(null);
+      return null;
     }
+    inMemorySession = parsed;
+    return parsed;
   }
 
   static setSession(session: LocalSession | null) {
     inMemorySession = session;
-    if (typeof window !== "undefined") {
-      if (session) {
-        localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-      } else {
-        localStorage.removeItem(SESSION_KEY);
-      }
-    }
+    if (session) safeWriteStorage(SESSION_KEY, session);
+    else if (typeof window !== "undefined") localStorage.removeItem(SESSION_KEY);
     listeners.forEach((fn) => fn(session));
   }
 
@@ -70,10 +66,20 @@ export class LocalAuthClient {
 
   static async signIn(email: string, password: string) {
     const cleanEmail = email.trim().toLowerCase();
-    const user = this.getUsers().find((u) => u.email.toLowerCase() === cleanEmail);
-    if (!user) return { session: null, error: new Error("Akun email ini belum terdaftar.") };
-    if (user.passwordHash !== password)
-      return { session: null, error: new Error("Kata sandi salah.") };
+    const users = this.getUsers();
+    const userIndex = users.findIndex((u) => u.email.toLowerCase() === cleanEmail);
+    if (userIndex === -1)
+      return { session: null, error: new Error("Akun email ini belum terdaftar.") };
+
+    const user = users[userIndex];
+    const { isValid, needsRehash } = await verifyPassword(password, user.passwordHash);
+    if (!isValid) return { session: null, error: new Error("Kata sandi salah.") };
+
+    if (needsRehash) {
+      user.passwordHash = await hashPassword(password);
+      this.updateUser(user.id, { passwordHash: user.passwordHash });
+    }
+
     const session = createLocalSession(user);
     this.setSession(session);
     return { session, error: null };
@@ -94,20 +100,21 @@ export class LocalAuthClient {
       };
     }
 
+    const passwordHash = await hashPassword(payload.password);
     const newUser: LocalUser = {
-      id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      id: generatePrefixedId("usr"),
       email: cleanEmail,
       nama: cleanName,
       no_hp: payload.no_hp || "",
       role: "anggota",
       jenjang: "calon",
       status: "aktif",
-      passwordHash: payload.password,
+      passwordHash,
       created_at: new Date().toISOString(),
     };
     users.push(newUser);
     inMemoryUsers = users;
-    if (typeof window !== "undefined") localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    safeWriteStorage(USERS_KEY, users);
 
     const session = createLocalSession(newUser);
     this.setSession(session);

@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DEFAULT_USERS } from "@/modules/auth/logic/local-auth-store";
+import { verifyPassword } from "@/modules/auth/logic/password-hasher";
+import { generatePrefixedId } from "@/shared/utils/id-generator";
 
 export const Route = createFileRoute("/api/auth")({
   server: {
@@ -12,7 +14,15 @@ export const Route = createFileRoute("/api/auth")({
           if (action === "signin") {
             const cleanEmail = (email ?? "").trim().toLowerCase();
             const user = DEFAULT_USERS.find((u) => u.email.toLowerCase() === cleanEmail);
-            if (!user || user.passwordHash !== password) {
+            if (!user) {
+              return new Response(JSON.stringify({ error: "Email atau kata sandi tidak valid." }), {
+                status: 401,
+                headers: { "Content-Type": "application/json" },
+              });
+            }
+
+            const { isValid } = await verifyPassword(password, user.passwordHash);
+            if (!isValid) {
               return new Response(JSON.stringify({ error: "Email atau kata sandi tidak valid." }), {
                 status: 401,
                 headers: { "Content-Type": "application/json" },
@@ -23,7 +33,7 @@ export const Route = createFileRoute("/api/auth")({
               JSON.stringify({
                 status: "success",
                 user: { id: user.id, email: user.email, nama: user.nama, role: user.role },
-                token: `srv_tok_${user.id}_${Date.now()}`,
+                token: generatePrefixedId(`srv_tok_${user.id}`),
               }),
               { status: 200, headers: { "Content-Type": "application/json" } },
             );
@@ -41,12 +51,12 @@ export const Route = createFileRoute("/api/auth")({
               );
             }
 
-            const newId = `usr_${Date.now()}`;
+            const newId = generatePrefixedId("usr");
             return new Response(
               JSON.stringify({
                 status: "success",
                 user: { id: newId, email: cleanEmail, nama: cleanName, role: "anggota" },
-                token: `srv_tok_${newId}_${Date.now()}`,
+                token: generatePrefixedId(`srv_tok_${newId}`),
               }),
               { status: 201, headers: { "Content-Type": "application/json" } },
             );

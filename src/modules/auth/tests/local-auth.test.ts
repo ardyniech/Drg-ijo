@@ -7,9 +7,9 @@ describe("LocalAuthClient", () => {
     LocalAuthClient.setSession(null);
   });
 
-  it("should successfully sign in with seeded default users", async () => {
+  it("should successfully sign in with seeded default users using plain password against bcrypt hash", async () => {
     const admin = DEFAULT_USERS[0];
-    const { session, error } = await LocalAuthClient.signIn(admin.email, admin.passwordHash);
+    const { session, error } = await LocalAuthClient.signIn(admin.email, "admin12345");
 
     expect(error).toBeNull();
     expect(session).not.toBeNull();
@@ -32,7 +32,7 @@ describe("LocalAuthClient", () => {
     expect(error?.message).toContain("belum terdaftar");
   });
 
-  it("should successfully register a new local user and create session", async () => {
+  it("should successfully register a new local user with bcrypt hashed password and create session", async () => {
     const uniqueEmail = `test_${Date.now()}@drg.id`;
     const { session, error } = await LocalAuthClient.signUp({
       email: uniqueEmail,
@@ -47,5 +47,11 @@ describe("LocalAuthClient", () => {
 
     const currentSession = LocalAuthClient.getSession();
     expect(currentSession?.user.email).toBe(uniqueEmail);
+
+    // Verify user password in storage is bcrypt hashed, not plaintext
+    const createdUser = LocalAuthClient.getUsers().find((u) => u.email === uniqueEmail);
+    expect(createdUser).toBeDefined();
+    expect(createdUser?.passwordHash).not.toBe("securepassword123");
+    expect(createdUser?.passwordHash.startsWith("$2")).toBe(true);
   });
 });

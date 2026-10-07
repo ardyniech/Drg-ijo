@@ -2,6 +2,7 @@ import { DEFAULT_USERS } from "@/modules/auth/logic/local-auth-store";
 import { computeKasBalances } from "./local-tx-store";
 import { addApplicantApproval } from "@/modules/persetujuan/storage/persetujuan-storage";
 import { saveScreeningApplication, saveScreeningAnswers } from "./local-screening-store";
+import { generatePrefixedId } from "@/shared/utils/id-generator";
 
 export async function handleLocalRpc(fn: string, args?: Record<string, unknown>) {
   if (fn === "kas_balances") return { data: computeKasBalances(), error: null };
@@ -18,9 +19,9 @@ export async function handleLocalRpc(fn: string, args?: Record<string, unknown>)
     };
   }
   if (fn === "submit_screening_application") {
-    const token = `token_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const token = generatePrefixedId("token");
     if (args) {
-      const appId = `scr-${Date.now()}`;
+      const appId = generatePrefixedId("scr");
       saveScreeningApplication({
         id: appId,
         nama: String(args._nama || "Calon Driver"),
