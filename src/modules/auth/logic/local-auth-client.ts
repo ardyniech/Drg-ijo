@@ -1,6 +1,5 @@
 import { z } from "zod";
 import {
-  DEFAULT_USERS,
   LocalSession,
   LocalUser,
   LocalUserSchema,
@@ -16,20 +15,18 @@ const SESSION_KEY = "drg_local_session_v1";
 type AuthListener = (session: LocalSession | null) => void;
 const listeners = new Set<AuthListener>();
 
-let inMemoryUsers: LocalUser[] = [...DEFAULT_USERS];
+let inMemoryUsers: LocalUser[] = [];
 let inMemorySession: LocalSession | null = null;
 
 export class LocalAuthClient {
   static getUsers(): LocalUser[] {
-    const users = safeReadStorage(USERS_KEY, z.array(LocalUserSchema), DEFAULT_USERS);
-    inMemoryUsers = users;
-    return users;
+    inMemoryUsers = safeReadStorage(USERS_KEY, z.array(LocalUserSchema), []);
+    return inMemoryUsers;
   }
 
   static updateUser(userId: string, patch: Partial<LocalUser>) {
-    const users = this.getUsers().map((u) => (u.id === userId ? { ...u, ...patch } : u));
-    inMemoryUsers = users;
-    safeWriteStorage(USERS_KEY, users);
+    inMemoryUsers = this.getUsers().map((u) => (u.id === userId ? { ...u, ...patch } : u));
+    safeWriteStorage(USERS_KEY, inMemoryUsers);
     const cur = this.getSession();
     if (cur?.user.id === userId) {
       if (patch.nama) cur.user.user_metadata.nama = patch.nama;
@@ -67,11 +64,9 @@ export class LocalAuthClient {
   static async signIn(email: string, password: string) {
     const cleanEmail = email.trim().toLowerCase();
     const users = this.getUsers();
-    const userIndex = users.findIndex((u) => u.email.toLowerCase() === cleanEmail);
-    if (userIndex === -1)
-      return { session: null, error: new Error("Akun email ini belum terdaftar.") };
+    const user = users.find((u) => u.email.toLowerCase() === cleanEmail);
+    if (!user) return { session: null, error: new Error("Akun email ini belum terdaftar.") };
 
-    const user = users[userIndex];
     const { isValid, needsRehash } = await verifyPassword(password, user.passwordHash);
     if (!isValid) return { session: null, error: new Error("Kata sandi salah.") };
 
@@ -100,14 +95,15 @@ export class LocalAuthClient {
       };
     }
 
+    const isFirstUser = users.length === 0;
     const passwordHash = await hashPassword(payload.password);
     const newUser: LocalUser = {
       id: generatePrefixedId("usr"),
       email: cleanEmail,
       nama: cleanName,
       no_hp: payload.no_hp || "",
-      role: "anggota",
-      jenjang: "calon",
+      role: isFirstUser ? "super_admin" : "anggota",
+      jenjang: isFirstUser ? "purna" : "calon",
       status: "aktif",
       passwordHash,
       created_at: new Date().toISOString(),

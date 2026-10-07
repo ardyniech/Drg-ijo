@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { UserRole } from "@/hooks/use-me";
-import { SEED_DEFAULT_USERS } from "@/dev/seed";
 import { generatePrefixedId } from "@/shared/utils/id-generator";
 
 export const LocalUserSchema = z.object({
@@ -33,8 +32,6 @@ export const LocalSessionSchema = z.object({
 
 export type LocalUser = z.infer<typeof LocalUserSchema>;
 export type LocalSession = z.infer<typeof LocalSessionSchema>;
-
-export const DEFAULT_USERS: LocalUser[] = SEED_DEFAULT_USERS;
 
 export function createLocalSession(user: LocalUser): LocalSession {
   const token = generatePrefixedId(`loc_tok_${user.id}`);

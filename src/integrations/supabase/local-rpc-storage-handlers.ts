@@ -1,4 +1,4 @@
-import { DEFAULT_USERS } from "@/modules/auth/logic/local-auth-store";
+import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { computeKasBalances } from "./local-tx-store";
 import { addApplicantApproval } from "@/modules/persetujuan/storage/persetujuan-storage";
 import { saveScreeningApplication, saveScreeningAnswers } from "./local-screening-store";
@@ -7,11 +7,12 @@ import { generatePrefixedId } from "@/shared/utils/id-generator";
 export async function handleLocalRpc(fn: string, args?: Record<string, unknown>) {
   if (fn === "kas_balances") return { data: computeKasBalances(), error: null };
   if (fn === "member_contacts") {
+    const users = LocalAuthClient.getUsers();
     return {
-      data: DEFAULT_USERS.map((u) => ({
+      data: users.map((u) => ({
         id: u.id,
         nama: u.nama,
-        no_hp: u.no_hp,
+        no_hp: u.no_hp || "-",
         alamat: "Malang, Jawa Timur",
         email: u.email,
       })),

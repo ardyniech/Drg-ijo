@@ -1,8 +1,14 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { AVAILABLE_ROLES, PERMISSIONS_LIST } from "../constants";
 import { getMemberRoleRecords, assignMemberRole, getRoleAuditLogs } from "../storage/roles-storage";
+import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 
 describe("Roles Management Module", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    LocalAuthClient.setSession(null);
+  });
+
   it("should define all primary organizational roles", () => {
     const roleIds = AVAILABLE_ROLES.map((r) => r.id);
     expect(roleIds).toContain("ketua");
@@ -22,7 +28,15 @@ describe("Roles Management Module", () => {
     expect(ketua?.permissions).toContain("approve_finance");
   });
 
-  it("should read and assign member roles with audit logging", () => {
+  it("should read and assign member roles with audit logging", async () => {
+    // Register a user first in dynamic storage
+    const { session } = await LocalAuthClient.signUp({
+      email: "test_member@drg.id",
+      nama: "Anggota Uji",
+      password: "password12345",
+    });
+    expect(session).not.toBeNull();
+
     const initialLogsCount = getRoleAuditLogs().length;
     const members = getMemberRoleRecords();
     expect(members.length).toBeGreaterThan(0);

@@ -13,7 +13,7 @@ export const SEED_MEMBERS: MemberRecord[] = [
     bergabung_sejak: "01 Oktober 2026",
     plat_nomor: "N 1234 AB",
     jenis_kendaraan: "Honda Vario 160",
-    email: "ardy.syafii@gmail.com",
+    email: "superadmin@drg.id",
     catatan: "Koordinator Utama & Pengawas Sistem DRG",
   },
   {

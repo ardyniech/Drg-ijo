@@ -1,57 +1,88 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { LocalAuthClient } from "../logic/local-auth-client";
-import { DEFAULT_USERS } from "../logic/local-auth-store";
 
-describe("LocalAuthClient", () => {
+describe("LocalAuthClient - Clean Dynamic Bootstrap", () => {
   beforeEach(() => {
+    localStorage.clear();
     LocalAuthClient.setSession(null);
   });
 
-  it("should successfully sign in with seeded default users using plain password against bcrypt hash", async () => {
-    const admin = DEFAULT_USERS[0];
-    const { session, error } = await LocalAuthClient.signIn(admin.email, "admin12345");
+  it("assigns super_admin role to the first user registered (bootstrap)", async () => {
+    expect(LocalAuthClient.getUsers()).toHaveLength(0);
 
-    expect(error).toBeNull();
-    expect(session).not.toBeNull();
-    expect(session?.user.email).toBe(admin.email);
-    expect(session?.user.user_metadata.nama).toBe(admin.nama);
-  });
-
-  it("should reject invalid passwords", async () => {
-    const admin = DEFAULT_USERS[0];
-    const { session, error } = await LocalAuthClient.signIn(admin.email, "wrongpassword");
-
-    expect(session).toBeNull();
-    expect(error?.message).toContain("Kata sandi salah");
-  });
-
-  it("should reject non-existent users", async () => {
-    const { session, error } = await LocalAuthClient.signIn("ghost@drg.id", "admin12345");
-
-    expect(session).toBeNull();
-    expect(error?.message).toContain("belum terdaftar");
-  });
-
-  it("should successfully register a new local user with bcrypt hashed password and create session", async () => {
-    const uniqueEmail = `test_${Date.now()}@drg.id`;
+    const firstEmail = `owner_${Date.now()}@drg.id`;
     const { session, error } = await LocalAuthClient.signUp({
-      email: uniqueEmail,
-      password: "securepassword123",
-      nama: "Driver Testing Baru",
+      email: firstEmail,
+      password: "passwordOwner123",
+      nama: "Super Admin Founder",
     });
 
     expect(error).toBeNull();
     expect(session).not.toBeNull();
-    expect(session?.user.email).toBe(uniqueEmail);
-    expect(session?.user.user_metadata.nama).toBe("Driver Testing Baru");
+    expect(session?.user.user_metadata.role).toBe("super_admin");
 
-    const currentSession = LocalAuthClient.getSession();
-    expect(currentSession?.user.email).toBe(uniqueEmail);
+    const users = LocalAuthClient.getUsers();
+    expect(users).toHaveLength(1);
+    expect(users[0].role).toBe("super_admin");
+    expect(users[0].jenjang).toBe("purna");
+    expect(users[0].passwordHash.startsWith("$2")).toBe(true);
+  });
 
-    // Verify user password in storage is bcrypt hashed, not plaintext
-    const createdUser = LocalAuthClient.getUsers().find((u) => u.email === uniqueEmail);
-    expect(createdUser).toBeDefined();
-    expect(createdUser?.passwordHash).not.toBe("securepassword123");
-    expect(createdUser?.passwordHash.startsWith("$2")).toBe(true);
+  it("assigns anggota role to subsequent users registered", async () => {
+    // 1st User (super_admin)
+    await LocalAuthClient.signUp({
+      email: `founder_${Date.now()}@drg.id`,
+      password: "password12345",
+      nama: "Founder DRG",
+    });
+
+    // 2nd User (regular member)
+    const memberEmail = `driver_${Date.now()}@drg.id`;
+    const { session, error } = await LocalAuthClient.signUp({
+      email: memberEmail,
+      password: "driverPassword123",
+      nama: "Driver Reguler",
+    });
+
+    expect(error).toBeNull();
+    expect(session).not.toBeNull();
+    expect(session?.user.user_metadata.role).toBe("anggota");
+
+    const users = LocalAuthClient.getUsers();
+    expect(users).toHaveLength(2);
+    const memberUser = users.find((u) => u.email === memberEmail);
+    expect(memberUser?.role).toBe("anggota");
+    expect(memberUser?.jenjang).toBe("calon");
+  });
+
+  it("successfully signs in registered user with bcrypt verification", async () => {
+    const userEmail = `login_${Date.now()}@drg.id`;
+    await LocalAuthClient.signUp({
+      email: userEmail,
+      password: "mySecretPassword",
+      nama: "User Login Test",
+    });
+
+    const { session, error } = await LocalAuthClient.signIn(userEmail, "mySecretPassword");
+    expect(error).toBeNull();
+    expect(session).not.toBeNull();
+    expect(session?.user.email).toBe(userEmail);
+  });
+
+  it("rejects invalid passwords and non-existent users", async () => {
+    const userEmail = `auth_test_${Date.now()}@drg.id`;
+    await LocalAuthClient.signUp({
+      email: userEmail,
+      password: "validPassword123",
+      nama: "Auth Test",
+    });
+
+    const wrongPassRes = await LocalAuthClient.signIn(userEmail, "wrongPass");
+    expect(wrongPassRes.session).toBeNull();
+    expect(wrongPassRes.error?.message).toContain("Kata sandi salah");
+
+    const nonExistRes = await LocalAuthClient.signIn("unregistered@drg.id", "validPassword123");
+    expect(nonExistRes.session).toBeNull();
+    expect(nonExistRes.error?.message).toContain("belum terdaftar");
   });
 });
