@@ -21,11 +21,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard Operasional & Peran — DRG App" },
-      {
-        name: "description",
-        content:
-          "Dashboard spesifik peran DRG: Ketua Umum, Sekretaris, Bendahara, Admin, Korlap, Satgas, Dewan Etik, dan Driver.",
-      },
+      { name: "description", content: "Dashboard spesifik peran DRG." },
     ],
   }),
   component: Dashboard,
@@ -50,21 +46,18 @@ function Dashboard() {
 
   const { data: screeningApps = [] } = useQuery({
     queryKey: ["screening-apps"],
-    queryFn: async () => {
-      const { data } = await supabase.from("screening_applications").select("id, email");
-      return data ?? [];
-    },
+    queryFn: async () =>
+      (await supabase.from("screening_applications").select("id, email")).data ?? [],
   });
 
-  const myApp = screeningApps.find((c) => c.email?.toLowerCase() === user?.email?.toLowerCase());
-  const hasSubmittedScreening = Boolean(myApp);
-
+  const hasSubmittedScreening = Boolean(
+    screeningApps.find((c) => c.email?.toLowerCase() === user?.email?.toLowerCase()),
+  );
   const [activeRole, setActiveRole] = useState<UserRole>("driver");
 
   useEffect(() => {
     if (profile?.role) {
-      const r = profile.role === "member" ? "driver" : (profile.role as UserRole);
-      setActiveRole(r);
+      setActiveRole(profile.role === "member" ? "driver" : (profile.role as UserRole));
     }
   }, [profile?.role]);
 
@@ -100,18 +93,14 @@ function Dashboard() {
       }
     >
       <DashboardRoleSwitcher activeRole={activeRole} onRoleChange={setActiveRole} />
-
       <DashboardRoleWidgetRenderer role={activeRole} />
-
       <ProgressiveOnboardingCard
         level={progress.currentLevel}
         progressPercent={progress.progressPercent}
         nextMission={progress.nextMission}
         roleTitle={progress.roleTitle}
       />
-
       <DashboardHero overview={overview} />
-
       {isError && (
         <div className="mb-6 flex items-center justify-between rounded-xl border border-signal/40 bg-signal/10 px-4 py-3 text-sm text-signal">
           <span>Gagal memuat ringkasan data operasional.</span>
@@ -120,9 +109,7 @@ function Dashboard() {
           </Button>
         </div>
       )}
-
       <DashboardStats overview={overview} />
-
       <div className="grid gap-6 lg:grid-cols-2">
         <DashboardPiketGrid piket={overview?.piket ?? []} />
         <ActivityLogView roleFilter={activeRole === "driver" ? "all" : activeRole} limit={6} />

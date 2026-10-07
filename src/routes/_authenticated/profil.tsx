@@ -1,27 +1,25 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMyRoles } from "@/hooks/use-my-role";
 import { PageShell } from "@/components/page-shell";
-import { PermissionOnboarding } from "@/components/permission-onboarding";
-import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Loader2, Settings, ArrowRight } from "lucide-react";
 import {
   useProfil,
-  ProfileSummaryCard,
-  ProfileBiodataCard,
-  ProfileNotificationsCard,
-  ProfilePasswordCard,
-  ProfilePushCard,
-  BackupRestoreCard,
-  SchemaMigrationCard,
+  ProfileHeaderHero,
+  ProfilePersonalCard,
+  ProfileVehicleCard,
+  ProfileEmergencyCard,
+  ProfileEditDialog,
 } from "@/modules/profil";
 
 export const Route = createFileRoute("/_authenticated/profil")({
   head: () => ({
     meta: [
-      { title: "Profil & Preferensi — DRG App" },
+      { title: "Profil Anggota — DRG App" },
       {
         name: "description",
-        content:
-          "Kelola biodata anggota DRG, foto profil, izin GPS on-bit, dan preferensi notifikasi push.",
+        content: "Data biodata anggota lengkap, kendaraan operasional, dan kontak darurat DRG.",
       },
     ],
   }),
@@ -30,68 +28,66 @@ export const Route = createFileRoute("/_authenticated/profil")({
 
 function ProfilPage() {
   const { roles = [] } = useMyRoles();
-  const {
-    userId,
-    authEmail,
-    profile,
-    isLoading,
-    form,
-    setForm,
-    saveBio,
-    saveNotif,
-    handleAvatarUpload,
-    canEditJenjang,
-  } = useProfil();
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const { profile, isLoading, form, setForm, saveBio, handleAvatarUpload } = useProfil();
 
   return (
     <PageShell
-      eyebrow="Akun Saya"
-      title="Profil Pengguna"
-      description="Kelola biodata, foto profil, kata sandi, dan preferensi notifikasi kamu."
+      eyebrow="Identitas Driver"
+      title="Profil Anggota"
+      description="Kelola biodata diri, armada kendaraan operasional, dan nomor kontak darurat kamu."
     >
       {isLoading || !profile ? (
         <div className="grid place-items-center py-16 text-muted-foreground">
           <Loader2 className="h-6 w-6 animate-spin" />
         </div>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-3">
-            <PermissionOnboarding userId={userId ?? undefined} />
-          </div>
-
-          <ProfileSummaryCard
+        <div className="space-y-6">
+          <ProfileHeaderHero
             profile={profile}
-            form={form}
-            authEmail={authEmail}
             roles={roles}
             onUploadAvatar={handleAvatarUpload}
+            onOpenEdit={() => setIsEditDialogOpen(true)}
           />
 
-          <ProfileBiodataCard
-            form={form}
-            authEmail={authEmail}
-            onFormChange={setForm}
-            onSave={() => saveBio.mutate()}
-            isSaving={saveBio.isPending}
-            canEditJenjang={canEditJenjang}
-          />
-
-          <ProfileNotificationsCard
-            form={form}
-            onToggle={(key, val) => {
-              setForm({ ...form, [key]: val });
-              saveNotif.mutate({ [key]: val });
-            }}
-          />
-
-          <ProfilePushCard />
-
-          <ProfilePasswordCard />
-
-          <div className="lg:col-span-3 space-y-6">
-            <SchemaMigrationCard />
-            <BackupRestoreCard />
+          <div className="grid gap-6 lg:grid-cols-2">
+            <ProfilePersonalCard profile={profile} />
+            <div className="space-y-6">
+              <ProfileVehicleCard profile={profile} />
+              <ProfileEmergencyCard profile={profile} />
+            </div>
           </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl border border-border/80 bg-muted/30 p-4">
+            <div className="flex items-center gap-3 text-sm">
+              <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary/10 text-primary">
+                <Settings className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">Pengaturan & Preferensi Sistem</p>
+                <p className="text-xs text-muted-foreground">
+                  Kelola notifikasi push, kata sandi akun, izin GPS, dan cadangan data.
+                </p>
+              </div>
+            </div>
+            <Button asChild variant="outline" size="sm" className="shrink-0 gap-1.5">
+              <Link to="/pengaturan">
+                Buka Pengaturan <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+
+          <ProfileEditDialog
+            open={isEditDialogOpen}
+            onOpenChange={setIsEditDialogOpen}
+            form={form}
+            onChange={setForm}
+            onSave={async () => {
+              await saveBio.mutateAsync();
+              setIsEditDialogOpen(false);
+            }}
+            isSaving={saveBio.isPending}
+          />
         </div>
       )}
     </PageShell>

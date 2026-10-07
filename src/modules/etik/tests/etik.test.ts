@@ -1,11 +1,14 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { getEtikCases, addEtikCase, updateCaseStatus } from "../storage/etik-storage";
 
-describe("Dewan Etik Storage & Logic", () => {
-  it("loads initial etik cases properly", () => {
+describe("Dewan Etik Storage & Logic (Production Mode)", () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it("handles empty initial etik cases properly", () => {
     const cases = getEtikCases();
-    expect(cases.length).toBeGreaterThan(0);
-    expect(cases[0]).toHaveProperty("caseNumber");
+    expect(cases).toEqual([]);
   });
 
   it("adds new etik violation case and updates resolution", () => {
@@ -15,7 +18,7 @@ describe("Dewan Etik Storage & Logic", () => {
       category: "Pelanggaran Disiplin",
       severity: "Ringan",
       location: "Pangkalan A",
-      incidentDate: "2024-05-15",
+      incidentDate: "2026-05-15",
       description: "Tidak mengenakan seragam saat piket satgas.",
     });
 

@@ -1,19 +1,35 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
 import {
   MemberFilters,
-  MemberDirectoryStats,
   MemberDirectoryGrid,
+  MemberHeaderBar,
+  AddMemberDialog,
+  EditMemberDialog,
+  DeleteMemberDialog,
   useAnggota,
+  MemberRecord,
 } from "@/modules/anggota";
-import { useMe } from "@/hooks/use-me";
 
 export const Route = createFileRoute("/_authenticated/anggota")({
+  head: () => ({
+    meta: [
+      { title: "Direktori & Manajemen Anggota — DRG App" },
+      {
+        name: "description",
+        content: "Basis data keanggotaan DRG resmi, verifikasi KTA, dan administrasi pengurus.",
+      },
+    ],
+  }),
   component: AnggotaPage,
 });
 
 function AnggotaPage() {
-  const { me } = useMe();
+  const [isAddOpen, setIsAddOpen] = useState(false);
+  const [editingMember, setEditingMember] = useState<MemberRecord | null>(null);
+  const [deletingMember, setDeletingMember] = useState<MemberRecord | null>(null);
+
   const {
     members,
     stats,
@@ -30,23 +46,28 @@ function AnggotaPage() {
     pangkalanOptions,
     resetFilters,
     isLoading,
-    verifyMember,
+    canManage,
+    addMember,
+    updateMember,
+    deleteMember,
+    isAdding,
+    isUpdating,
+    isDeleting,
   } = useAnggota();
-
-  const canVerify =
-    !!me?.role && ["ketua", "admin", "super_admin", "dewan_etik", "satgas"].includes(me.role);
 
   return (
     <PageShell
       title="Direktori Anggota"
-      description={`Basis data anggota resmi DRG (${stats.total} driver terdaftar), jenjang kaderisasi, status verifikasi, dan KTA digital.`}
+      description={`Basis data anggota resmi DRG (${stats.total} driver terdaftar), jenjang kaderisasi, dan manajemen pengurus.`}
     >
       <div className="space-y-4">
-        <MemberDirectoryStats
+        <MemberHeaderBar
           total={stats.total}
-          verifiedCount={stats.verified}
-          pendingCount={stats.pending}
-          pangkalanCount={stats.pangkalan}
+          verified={stats.verified}
+          pending={stats.pending}
+          pangkalan={stats.pangkalan}
+          canManage={canManage}
+          onAddClick={() => setIsAddOpen(true)}
         />
 
         <MemberFilters
@@ -67,8 +88,32 @@ function AnggotaPage() {
           members={members}
           isLoading={isLoading}
           onResetFilters={resetFilters}
-          onVerifyMember={verifyMember}
-          canVerify={canVerify}
+          canManage={canManage}
+          onEditMember={(m) => setEditingMember(m)}
+          onDeleteMember={(m) => setDeletingMember(m)}
+        />
+
+        <AddMemberDialog
+          open={isAddOpen}
+          onOpenChange={setIsAddOpen}
+          onAdd={addMember}
+          isAdding={isAdding}
+        />
+
+        <EditMemberDialog
+          member={editingMember}
+          open={!!editingMember}
+          onOpenChange={(open) => !open && setEditingMember(null)}
+          onUpdate={updateMember}
+          isUpdating={isUpdating}
+        />
+
+        <DeleteMemberDialog
+          member={deletingMember}
+          open={!!deletingMember}
+          onOpenChange={(open) => !open && setDeletingMember(null)}
+          onConfirmDelete={deleteMember}
+          isDeleting={isDeleting}
         />
       </div>
     </PageShell>

@@ -1,16 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { NotulenStorage } from "../storage/notulen-storage";
 
-describe("Notulen Storage & Operations", () => {
-  it("fetches seed notulen records properly", () => {
-    const records = NotulenStorage.getNotulen();
-    expect(records.length).toBeGreaterThan(0);
-    expect(records[0]).toHaveProperty("judul");
-    expect(records[0]).toHaveProperty("poin_keputusan");
+describe("Notulen Storage & Operations (Production Mode)", () => {
+  beforeEach(() => {
+    localStorage.clear();
   });
 
-  it("saves a new notulen meeting record", () => {
+  it("handles empty initial notulen records properly", () => {
     const records = NotulenStorage.getNotulen();
+    expect(records).toEqual([]);
+  });
+
+  it("saves and retrieves a new notulen meeting record", () => {
     const newRecord = {
       id: "not-test",
       judul: "Rapat Pleno Khusus",
@@ -25,8 +26,9 @@ describe("Notulen Storage & Operations", () => {
       created_at: new Date().toISOString(),
     };
 
-    NotulenStorage.saveNotulen([newRecord, ...records]);
+    NotulenStorage.saveNotulen([newRecord]);
     const updated = NotulenStorage.getNotulen();
-    expect(updated.find((r) => r.id === "not-test")).toBeDefined();
+    expect(updated).toHaveLength(1);
+    expect(updated[0].judul).toBe("Rapat Pleno Khusus");
   });
 });

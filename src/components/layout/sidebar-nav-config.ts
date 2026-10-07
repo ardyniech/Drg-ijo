@@ -13,6 +13,7 @@ import {
   UserCheck,
   ShieldCheck,
   Activity,
+  Settings,
   LucideIcon,
 } from "lucide-react";
 
@@ -40,6 +41,7 @@ export const administrasiBaseNav: NavItem[] = [
   { title: "Notulen Rapat", url: "/notulen", icon: FileText },
   { title: "Inventaris", url: "/inventaris", icon: Boxes },
   { title: "Log Aktivitas", url: "/activity-log", icon: Activity },
+  { title: "Pengaturan", url: "/pengaturan", icon: Settings },
 ];
 
 export const kaderisasiNav: NavItem[] = [
@@ -51,8 +53,9 @@ export const kaderisasiNav: NavItem[] = [
 export function getAdminNav(isAdmin: boolean): NavItem[] {
   if (!isAdmin) return administrasiBaseNav;
   return [
-    ...administrasiBaseNav,
+    ...administrasiBaseNav.filter((n) => n.url !== "/pengaturan"),
     { title: "Persetujuan Akun", url: "/persetujuan", icon: UserCheck },
     { title: "Manajemen Peran", url: "/roles", icon: ShieldCheck },
+    { title: "Pengaturan", url: "/pengaturan", icon: Settings },
   ];
 }

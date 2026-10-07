@@ -22,21 +22,11 @@ export function useProfil() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select(
-          "id, nama, foto_url, jenjang, status, bio, role, created_at, updated_at, notif_sos, notif_kas, notif_pengumuman, notif_email",
-        )
+        .select("*")
         .eq("id", userId!)
         .maybeSingle();
       if (error) throw error;
-      if (!data) return null;
-      const { data: contacts } = await supabase.rpc("member_contacts");
-      const mine = (contacts ?? []).find((c) => c.id === userId);
-      return {
-        ...data,
-        no_hp: mine?.no_hp ?? null,
-        alamat: mine?.alamat ?? null,
-        email: mine?.email ?? null,
-      } as ProfileRow;
+      return (data as ProfileRow) ?? null;
     },
   });
 
@@ -45,28 +35,39 @@ export function useProfil() {
     if (profile) setForm(profile);
   }, [profile]);
 
-  // Sesuai kebijakan: "tidaklah boleh edit jenjang karir sendiri, hanya ketua umum, admin, dan dewan etika yg bisa ubah"
-  // Karena halaman profil ini melayani profil diri sendiri, canEditJenjang selalu diset false untuk mencegah edit diri sendiri.
   const canEditJenjang = false;
 
   const saveBio = useMutation({
-    mutationFn: async () => {
-      if (!userId) throw new Error("Tidak ada sesi");
+    mutationFn: async (updatedValues?: Partial<ProfileRow>) => {
+      if (!userId) throw new Error("Tidak ada sesi login aktif");
+      const dataToSave = updatedValues ? { ...form, ...updatedValues } : form;
       const { error } = await supabase
         .from("profiles")
         .update({
-          nama: form.nama ?? "",
-          no_hp: form.no_hp ?? null,
-          alamat: form.alamat ?? null,
-          bio: form.bio ?? null,
-          email: form.email ?? null,
-          jenjang: canEditJenjang ? (form.jenjang ?? "calon") : (profile?.jenjang ?? "calon"),
+          nama: dataToSave.nama ?? "",
+          no_hp: dataToSave.no_hp ?? null,
+          alamat: dataToSave.alamat ?? null,
+          bio: dataToSave.bio ?? null,
+          email: dataToSave.email ?? null,
+          tanggal_lahir: dataToSave.tanggal_lahir ?? null,
+          jenis_kelamin: dataToSave.jenis_kelamin ?? null,
+          golongan_darah: dataToSave.golongan_darah ?? null,
+          plat_nomor: dataToSave.plat_nomor ?? null,
+          jenis_kendaraan: dataToSave.jenis_kendaraan ?? null,
+          merk_kendaraan: dataToSave.merk_kendaraan ?? null,
+          nomor_stnk: dataToSave.nomor_stnk ?? null,
+          pangkalan: dataToSave.pangkalan ?? null,
+          nomor_anggota: dataToSave.nomor_anggota ?? null,
+          kontak_darurat_nama: dataToSave.kontak_darurat_nama ?? null,
+          kontak_darurat_hp: dataToSave.kontak_darurat_hp ?? null,
+          kontak_darurat_hubungan: dataToSave.kontak_darurat_hubungan ?? null,
+          jenjang: canEditJenjang ? (dataToSave.jenjang ?? "calon") : (profile?.jenjang ?? "calon"),
         })
         .eq("id", userId);
       if (error) throw error;
     },
     onSuccess: () => {
-      toast.success("Biodata tersimpan");
+      toast.success("Biodata profil berhasil diperbarui");
       qc.invalidateQueries({ queryKey: ["profile", userId] });
       qc.invalidateQueries({ queryKey: ["anggota"] });
     },
@@ -75,7 +76,7 @@ export function useProfil() {
 
   const saveNotif = useMutation({
     mutationFn: async (patch: Partial<ProfileRow>) => {
-      if (!userId) throw new Error("Tidak ada sesi");
+      if (!userId) throw new Error("Tidak ada sesi login aktif");
       const { error } = await supabase.from("profiles").update(patch).eq("id", userId);
       if (error) throw error;
     },

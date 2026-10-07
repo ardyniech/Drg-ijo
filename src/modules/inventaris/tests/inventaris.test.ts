@@ -1,21 +1,30 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { InventarisStorage } from "../storage/inventaris-storage";
 
-describe("InventarisStorage", () => {
-  it("should return seed items correctly", () => {
-    const items = InventarisStorage.getItems();
-    expect(items.length).toBeGreaterThan(0);
-    expect(items[0]).toHaveProperty("kode_alat");
-    expect(items[0]).toHaveProperty("status");
+describe("InventarisStorage (Production Mode)", () => {
+  beforeEach(() => {
+    localStorage.clear();
   });
 
-  it("should persist item modifications", () => {
+  it("should return empty array when no items exist", () => {
     const items = InventarisStorage.getItems();
-    const updated = items.map((item, idx) =>
-      idx === 0 ? { ...item, status: "dipinjam" as const } : item,
-    );
-    InventarisStorage.saveItems(updated);
+    expect(items).toEqual([]);
+  });
+
+  it("should persist item creations and modifications", () => {
+    const newItem = {
+      id: "inv-1",
+      kode_alat: "HT-01",
+      nama_barang: "Handie Talkie",
+      kategori: "Komunikasi",
+      kondisi: "Baik",
+      status: "tersedia" as const,
+      lokasi_pos: "Basecamp Suhat",
+    };
+
+    InventarisStorage.saveItems([newItem]);
     const result = InventarisStorage.getItems();
-    expect(result[0].status).toBe("dipinjam");
+    expect(result).toHaveLength(1);
+    expect(result[0].nama_barang).toBe("Handie Talkie");
   });
 });

@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { LogOut, User, ShieldCheck } from "lucide-react";
+import { LogOut, User, Settings, ShieldCheck } from "lucide-react";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { useMe } from "@/hooks/use-me";
 import {
@@ -52,6 +52,10 @@ export function UserMenu() {
         <DropdownMenuItem onClick={() => navigate({ to: "/profil" })}>
           <User className="mr-2 h-4 w-4" />
           <span>Profil Saya</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => navigate({ to: "/pengaturan" })}>
+          <Settings className="mr-2 h-4 w-4" />
+          <span>Pengaturan Sistem</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
