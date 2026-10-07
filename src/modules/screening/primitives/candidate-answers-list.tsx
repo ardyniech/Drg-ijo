@@ -15,9 +15,7 @@ export function CandidateAnswersList({ answers }: Props) {
       <div className="space-y-2">
         {answers.map((a, i) => (
           <div key={i} className="rounded-lg border border-border p-2 text-sm">
-            <div className="text-xs text-muted-foreground">
-              {a.screening_questions?.pertanyaan}
-            </div>
+            <div className="text-xs text-muted-foreground">{a.screening_questions?.pertanyaan}</div>
             <div className="mt-0.5 flex items-center justify-between">
               <span>{a.jawaban}</span>
               <span className="font-mono text-xs text-primary">

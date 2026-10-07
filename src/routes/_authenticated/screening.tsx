@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
-import { Download, ExternalLink } from "lucide-react";
+import { Download } from "lucide-react";
+import { useMe } from "@/hooks/use-me";
 import {
   useScreening,
   ScreeningFilters,
   ScreeningTable,
   ScreeningReviewDialog,
+  UserScreeningView,
 } from "@/modules/screening";
 
 export const Route = createFileRoute("/_authenticated/screening")({
@@ -17,13 +19,13 @@ export const Route = createFileRoute("/_authenticated/screening")({
         name: "description",
         content: "Panel evaluasi dan screening berkas calon anggota komunitas DRG.",
       },
-      { property: "og:title", content: "Screening Calon Anggota — DRG App" },
     ],
   }),
   component: ScreeningPage,
 });
 
 function ScreeningPage() {
+  const { data: me } = useMe();
   const {
     data,
     filtered,
@@ -39,6 +41,24 @@ function ScreeningPage() {
     exportCsv,
   } = useScreening();
 
+  const myApp = data.find((c) => c.email.toLowerCase() === me?.email?.toLowerCase());
+
+  if (!me?.isAdmin) {
+    return (
+      <PageShell
+        eyebrow="Calon Anggota"
+        title="Screening Pendaftaran"
+        description={
+          myApp
+            ? "Status pengajuan dan evaluasi berkas pendaftaran Anda."
+            : "Silakan isi kuesioner screening untuk mengajukan keanggotaan resmi."
+        }
+      >
+        <UserScreeningView myApp={myApp} email={me?.email || ""} nama={me?.nama || ""} />
+      </PageShell>
+    );
+  }
+
   return (
     <PageShell
       eyebrow="PIC Kaderisasi"
@@ -46,18 +66,8 @@ function ScreeningPage() {
       description="Skor terkalkulasi dari bobot rahasia. Klik baris untuk review & putuskan."
       actions={
         <div className="flex gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={exportCsv}
-            disabled={filtered.length === 0}
-          >
+          <Button size="sm" variant="outline" onClick={exportCsv} disabled={filtered.length === 0}>
             <Download className="mr-1.5 h-4 w-4" /> Export CSV
-          </Button>
-          <Button asChild size="sm" variant="outline">
-            <a href="/daftar" target="_blank" rel="noreferrer">
-              <ExternalLink className="mr-1.5 h-4 w-4" /> Formulir Publik
-            </a>
           </Button>
         </div>
       }
@@ -73,16 +83,9 @@ function ScreeningPage() {
         totalCount={data.length}
       />
 
-      <ScreeningTable
-        data={filtered}
-        isLoading={isLoading}
-        onSelect={setSelected}
-      />
+      <ScreeningTable data={filtered} isLoading={isLoading} onSelect={setSelected} />
 
-      <ScreeningReviewDialog
-        app={selected}
-        onClose={() => setSelected(null)}
-      />
+      <ScreeningReviewDialog app={selected} onClose={() => setSelected(null)} />
     </PageShell>
   );
 }

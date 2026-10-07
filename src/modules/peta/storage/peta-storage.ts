@@ -1,0 +1,70 @@
+import { ActiveDriverMarker, OfficialShelter } from "../types";
+
+export const SEED_SHELTERS: OfficialShelter[] = [
+  {
+    id: "sh-01",
+    nama: "Basecamp Utama DRG Suhat",
+    alamat: "Jl. Soekarno Hatta No. 45 (Samping Masjid Jami)",
+    lat: -7.9485,
+    lng: 112.6175,
+    korlap_nama: "Hendra Wijaya",
+    korlap_phone: "081234567890",
+    kapasitas: 40,
+    fasilitas: ["Stop Kontak", "Kopi & Air Minum", "Kompresor Ban", "Wi-Fi Gratis", "Kotak P3K"],
+  },
+  {
+    id: "sh-02",
+    nama: "Pos Pantau Dinoyo Barat",
+    alamat: "Jl. MT Haryono No. 120 (Depan Ruko Dinoyo)",
+    lat: -7.9395,
+    lng: 112.6078,
+    korlap_nama: "Rudi Hartono",
+    korlap_phone: "081987654321",
+    kapasitas: 25,
+    fasilitas: ["Alat Tambal Ban", "Air Minum", "Tempat Istirahat"],
+  },
+  {
+    id: "sh-03",
+    nama: "Shelter Stasiun Kota Baru",
+    alamat: "Jl. Trunojoyo No. 10 (Area Parkir Timur)",
+    lat: -7.9775,
+    lng: 112.6375,
+    korlap_nama: "Bambang Satgas",
+    korlap_phone: "081211223344",
+    kapasitas: 30,
+    fasilitas: ["Parkir Khusus Driver", "Stop Kontak", "Musholla"],
+  },
+];
+
+export const SEED_DRIVERS: ActiveDriverMarker[] = [
+  {
+    id: "drv-01",
+    nama: "Agus Pratama",
+    pangkalan: "Pangkalan Suhat",
+    lat: -7.9472,
+    lng: 112.6182,
+    status: "on_bit",
+    distance_km: 0.4,
+    updated_at: "2 menit lalu",
+  },
+  {
+    id: "drv-02",
+    nama: "Budi Santoso",
+    pangkalan: "Pangkalan Dinoyo",
+    lat: -7.9412,
+    lng: 112.6095,
+    status: "on_bit",
+    distance_km: 1.2,
+    updated_at: "Baru saja",
+  },
+  {
+    id: "drv-03",
+    nama: "Siti Rahma",
+    pangkalan: "Pangkalan Sawojajar",
+    lat: -7.9622,
+    lng: 112.6455,
+    status: "standby",
+    distance_km: 2.8,
+    updated_at: "5 menit lalu",
+  },
+];

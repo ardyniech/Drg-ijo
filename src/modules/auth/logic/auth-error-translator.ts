@@ -1,12 +1,16 @@
-export function translateAuthError(error: { message?: string; code?: string; status?: number } | null | undefined): { title: string; description: string; canResend?: boolean } {
-  if (!error) return { title: "Terjadi kesalahan", description: "Silakan periksa kembali formulir Anda." };
+export function translateAuthError(
+  error: { message?: string; code?: string; status?: number } | null | undefined,
+): { title: string; description: string; canResend?: boolean } {
+  if (!error)
+    return { title: "Terjadi kesalahan", description: "Silakan periksa kembali formulir Anda." };
 
   const msg = (error.message || "").toLowerCase();
 
   if (msg.includes("email not confirmed") || msg.includes("email_not_confirmed")) {
     return {
       title: "Email Belum Dikonfirmasi",
-      description: "Silakan buka tautan konfirmasi yang dikirimkan ke kotak masuk / spam email Anda sebelum masuk.",
+      description:
+        "Silakan buka tautan konfirmasi yang dikirimkan ke kotak masuk / spam email Anda sebelum masuk.",
       canResend: true,
     };
   }
@@ -21,7 +25,8 @@ export function translateAuthError(error: { message?: string; code?: string; sta
   if (msg.includes("user already registered") || msg.includes("already registered")) {
     return {
       title: "Email Sudah Terdaftar",
-      description: "Akun dengan email ini sudah ada. Silakan pindah ke tab 'Masuk' atau atur ulang sandi.",
+      description:
+        "Akun dengan email ini sudah ada. Silakan pindah ke tab 'Masuk' atau atur ulang sandi.",
     };
   }
 
@@ -35,7 +40,8 @@ export function translateAuthError(error: { message?: string; code?: string; sta
   if (msg.includes("rate limit") || msg.includes("over_email_send_rate_limit")) {
     return {
       title: "Terlalu Banyak Percobaan",
-      description: "Sistem membatasi percobaan demi keamanan. Mohon tunggu sekitar 1 menit sebelum mencoba lagi.",
+      description:
+        "Sistem membatasi percobaan demi keamanan. Mohon tunggu sekitar 1 menit sebelum mencoba lagi.",
     };
   }
 

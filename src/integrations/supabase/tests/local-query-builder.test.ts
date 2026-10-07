@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { createQueryBuilder } from "../local-query-builder";
+import { createLocalSupabaseAdapter } from "../local-database-adapter";
 
 describe("local-query-builder adapter", () => {
   it("should support upsert without error", async () => {
@@ -28,11 +29,21 @@ describe("local-query-builder adapter", () => {
     expect(result.data).toBeDefined();
   });
 
-  it("should support insert, update, and delete", async () => {
-    const insertRes = await createQueryBuilder("notulen").insert({ judul: "Rapat Bulanan" });
-    expect(insertRes.error).toBeNull();
-
-    const updateRes = await createQueryBuilder("notulen").update({ judul: "Revisi" });
+  it("should support chained update().eq() without throwing", async () => {
+    const updateRes = await createQueryBuilder("profiles")
+      .update({ foto_url: "https://example.com/avatar.jpg" })
+      .eq("id", "usr-admin-01");
     expect(updateRes.error).toBeNull();
+    expect(updateRes.data).toBeDefined();
+  });
+
+  it("should support channel subscription and removal", async () => {
+    const adapter = createLocalSupabaseAdapter();
+    const ch = adapter
+      .channel("test-channel")
+      .on("postgres_changes", {}, () => {})
+      .subscribe();
+    expect(ch).toBeDefined();
+    await expect(adapter.removeChannel(ch)).resolves.not.toThrow();
   });
 });

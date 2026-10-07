@@ -30,9 +30,7 @@ export function useScreening() {
       if (verifFilter === "verified" && !c.email_verified) return false;
       if (verifFilter === "unverified" && c.email_verified) return false;
       if (!term) return true;
-      return [c.nama, c.no_hp, c.email, c.kota].some((v) =>
-        (v ?? "").toLowerCase().includes(term),
-      );
+      return [c.nama, c.no_hp, c.email, c.kota].some((v) => (v ?? "").toLowerCase().includes(term));
     });
   }, [data, q, statusFilter, verifFilter]);
 

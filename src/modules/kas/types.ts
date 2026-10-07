@@ -28,7 +28,11 @@ export function tierOf(jumlah: number): Tier | null {
   if (jumlah < 5000000) {
     return { label: "Oranye · admin", role: "admin", tone: "bg-signal/20 text-signal" };
   }
-  return { label: "Merah · super admin", role: "super_admin", tone: "bg-destructive/20 text-destructive" };
+  return {
+    label: "Merah · super admin",
+    role: "super_admin",
+    tone: "bg-destructive/20 text-destructive",
+  };
 }
 
 export const rupiah = (n: number) =>

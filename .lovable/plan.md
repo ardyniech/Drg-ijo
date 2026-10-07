@@ -26,10 +26,12 @@ Cakupan besar (4 modul). Saya kerjakan berurutan dalam 1 turn — kalau ada modu
 ### 3. Kas — approval tiering + filter periode + export
 
 Migration: tambah kolom di `kas_transactions`:
+
 - `status` enum `kas_status`: `draft|menunggu|disetujui|ditolak` (default `disetujui` untuk backward-compat pada tier Hijau).
 - `approved_by uuid`, `approved_at timestamptz`, `catatan_approver text`.
 
 Rule tier → butuh approval:
+
 - Hijau (<500rb) → auto `disetujui`.
 - Kuning (500rb–2jt) → butuh `bendahara`.
 - Oranye (2jt–5jt) → butuh `admin`.
@@ -38,6 +40,7 @@ Rule tier → butuh approval:
 Trigger DB `trg_kas_default_status` untuk set status awal berdasarkan tier saat insert. Saldo dihitung hanya dari `status = 'disetujui'`.
 
 UI:
+
 - Filter: rentang tanggal (default bulan berjalan), ledger, status, kategori, search deskripsi.
 - Ringkasan periode: total masuk / keluar / net / saldo kumulatif; badge "menunggu approval" (dengan jumlah).
 - Tabel: kolom status, tombol Approve/Tolak untuk role sesuai.
@@ -48,6 +51,7 @@ UI:
 Migration: tabel `piket_swap_requests` (`shift_id`, `requested_by`, `target_user_id`, `status: pending|accepted|declined|cancelled`, `alasan`), plus RLS (pemilik shift boleh request; target boleh accept/decline; admin lihat semua).
 
 Fitur:
+
 - Auto-assign: dialog "Buat jadwal 1 pekan" — pilih daftar Satgas + wilayah, algoritme round-robin isi slot kosong per hari (tiap orang max 1 shift/hari). Preview → confirm → batch insert.
 - Notifikasi push H-1: server fn `notifyPiketReminders` — dipicu manual dari tombol "Kirim pengingat besok" (skip pg_cron dulu; ringkas dulu). Kirim push ke owner shift H-1 yang punya `notif_pengumuman = true`.
 - Tukar jadwal: tombol "Ajukan tukar" pada shift milik user → pilih rekan target → request. Rekan target lihat inbox tukar di halaman piket (card di atas kalender). Accept → swap `user_id`. Decline → tandai.

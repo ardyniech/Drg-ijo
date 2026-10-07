@@ -13,10 +13,10 @@ export const Route = createFileRoute("/api/auth")({
             const cleanEmail = (email ?? "").trim().toLowerCase();
             const user = DEFAULT_USERS.find((u) => u.email.toLowerCase() === cleanEmail);
             if (!user || user.passwordHash !== password) {
-              return new Response(
-                JSON.stringify({ error: "Email atau kata sandi tidak valid." }),
-                { status: 401, headers: { "Content-Type": "application/json" } },
-              );
+              return new Response(JSON.stringify({ error: "Email atau kata sandi tidak valid." }), {
+                status: 401,
+                headers: { "Content-Type": "application/json" },
+              });
             }
 
             return new Response(
@@ -34,7 +34,9 @@ export const Route = createFileRoute("/api/auth")({
             const cleanName = (nama ?? "").trim();
             if (!cleanName || !cleanEmail || (password ?? "").length < 6) {
               return new Response(
-                JSON.stringify({ error: "Data pendaftaran tidak lengkap atau password < 6 karakter." }),
+                JSON.stringify({
+                  error: "Data pendaftaran tidak lengkap atau password < 6 karakter.",
+                }),
                 { status: 400, headers: { "Content-Type": "application/json" } },
               );
             }
@@ -50,15 +52,16 @@ export const Route = createFileRoute("/api/auth")({
             );
           }
 
-          return new Response(
-            JSON.stringify({ status: "ok" }),
-            { status: 200, headers: { "Content-Type": "application/json" } },
-          );
-        } catch (e: any) {
-          return new Response(
-            JSON.stringify({ error: e.message || "Internal server error" }),
-            { status: 500, headers: { "Content-Type": "application/json" } },
-          );
+          return new Response(JSON.stringify({ status: "ok" }), {
+            status: 200,
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch (e: unknown) {
+          const message = e instanceof Error ? e.message : "Internal server error";
+          return new Response(JSON.stringify({ error: message }), {
+            status: 500,
+            headers: { "Content-Type": "application/json" },
+          });
         }
       },
     },

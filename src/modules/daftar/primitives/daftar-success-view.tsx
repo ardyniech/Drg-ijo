@@ -25,7 +25,9 @@ export function DaftarSuccessView({ done }: Props) {
       </p>
       <div className="mt-6 w-full space-y-3 rounded-2xl border border-border bg-card p-4 text-left shadow-card">
         <div>
-          <div className="text-xs font-semibold uppercase text-muted-foreground">Tautan Verifikasi</div>
+          <div className="text-xs font-semibold uppercase text-muted-foreground">
+            Tautan Verifikasi
+          </div>
           <div className="mt-1 flex gap-2">
             <Input readOnly value={verifyUrl} className="font-mono text-xs" />
             <Button
@@ -42,7 +44,9 @@ export function DaftarSuccessView({ done }: Props) {
           </div>
         </div>
         <div>
-          <div className="text-xs font-semibold uppercase text-muted-foreground">Cek Status Kapan Pun</div>
+          <div className="text-xs font-semibold uppercase text-muted-foreground">
+            Cek Status Kapan Pun
+          </div>
           <div className="mt-1 flex gap-2">
             <Input readOnly value={statusUrl} className="font-mono text-xs" />
             <Button

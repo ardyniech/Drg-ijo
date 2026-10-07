@@ -1,131 +1,43 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
-  Link,
   createRootRouteWithContext,
   useRouter,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
-
-import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
+import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
+import { runStorageMigrationGuard } from "@/core/sync";
 import { Toaster } from "@/components/ui/sonner";
+import { RootNotFoundComponent, RootErrorComponent } from "@/components/layout/root-error-boundary";
+import { getRootHead } from "@/components/layout/root-head-config";
 
-function NotFoundComponent() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Halaman tidak ditemukan</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          URL yang dituju tidak ada atau sudah dipindah.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Beranda
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
-  const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
-
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          Halaman gagal dimuat
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Ada masalah teknis. Coba muat ulang atau kembali ke beranda.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Coba lagi
-          </button>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-          >
-            Beranda
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-}
+const fallbackQueryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "DRG App — Platform Komunitas Driver Riang Gembira" },
-      {
-        name: "description",
-        content:
-          "Platform operasional Komunitas DRG: data anggota, kas transparan, SOS & peta lokasi, piket Satgas, dan kaderisasi.",
-      },
-      { property: "og:title", content: "DRG App — Platform Komunitas Driver Riang Gembira" },
-      {
-        property: "og:description",
-        content:
-          "Platform operasional Komunitas DRG: data anggota, kas transparan, SOS & peta lokasi, piket Satgas, dan kaderisasi.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "theme-color", content: "#00B14F" },
-      { name: "apple-mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
-      { name: "apple-mobile-web-app-title", content: "DRG" },
-      { name: "mobile-web-app-capable", content: "yes" },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "manifest", href: "/manifest.webmanifest" },
-      { rel: "icon", href: "/icon-512.png", type: "image/png", sizes: "512x512" },
-      { rel: "apple-touch-icon", href: "/icon-512.png", sizes: "512x512" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap",
-      },
-      { rel: "stylesheet", href: "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", crossOrigin: "" },
-    ],
-  }),
+  head: getRootHead,
   shellComponent: RootShell,
   component: RootComponent,
-  notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
+  notFoundComponent: RootNotFoundComponent,
+  errorComponent: RootErrorComponent,
 });
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="id">
+    <html lang="id" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {children}
         <Scripts />
       </body>
@@ -133,30 +45,71 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
-function AuthSync() {
+function AuthSync({ client }: { client: QueryClient }) {
   const router = useRouter();
-  const { queryClient } = Route.useRouteContext();
   useEffect(() => {
+    const unsubLocal = LocalAuthClient.onAuthStateChange(() => {
+      router.invalidate();
+      client.invalidateQueries();
+    });
     const { data } = supabase.auth.onAuthStateChange((event) => {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       router.invalidate();
-      if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
+      if (event !== "SIGNED_OUT") client.invalidateQueries();
     });
-    return () => data.subscription.unsubscribe();
-  }, [router, queryClient]);
+    return () => {
+      unsubLocal();
+      data.subscription.unsubscribe();
+    };
+  }, [router, client]);
   return null;
 }
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
+  const context = Route.useRouteContext();
+  const [activeClient] = useState(() => context?.queryClient ?? fallbackQueryClient);
+  const clientToUse = context?.queryClient ?? activeClient;
+
   useEffect(() => {
-    if (typeof navigator !== "undefined" && "serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").catch(() => {});
+    runStorageMigrationGuard();
+    if (
+      typeof window !== "undefined" &&
+      typeof navigator !== "undefined" &&
+      "serviceWorker" in navigator
+    ) {
+      const isDev =
+        window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1" ||
+        window.location.hostname.includes("ais-dev-");
+
+      if (isDev) {
+        // Unregister service workers in development to prevent caching of dynamic modules
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          for (const reg of registrations) {
+            reg.unregister().then(() => {
+              console.log("[Dev] Service Worker unregistered to prevent Vite import caching.");
+            });
+          }
+        });
+
+        // Purge caches in development
+        if ("caches" in window) {
+          window.caches.keys().then((keys) => {
+            keys.forEach((key) => {
+              window.caches.delete(key);
+            });
+          });
+        }
+      } else {
+        // Only register service worker in production
+        navigator.serviceWorker.register("/sw.js").catch(() => {});
+      }
     }
   }, []);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthSync />
+    <QueryClientProvider client={clientToUse}>
+      <AuthSync client={clientToUse} />
       <Outlet />
       <Toaster richColors position="top-right" />
     </QueryClientProvider>

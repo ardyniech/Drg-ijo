@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
+import { enqueueOperation } from "@/core/sync";
 import { Tx } from "../types";
 import { NewTxFormFields } from "./new-tx-form-fields";
 
@@ -37,10 +38,11 @@ export function NewTxDialog() {
         if (error) throw error;
         bukti_path = path;
       }
+      const numJumlah = Number(jumlah || 0);
       const { error } = await supabase.from("kas_transactions").insert({
         ledger,
         jenis,
-        jumlah: Number(jumlah || 0),
+        jumlah: numJumlah,
         kategori: kategori || undefined,
         deskripsi: deskripsi || undefined,
         tanggal,
@@ -48,10 +50,19 @@ export function NewTxDialog() {
         created_by: u.user.id,
       });
       if (error) throw error;
+      return numJumlah;
     },
-    onSuccess: () => {
-      toast.success("Transaksi disimpan");
+    onSuccess: (numJumlah) => {
+      toast.success("Transaksi kas berhasil disimpan");
+      enqueueOperation({
+        idempotencyKey: `kas-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+        action: `Pencatatan Kas (${jenis.toUpperCase()})`,
+        module: "kas",
+        payload: { ledger, jenis, jumlah: numJumlah, deskripsi },
+      });
       qc.invalidateQueries({ queryKey: ["kas-tx"] });
+      qc.invalidateQueries({ queryKey: ["kas-balances"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-overview"] });
       setOpen(false);
       setJumlah("");
       setKategori("");
@@ -64,10 +75,14 @@ export function NewTxDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm"><Plus className="mr-1.5 h-4 w-4" /> Transaksi baru</Button>
+        <Button size="sm">
+          <Plus className="mr-1.5 h-4 w-4" /> Transaksi baru
+        </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader><DialogTitle>Transaksi kas baru</DialogTitle></DialogHeader>
+        <DialogHeader>
+          <DialogTitle>Transaksi kas baru</DialogTitle>
+        </DialogHeader>
         <NewTxFormFields
           ledger={ledger}
           onLedgerChange={setLedger}
@@ -84,7 +99,9 @@ export function NewTxDialog() {
           onBuktiChange={setBukti}
         />
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Batal</Button>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Batal
+          </Button>
           <Button onClick={() => mut.mutate()} disabled={mut.isPending || !jumlah}>
             {mut.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Simpan
           </Button>

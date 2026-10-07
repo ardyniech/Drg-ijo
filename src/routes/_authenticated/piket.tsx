@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_authenticated/piket")({
 
 function PiketPage() {
   const { user } = Route.useRouteContext();
-  const canManage = useIs("satgas") || useIs("admin");
+  const canManage = useIs(["ketua", "admin", "super_admin", "korlap", "satgas"]);
 
   const {
     weekStart,

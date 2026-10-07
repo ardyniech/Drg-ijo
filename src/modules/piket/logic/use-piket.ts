@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { recordActivityLog } from "@/modules/activity-log";
 import { Shift, Swap, addDays, startOfWeek, toIso } from "../types";
 
 export function usePiket(userId?: string) {
@@ -73,7 +74,16 @@ export function usePiket(userId?: string) {
   }, [qc]);
 
   const respondSwap = useMutation({
-    mutationFn: async ({ id, accept, shiftId }: { id: string; accept: boolean; shiftId: string; requestedBy: string }) => {
+    mutationFn: async ({
+      id,
+      accept,
+      shiftId,
+    }: {
+      id: string;
+      accept: boolean;
+      shiftId: string;
+      requestedBy: string;
+    }) => {
       const status = accept ? "diterima" : "ditolak";
       const { error } = await supabase
         .from("piket_swap_requests")
@@ -84,7 +94,17 @@ export function usePiket(userId?: string) {
         await supabase.from("piket_shifts").update({ user_id: userId }).eq("id", shiftId);
       }
     },
-    onSuccess: () => toast.success("Permintaan diperbarui"),
+    onSuccess: () => {
+      toast.success("Permintaan diperbarui");
+      recordActivityLog({
+        actorId: userId || "korlap",
+        actorName: "Korlap Satgas",
+        actorRole: "korlap",
+        action: "Persetujuan Tukar Shift",
+        module: "piket",
+        description: "Memproses permohonan penukaran shift piket posko wilayah.",
+      });
+    },
     onError: (e: Error) => toast.error(e.message),
   });
 

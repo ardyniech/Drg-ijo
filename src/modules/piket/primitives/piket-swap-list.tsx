@@ -5,7 +5,12 @@ import { Swap } from "../types";
 interface Props {
   swaps: Swap[];
   currentUserId?: string;
-  onRespond: (payload: { id: string; accept: boolean; shiftId: string; requestedBy: string }) => void;
+  onRespond: (payload: {
+    id: string;
+    accept: boolean;
+    shiftId: string;
+    requestedBy: string;
+  }) => void;
 }
 
 export function PiketSwapList({ swaps, currentUserId, onRespond }: Props) {

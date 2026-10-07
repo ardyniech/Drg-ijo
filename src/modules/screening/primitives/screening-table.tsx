@@ -40,17 +40,16 @@ export function ScreeningTable({ data, isLoading, onSelect }: Props) {
         </thead>
         <tbody className="divide-y divide-border">
           {data.map((c) => (
-            <tr
-              key={c.id}
-              className="cursor-pointer hover:bg-muted/40"
-              onClick={() => onSelect(c)}
-            >
+            <tr key={c.id} className="cursor-pointer hover:bg-muted/40" onClick={() => onSelect(c)}>
               <td className="px-4 py-3">
                 <div className="flex items-center gap-2">
                   <ClipboardList className="h-4 w-4 text-primary" />
                   <span className="font-medium">{c.nama}</span>
                   {c.email_verified ? (
-                    <MailCheck className="h-3.5 w-3.5 text-success" aria-label="Email terverifikasi" />
+                    <MailCheck
+                      className="h-3.5 w-3.5 text-success"
+                      aria-label="Email terverifikasi"
+                    />
                   ) : (
                     <MailWarning className="h-3.5 w-3.5 text-warn" aria-label="Belum verifikasi" />
                   )}

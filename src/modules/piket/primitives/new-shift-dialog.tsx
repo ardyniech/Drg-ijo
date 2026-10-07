@@ -1,16 +1,8 @@
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { recordActivityLog } from "@/modules/activity-log";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -21,8 +13,9 @@ import {
 } from "@/components/ui/dialog";
 import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
-import { Shift, slots } from "../types";
+import { Shift } from "../types";
 import { useMemberOptions } from "../storage/use-member-options";
+import { NewShiftFormFields } from "./new-shift-form-fields";
 
 interface Props {
   defaultDate: string;
@@ -30,6 +23,7 @@ interface Props {
 }
 
 export function NewShiftDialog({ defaultDate, onDone }: Props) {
+  const qc = useQueryClient();
   const [open, setOpen] = useState(false);
   const [tanggal, setTanggal] = useState(defaultDate);
   const [slot, setSlot] = useState<Shift["slot"]>("pagi");
@@ -41,70 +35,60 @@ export function NewShiftDialog({ defaultDate, onDone }: Props) {
     mutationFn: async () => {
       const { data: u } = await supabase.auth.getUser();
       const payload: Record<string, unknown> = { tanggal, slot };
-      if (wilayah) payload.wilayah = wilayah;
+      const cleanWilayah = wilayah.trim();
+      if (cleanWilayah) payload.wilayah = cleanWilayah;
       if (userId && userId !== "none") payload.user_id = userId;
       if (u.user?.id) payload.created_by = u.user.id;
       const { error } = await supabase.from("piket_shifts").insert(payload as never);
       if (error) throw error;
+      return { cleanWilayah, u: u.user };
     },
-    onSuccess: () => {
-      toast.success("Shift ditambahkan");
+    onSuccess: ({ cleanWilayah, u }) => {
+      toast.success("Jadwal shift piket berhasil ditambahkan");
+      recordActivityLog({
+        actorId: u?.id || "korlap-piket",
+        actorName: u?.user_metadata?.nama || "Korlap Satgas",
+        actorRole: "korlap",
+        action: "Penjadwalan Shift Piket",
+        module: "piket",
+        description: `Menambahkan jadwal piket tanggal ${tanggal} slot ${slot} (${cleanWilayah || "Pangkalan Umum"}).`,
+      });
+      qc.invalidateQueries({ queryKey: ["piket"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-overview"] });
       setOpen(false);
       onDone();
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toast.error("Gagal menambahkan shift", { description: e.message }),
   });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm"><Plus className="mr-1.5 h-4 w-4" /> Shift baru</Button>
+        <Button size="sm">
+          <Plus className="mr-1.5 h-4 w-4" /> Shift baru
+        </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader><DialogTitle>Tambah shift piket</DialogTitle></DialogHeader>
-        <div className="grid gap-3">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <Label>Tanggal</Label>
-              <Input type="date" value={tanggal} onChange={(e) => setTanggal(e.target.value)} />
-            </div>
-            <div>
-              <Label>Slot</Label>
-              <Select value={slot} onValueChange={(v) => setSlot(v as Shift["slot"])}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  {slots.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div>
-            <Label>Wilayah</Label>
-            <Input value={wilayah} onChange={(e) => setWilayah(e.target.value)} placeholder="Malang Kota / Barat / dsb" />
-          </div>
-          <div>
-            <Label>Petugas</Label>
-            <Select value={userId || "none"} onValueChange={setUserId}>
-              <SelectTrigger>
-                <SelectValue placeholder={membersLoading ? "Memuat anggota…" : "Belum ditentukan"} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="none">Belum ditentukan</SelectItem>
-                {members.map((m) => (
-                  <SelectItem key={m.id} value={m.id}>
-                    {m.nama}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="rounded-lg bg-muted/60 px-3 py-2 text-[11px] text-muted-foreground">
-            Pilih anggota aktif dari daftar. Shift tanpa petugas akan tampil sebagai slot terbuka.
-          </div>
-        </div>
+        <DialogHeader>
+          <DialogTitle>Tambah shift piket</DialogTitle>
+        </DialogHeader>
+        <NewShiftFormFields
+          tanggal={tanggal}
+          setTanggal={setTanggal}
+          slot={slot}
+          setSlot={setSlot}
+          wilayah={wilayah}
+          setWilayah={setWilayah}
+          userId={userId}
+          setUserId={setUserId}
+          members={members}
+          membersLoading={membersLoading}
+        />
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Batal</Button>
-          <Button onClick={() => mut.mutate()} disabled={mut.isPending}>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Batal
+          </Button>
+          <Button onClick={() => mut.mutate()} disabled={mut.isPending || !tanggal}>
             {mut.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Simpan
           </Button>
         </DialogFooter>

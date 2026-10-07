@@ -25,7 +25,8 @@ export function ProgressiveOnboardingCard({
           <div>
             <h4 className="font-bold text-foreground">Akun Driver Siap Penuh (Level {level})</h4>
             <p className="text-xs text-muted-foreground">
-              Semua modul komunitas telah aktif untuk peran {roleTitle}. Tetap jaga keselamatan di jalan!
+              Semua modul komunitas telah aktif untuk peran {roleTitle}. Tetap jaga keselamatan di
+              jalan!
             </p>
           </div>
         </div>
@@ -48,9 +49,7 @@ export function ProgressiveOnboardingCard({
           <h3 className="mt-2 font-display text-base font-bold text-foreground">
             Langkah Selanjutnya: {nextMission.title}
           </h3>
-          <p className="mt-1 text-xs text-muted-foreground max-w-xl">
-            {nextMission.desc}
-          </p>
+          <p className="mt-1 text-xs text-muted-foreground max-w-xl">{nextMission.desc}</p>
         </div>
         <Button
           size="sm"

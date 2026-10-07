@@ -15,9 +15,7 @@ export function ProfileNotificationsCard({ form, onToggle }: Props) {
         <CardTitle className="flex items-center gap-2 text-base">
           <BellRing className="h-4 w-4" /> Preferensi Notifikasi
         </CardTitle>
-        <CardDescription>
-          Atur peristiwa apa saja yang kamu terima di aplikasi.
-        </CardDescription>
+        <CardDescription>Atur peristiwa apa saja yang kamu terima di aplikasi.</CardDescription>
       </CardHeader>
       <CardContent className="divide-y divide-border/60">
         {NOTIF_CONFIGS.map((row) => (

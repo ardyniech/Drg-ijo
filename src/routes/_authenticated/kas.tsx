@@ -1,7 +1,6 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
-import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
 import { useIs } from "@/hooks/use-my-role";
 import { useMe } from "@/hooks/use-me";
 import {
@@ -11,7 +10,10 @@ import {
   KasFilters,
   KasTable,
   NewTxDialog,
+  KasExportModal,
+  KasTransparencyDashboard,
 } from "@/modules/kas";
+import { BarChart3, Table as TableIcon } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/kas")({
   head: () => ({ meta: [{ title: "Kas Komunitas — DRG App" }] }),
@@ -19,11 +21,12 @@ export const Route = createFileRoute("/_authenticated/kas")({
 });
 
 function KasPage() {
-  const isBendahara = useIs("bendahara");
-  const isAdmin = useIs("admin");
+  const [viewMode, setViewMode] = useState<"dashboard" | "table">("dashboard");
+  const isBendahara = useIs(["bendahara", "admin", "super_admin"]);
+  const isAdmin = useIs(["admin", "super_admin"]);
   const canApprove = isBendahara || isAdmin;
   const { data: me } = useMe();
-  const roles = me?.roles ?? [];
+  const roles = me ? [me.role, ...(me.isAdmin ? ["admin", "bendahara"] : [])] : [];
 
   const canApproveTier = (jumlah: number) => {
     const t = tierOf(jumlah);
@@ -35,6 +38,7 @@ function KasPage() {
   };
 
   const {
+    rows,
     filtered,
     totals,
     isLoading,
@@ -47,62 +51,66 @@ function KasPage() {
     approve,
   } = useKas();
 
-  function exportCsv() {
-    const header = ["tanggal", "ledger", "jenis", "jumlah", "kategori", "deskripsi", "status"];
-    const lines = [header.join(",")];
-    filtered.forEach((r) => {
-      const cells = [
-        r.tanggal,
-        r.ledger,
-        r.jenis,
-        String(r.jumlah),
-        (r.kategori ?? "").replaceAll('"', '""'),
-        (r.deskripsi ?? "").replaceAll('"', '""'),
-        r.status,
-      ].map((c) => `"${c}"`);
-      lines.push(cells.join(","));
-    });
-    const blob = new Blob([lines.join("\n")], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `kas-drg-${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
   return (
     <PageShell
-      eyebrow="Bendahara"
-      title="Kas Komunitas"
-      description="Ledger sosial & umum transparan. Tier approval: <500rb otomatis, 500rb–2jt bendahara, 2–5jt admin, ≥5jt super admin."
+      eyebrow="Bendahara & Transparansi"
+      title="Kas Komunitas & Dana Sosial"
+      description="Dashboard transparansi iuran anggota, dana sosial, dan iuran koperasi terverifikasi."
       actions={
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" size="sm" onClick={exportCsv}>
-            <Download className="mr-1.5 h-4 w-4" /> CSV
-          </Button>
-          {isBendahara && <NewTxDialog />}
+          <div className="flex items-center gap-1 rounded-xl bg-muted p-1 text-xs">
+            <button
+              onClick={() => setViewMode("dashboard")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                viewMode === "dashboard"
+                  ? "bg-background text-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <BarChart3 className="h-3.5 w-3.5 text-primary" />
+              <span>Transparansi</span>
+            </button>
+            <button
+              onClick={() => setViewMode("table")}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                viewMode === "table"
+                  ? "bg-background text-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <TableIcon className="h-3.5 w-3.5 text-muted-foreground" />
+              <span>Rincian Ledger</span>
+            </button>
+          </div>
+          <KasExportModal rows={filtered} />
+          {canApprove && <NewTxDialog />}
         </div>
       }
     >
       <KasBalanceCards totals={totals} />
 
-      <KasFilters
-        q={q}
-        onQChange={setQ}
-        ledgerFilter={ledgerFilter}
-        onLedgerFilterChange={setLedgerFilter}
-        statusFilter={statusFilter}
-        onStatusFilterChange={setStatusFilter}
-      />
+      {viewMode === "dashboard" ? (
+        <KasTransparencyDashboard rows={rows} />
+      ) : (
+        <div className="space-y-4">
+          <KasFilters
+            q={q}
+            onQChange={setQ}
+            ledgerFilter={ledgerFilter}
+            onLedgerFilterChange={setLedgerFilter}
+            statusFilter={statusFilter}
+            onStatusFilterChange={setStatusFilter}
+          />
 
-      <KasTable
-        rows={filtered}
-        isLoading={isLoading}
-        canApprove={canApprove}
-        canApproveTier={canApproveTier}
-        onApprove={(id, status) => approve.mutate({ id, status })}
-      />
+          <KasTable
+            rows={filtered}
+            isLoading={isLoading}
+            canApprove={canApprove}
+            canApproveTier={canApproveTier}
+            onApprove={(id, status) => approve.mutate({ id, status })}
+          />
+        </div>
+      )}
     </PageShell>
   );
 }

@@ -13,14 +13,7 @@ interface Props {
   onSubmit: (e: React.FormEvent) => void;
 }
 
-export function SignInForm({
-  email,
-  setEmail,
-  password,
-  setPassword,
-  loading,
-  onSubmit,
-}: Props) {
+export function SignInForm({ email, setEmail, password, setPassword, loading, onSubmit }: Props) {
   const [showPw, setShowPw] = useState(false);
 
   return (

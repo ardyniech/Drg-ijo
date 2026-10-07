@@ -53,9 +53,7 @@ export function DashboardStats({ overview }: Props) {
               <s.icon className="h-4 w-4" />
             </div>
           </div>
-          <div className="mt-3 font-display text-2xl font-bold text-foreground">
-            {s.value}
-          </div>
+          <div className="mt-3 font-display text-2xl font-bold text-foreground">{s.value}</div>
           <div className="mt-1 flex items-center justify-between text-xs text-muted-foreground">
             <span>{s.delta}</span>
             <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" />

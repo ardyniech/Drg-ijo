@@ -35,13 +35,27 @@ describe("Screening CSV Export Utility", () => {
 
   it("generates CSV with proper headers and escaping", () => {
     const csv = buildScreeningCsv(sampleApps);
-    expect(csv).toContain('"Nama","No HP","Email","Kota","Status","Email Verified","Skor","Tgl Submit","Catatan PIC"');
-    expect(csv).toContain('"Budi Santoso","08123456789","budi@example.com","Malang","direkomendasikan","yes","85"');
+    expect(csv).toContain(
+      '"Nama","No HP","Email","Kota","Status","Email Verified","Skor","Tgl Submit","Catatan PIC"',
+    );
+    expect(csv).toContain(
+      '"Budi Santoso","08123456789","budi@example.com","Malang","direkomendasikan","yes","85"',
+    );
     expect(csv).toContain('"Joko Widodo","08987654321","","Batu","menunggu","no","0"');
   });
 
   it("handles empty list without error", () => {
     const csv = buildScreeningCsv([]);
-    expect(csv).toBe('"Nama","No HP","Email","Kota","Status","Email Verified","Skor","Tgl Submit","Catatan PIC"');
+    expect(csv).toBe(
+      '"Nama","No HP","Email","Kota","Status","Email Verified","Skor","Tgl Submit","Catatan PIC"',
+    );
+  });
+
+  it("safely handles invalid date format in created_at", () => {
+    const appWithInvalidDate: ScreeningApplication = {
+      ...sampleApps[0],
+      created_at: "not-a-real-date",
+    };
+    expect(() => buildScreeningCsv([appWithInvalidDate])).not.toThrow();
   });
 });

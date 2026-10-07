@@ -1,8 +1,4 @@
-export type ScreeningStatus =
-  | "menunggu"
-  | "wawancara"
-  | "direkomendasikan"
-  | "ditolak";
+export type ScreeningStatus = "menunggu" | "wawancara" | "direkomendasikan" | "ditolak";
 
 export type ScreeningApplication = {
   id: string;
@@ -60,17 +56,25 @@ export function buildScreeningCsv(rows: ScreeningApplication[]): string {
     "Tgl Submit",
     "Catatan PIC",
   ];
-  const body = rows.map((c) => [
-    c.nama,
-    c.no_hp,
-    c.email ?? "",
-    c.kota ?? "",
-    c.status,
-    c.email_verified ? "yes" : "no",
-    String(c.skor_total ?? 0),
-    new Date(c.created_at).toISOString(),
-    (c.catatan_pic ?? "").replace(/\n/g, " "),
-  ]);
+  const body = rows.map((c) => {
+    let safeDate = "";
+    try {
+      safeDate = c.created_at ? new Date(c.created_at).toISOString() : new Date().toISOString();
+    } catch {
+      safeDate = new Date().toISOString();
+    }
+    return [
+      c.nama,
+      c.no_hp,
+      c.email ?? "",
+      c.kota ?? "",
+      c.status,
+      c.email_verified ? "yes" : "no",
+      String(c.skor_total ?? 0),
+      safeDate,
+      (c.catatan_pic ?? "").replace(/\n/g, " "),
+    ];
+  });
   const esc = (v: string) => `"${v.replace(/"/g, '""')}"`;
   return [headers, ...body].map((r) => r.map(esc).join(",")).join("\n");
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { recordActivityLog } from "@/modules/activity-log";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,23 +37,33 @@ export function SwapButton({ shiftId, currentUserId }: Props) {
 
   const submit = useMutation({
     mutationFn: async () => {
+      const cleanAlasan = alasan.trim();
       const payload: Record<string, unknown> = {
         shift_id: shiftId,
         requested_by: currentUserId,
         status: "menunggu",
       };
       if (target && target !== "open") payload.target_user_id = target;
-      if (alasan) payload.alasan = alasan;
+      if (cleanAlasan) payload.alasan = cleanAlasan;
       const { error } = await supabase.from("piket_swap_requests").insert(payload as never);
       if (error) throw error;
+      return cleanAlasan;
     },
-    onSuccess: () => {
-      toast.success("Permintaan tukar dikirim");
+    onSuccess: (cleanAlasan) => {
+      toast.success("Permintaan tukar shift berhasil dikirim");
+      recordActivityLog({
+        actorId: currentUserId,
+        actorName: "Anggota Piket",
+        actorRole: "anggota",
+        action: "Permohonan Tukar Shift",
+        module: "piket",
+        description: `Mengajukan permohonan tukar shift: ${cleanAlasan || "Terbuka untuk siapa saja"}.`,
+      });
       setOpen(false);
       setAlasan("");
       setTarget("");
     },
-    onError: (e: Error) => toast.error(e.message),
+    onError: (e: Error) => toast.error("Gagal mengirim permohonan", { description: e.message }),
   });
 
   return (
@@ -63,7 +74,9 @@ export function SwapButton({ shiftId, currentUserId }: Props) {
         </button>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader><DialogTitle>Ajukan tukar shift</DialogTitle></DialogHeader>
+        <DialogHeader>
+          <DialogTitle>Ajukan tukar shift</DialogTitle>
+        </DialogHeader>
         <div className="grid gap-3">
           <div>
             <Label>Rekan tujuan</Label>
@@ -84,12 +97,18 @@ export function SwapButton({ shiftId, currentUserId }: Props) {
             </Select>
           </div>
           <div>
-            <Label>Alasan</Label>
-            <Input value={alasan} onChange={(e) => setAlasan(e.target.value)} />
+            <Label>Alasan Penukaran</Label>
+            <Input
+              value={alasan}
+              onChange={(e) => setAlasan(e.target.value)}
+              placeholder="Contoh: Ada urusan keluarga / servis kendaraan..."
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>Batal</Button>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Batal
+          </Button>
           <Button onClick={() => submit.mutate()} disabled={submit.isPending}>
             {submit.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Kirim
           </Button>

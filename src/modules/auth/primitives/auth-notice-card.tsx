@@ -14,11 +14,10 @@ export function AuthNoticeCard({ email, onBackToSignIn, onResendEmail, resending
       <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-primary/10 text-primary">
         <Mail className="h-6 w-6" />
       </div>
-      <h3 className="mt-3 font-display text-lg font-bold text-foreground">
-        Cek Email Kamu
-      </h3>
+      <h3 className="mt-3 font-display text-lg font-bold text-foreground">Cek Email Kamu</h3>
       <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-        Tautan aktivasi telah dikirim ke <span className="font-semibold text-foreground">{email}</span>.
+        Tautan aktivasi telah dikirim ke{" "}
+        <span className="font-semibold text-foreground">{email}</span>.
       </p>
 
       {/* Trouble Receiving Email Alert Box */}
@@ -29,13 +28,14 @@ export function AuthNoticeCard({ email, onBackToSignIn, onResendEmail, resending
         </div>
         <ul className="mt-2 space-y-1.5 text-[11px] text-muted-foreground list-disc pl-5 leading-normal">
           <li>
-            Masuk ke folder <b className="text-foreground">Spam</b>, <b className="text-foreground">Promotions</b>, atau <b className="text-foreground">Update</b>.
+            Masuk ke folder <b className="text-foreground">Spam</b>,{" "}
+            <b className="text-foreground">Promotions</b>, atau{" "}
+            <b className="text-foreground">Update</b>.
           </li>
+          <li>Supabase default mailer memiliki kuota 3-4 email per jam per project.</li>
           <li>
-            Supabase default mailer memiliki kuota 3-4 email per jam per project.
-          </li>
-          <li>
-            Atau gunakan tombol <b className="text-foreground">Lanjutkan dengan Google</b> di bawah (langsung aktif tanpa tunggu email).
+            Atau gunakan tombol <b className="text-foreground">Lanjutkan dengan Google</b> di bawah
+            (langsung aktif tanpa tunggu email).
           </li>
         </ul>
       </div>

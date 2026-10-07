@@ -29,8 +29,10 @@ interface Props {
 }
 
 export function ScreeningReviewDialog({ app, onClose }: Props) {
-  const { status, setStatus, catatan, setCatatan, answers, audit, save } =
-    useScreeningReview(app, onClose);
+  const { status, setStatus, catatan, setCatatan, answers, audit, save } = useScreeningReview(
+    app,
+    onClose,
+  );
 
   return (
     <Dialog open={!!app} onOpenChange={(o) => !o && onClose()}>
@@ -51,7 +53,9 @@ export function ScreeningReviewDialog({ app, onClose }: Props) {
               <div>
                 <Label>Status</Label>
                 <Select value={status} onValueChange={(v) => setStatus(v as ScreeningStatus)}>
-                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="menunggu">Menunggu</SelectItem>
                     <SelectItem value="wawancara">Perlu Wawancara</SelectItem>
@@ -62,11 +66,7 @@ export function ScreeningReviewDialog({ app, onClose }: Props) {
               </div>
               <div>
                 <Label>Catatan PIC</Label>
-                <Textarea
-                  value={catatan}
-                  onChange={(e) => setCatatan(e.target.value)}
-                  rows={2}
-                />
+                <Textarea value={catatan} onChange={(e) => setCatatan(e.target.value)} rows={2} />
               </div>
             </div>
 
@@ -74,7 +74,9 @@ export function ScreeningReviewDialog({ app, onClose }: Props) {
           </div>
         )}
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Tutup</Button>
+          <Button variant="outline" onClick={onClose}>
+            Tutup
+          </Button>
           <Button
             onClick={() => save.mutate()}
             disabled={save.isPending}

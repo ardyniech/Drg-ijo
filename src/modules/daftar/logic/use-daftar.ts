@@ -1,10 +1,13 @@
-import { useMemo, useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMemo, useState, useEffect } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useMe } from "@/hooks/use-me";
 import { toast } from "sonner";
 import { DaftarDoneState, DaftarFormState, ScreeningQuestion } from "../types";
 
 export function useDaftar() {
+  const { data: me } = useMe();
+  const qc = useQueryClient();
   const { data: questions = [], isLoading } = useQuery<ScreeningQuestion[]>({
     queryKey: ["screening-q-public"],
     queryFn: async () => {
@@ -25,6 +28,16 @@ export function useDaftar() {
     kota: "",
     motivasi: "",
   });
+
+  useEffect(() => {
+    if (me) {
+      setForm((prev) => ({
+        ...prev,
+        nama: prev.nama || me.nama || "",
+        email: prev.email || me.email || "",
+      }));
+    }
+  }, [me]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [done, setDone] = useState<DaftarDoneState | null>(null);
 
@@ -57,6 +70,7 @@ export function useDaftar() {
     },
     onSuccess: (token) => {
       setDone({ token, email: form.email });
+      qc.invalidateQueries({ queryKey: ["screening-apps"] });
       toast.success("Pendaftaran berhasil diterima di server lokal!");
     },
     onError: (e: Error) => toast.error("Gagal mengirim", { description: e.message }),

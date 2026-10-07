@@ -15,13 +15,15 @@ export type ProfileRow = {
 };
 
 export function getInitials(nameOrEmail: string | null | undefined): string {
-  if (!nameOrEmail) return "?";
-  return nameOrEmail
+  if (!nameOrEmail || !nameOrEmail.trim()) return "?";
+  const res = nameOrEmail
+    .trim()
     .split(/[\s@]/)
     .filter(Boolean)
     .map((s) => s[0]!.toUpperCase())
     .slice(0, 2)
     .join("");
+  return res || "?";
 }
 
 export const NOTIF_CONFIGS = [

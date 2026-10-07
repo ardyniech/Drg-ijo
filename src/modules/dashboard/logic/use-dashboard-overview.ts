@@ -14,14 +14,26 @@ export function useDashboardOverview() {
       try {
         const [anggota, kas, kejadian, piket] = await Promise.all([
           supabase.from("profiles").select("id, status"),
-          supabase.from("kas_transactions").select("jenis, jumlah, kategori, deskripsi, tanggal, status, created_at"),
-          supabase.from("kejadian").select("id, tipe, status, deskripsi, alamat_text, dibuat_at").order("dibuat_at", { ascending: false }).limit(20),
-          supabase.from("piket_shifts").select("id, tanggal, slot, wilayah, user_id").eq("tanggal", today),
+          supabase
+            .from("kas_transactions")
+            .select("jenis, jumlah, kategori, deskripsi, tanggal, status, created_at"),
+          supabase
+            .from("kejadian")
+            .select("id, tipe, status, deskripsi, alamat_text, dibuat_at")
+            .order("dibuat_at", { ascending: false })
+            .limit(20),
+          supabase
+            .from("piket_shifts")
+            .select("id, tanggal, slot, wilayah, user_id")
+            .eq("tanggal", today),
         ]);
 
         const profiles = anggota.data ?? [];
         const trx = (kas.data ?? []).filter((t) => t.status === "disetujui");
-        const saldo = trx.reduce((acc, t) => acc + (t.jenis === "masuk" ? Number(t.jumlah) : -Number(t.jumlah)), 0);
+        const saldo = trx.reduce(
+          (acc, t) => acc + (t.jenis === "masuk" ? Number(t.jumlah) : -Number(t.jumlah)),
+          0,
+        );
         const masukBulanIni = trx
           .filter((t) => t.tanggal >= monthStart)
           .reduce((acc, t) => acc + (t.jenis === "masuk" ? Number(t.jumlah) : 0), 0);
@@ -36,7 +48,11 @@ export function useDashboardOverview() {
         for (const s of shifts) {
           const key = `${s.wilayah}|${s.slot}`;
           const prev = perWilayah.get(key);
-          perWilayah.set(key, { wilayah: s.wilayah, slot: s.slot, personil: (prev?.personil ?? 0) + 1 });
+          perWilayah.set(key, {
+            wilayah: s.wilayah,
+            slot: s.slot,
+            personil: (prev?.personil ?? 0) + 1,
+          });
         }
 
         const feed: ActivityFeedItem[] = [
@@ -74,7 +90,11 @@ export function useDashboardOverview() {
           feed,
         };
       } catch (err) {
-        logModuleError("Dashboard", "useDashboardOverview", err instanceof Error ? err.message : String(err));
+        logModuleError(
+          "Dashboard",
+          "useDashboardOverview",
+          err instanceof Error ? err.message : String(err),
+        );
         throw err;
       }
     },

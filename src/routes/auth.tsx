@@ -10,7 +10,10 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Masuk & Daftar — DRG App" },
-      { name: "description", content: "Masuk atau daftar akun anggota Komunitas Driver Riang Gembira (DRG)." },
+      {
+        name: "description",
+        content: "Masuk atau daftar akun anggota Komunitas Driver Riang Gembira (DRG).",
+      },
       { name: "robots", content: "noindex" },
     ],
   }),

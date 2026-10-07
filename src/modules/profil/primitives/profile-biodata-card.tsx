@@ -3,15 +3,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { ProfileRow } from "../types";
+import { JenjangSelectField } from "./profile-fields";
 
 interface Props {
   form: Partial<ProfileRow>;
@@ -19,6 +13,7 @@ interface Props {
   onFormChange: (form: Partial<ProfileRow>) => void;
   onSave: () => void;
   isSaving: boolean;
+  canEditJenjang?: boolean;
 }
 
 export function ProfileBiodataCard({
@@ -27,14 +22,13 @@ export function ProfileBiodataCard({
   onFormChange,
   onSave,
   isSaving,
+  canEditJenjang = false,
 }: Props) {
   return (
     <Card className="lg:col-span-2">
       <CardHeader>
         <CardTitle className="text-base">Biodata</CardTitle>
-        <CardDescription>
-          Data ini terlihat oleh sesama anggota di direktori.
-        </CardDescription>
+        <CardDescription>Data ini terlihat oleh sesama anggota di direktori.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
@@ -65,25 +59,11 @@ export function ProfileBiodataCard({
               onChange={(e) => onFormChange({ ...form, email: e.target.value })}
             />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="jenjang">Jenjang</Label>
-            <Select
-              value={form.jenjang ?? "calon"}
-              onValueChange={(v) =>
-                onFormChange({ ...form, jenjang: v as ProfileRow["jenjang"] })
-              }
-            >
-              <SelectTrigger id="jenjang">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="calon">Calon</SelectItem>
-                <SelectItem value="muda">Muda</SelectItem>
-                <SelectItem value="madya">Madya</SelectItem>
-                <SelectItem value="purna">Purna</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <JenjangSelectField
+            value={form.jenjang ?? "calon"}
+            onChange={(v) => onFormChange({ ...form, jenjang: v })}
+            canEdit={canEditJenjang}
+          />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="alamat">Alamat</Label>

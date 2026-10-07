@@ -10,6 +10,8 @@ import {
   ProfileNotificationsCard,
   ProfilePasswordCard,
   ProfilePushCard,
+  BackupRestoreCard,
+  SchemaMigrationCard,
 } from "@/modules/profil";
 
 export const Route = createFileRoute("/_authenticated/profil")({
@@ -21,18 +23,13 @@ export const Route = createFileRoute("/_authenticated/profil")({
         content:
           "Kelola biodata anggota DRG, foto profil, izin GPS on-bit, dan preferensi notifikasi push.",
       },
-      { property: "og:title", content: "Profil & Preferensi — DRG App" },
-      {
-        property: "og:description",
-        content: "Kelola biodata, izin lokasi, dan preferensi notifikasi akun DRG kamu.",
-      },
     ],
   }),
   component: ProfilPage,
 });
 
 function ProfilPage() {
-  const { data: roles = [] } = useMyRoles();
+  const { roles = [] } = useMyRoles();
   const {
     userId,
     authEmail,
@@ -43,6 +40,7 @@ function ProfilPage() {
     saveBio,
     saveNotif,
     handleAvatarUpload,
+    canEditJenjang,
   } = useProfil();
 
   return (
@@ -75,6 +73,7 @@ function ProfilPage() {
             onFormChange={setForm}
             onSave={() => saveBio.mutate()}
             isSaving={saveBio.isPending}
+            canEditJenjang={canEditJenjang}
           />
 
           <ProfileNotificationsCard
@@ -88,6 +87,11 @@ function ProfilPage() {
           <ProfilePushCard />
 
           <ProfilePasswordCard />
+
+          <div className="lg:col-span-3 space-y-6">
+            <SchemaMigrationCard />
+            <BackupRestoreCard />
+          </div>
         </div>
       )}
     </PageShell>

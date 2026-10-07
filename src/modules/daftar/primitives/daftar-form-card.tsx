@@ -93,11 +93,7 @@ export function DaftarFormCard({
       </section>
 
       {!isLoading && (
-        <DaftarQuestionsSection
-          questions={questions}
-          answers={answers}
-          setAnswers={setAnswers}
-        />
+        <DaftarQuestionsSection questions={questions} answers={answers} setAnswers={setAnswers} />
       )}
 
       <div className="flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">

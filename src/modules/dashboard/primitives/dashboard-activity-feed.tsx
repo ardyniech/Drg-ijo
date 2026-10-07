@@ -10,9 +10,7 @@ export function DashboardActivityFeed({ feed }: Props) {
   return (
     <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
       <div className="mb-4">
-        <h3 className="font-display text-lg font-bold text-foreground">
-          Aktivitas Terbaru
-        </h3>
+        <h3 className="font-display text-lg font-bold text-foreground">Aktivitas Terbaru</h3>
         <p className="text-xs text-muted-foreground">
           Laporan darurat dan mutasi kas komunitas secara real-time.
         </p>
@@ -37,9 +35,7 @@ export function DashboardActivityFeed({ feed }: Props) {
                   {item.tag}
                 </Badge>
                 <div>
-                  <p className="text-xs font-medium text-foreground leading-snug">
-                    {item.text}
-                  </p>
+                  <p className="text-xs font-medium text-foreground leading-snug">{item.text}</p>
                   <p className="text-[10px] text-muted-foreground mt-0.5 font-mono">
                     {formatJam(item.at)} WIB
                   </p>

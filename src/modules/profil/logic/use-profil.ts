@@ -22,7 +22,9 @@ export function useProfil() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, nama, foto_url, jenjang, status, bio, created_at, updated_at, notif_sos, notif_kas, notif_pengumuman, notif_email")
+        .select(
+          "id, nama, foto_url, jenjang, status, bio, role, created_at, updated_at, notif_sos, notif_kas, notif_pengumuman, notif_email",
+        )
         .eq("id", userId!)
         .maybeSingle();
       if (error) throw error;
@@ -43,6 +45,10 @@ export function useProfil() {
     if (profile) setForm(profile);
   }, [profile]);
 
+  // Sesuai kebijakan: "tidaklah boleh edit jenjang karir sendiri, hanya ketua umum, admin, dan dewan etika yg bisa ubah"
+  // Karena halaman profil ini melayani profil diri sendiri, canEditJenjang selalu diset false untuk mencegah edit diri sendiri.
+  const canEditJenjang = false;
+
   const saveBio = useMutation({
     mutationFn: async () => {
       if (!userId) throw new Error("Tidak ada sesi");
@@ -54,7 +60,7 @@ export function useProfil() {
           alamat: form.alamat ?? null,
           bio: form.bio ?? null,
           email: form.email ?? null,
-          jenjang: (form.jenjang ?? "calon") as ProfileRow["jenjang"],
+          jenjang: canEditJenjang ? (form.jenjang ?? "calon") : (profile?.jenjang ?? "calon"),
         })
         .eq("id", userId);
       if (error) throw error;
@@ -107,5 +113,6 @@ export function useProfil() {
     saveBio,
     saveNotif,
     handleAvatarUpload,
+    canEditJenjang,
   };
 }

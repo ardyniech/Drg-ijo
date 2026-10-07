@@ -73,7 +73,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.2 0.03 145);
   /* Hijau Grab Ikonik (#00B14F / oklch(0.64 0.20 145)) */
-  --primary: oklch(0.61 0.20 145);
+  --primary: oklch(0.61 0.2 145);
   --primary-foreground: oklch(0.99 0.005 145);
   --primary-glow: oklch(0.72 0.22 143);
   --secondary: oklch(0.95 0.025 145);
@@ -85,7 +85,7 @@
   --accent-foreground: oklch(0.25 0.06 145);
   --destructive: oklch(0.55 0.24 27);
   --destructive-foreground: oklch(0.99 0.01 80);
-  --success: oklch(0.61 0.20 145);
+  --success: oklch(0.61 0.2 145);
   --success-foreground: oklch(0.99 0.005 145);
   --warn: oklch(0.8 0.16 75);
   --warn-foreground: oklch(0.25 0.05 60);
@@ -93,8 +93,8 @@
   --signal-foreground: oklch(0.99 0.01 80);
   --border: oklch(0.91 0.015 145);
   --input: oklch(0.93 0.015 145);
-  --ring: oklch(0.61 0.20 145);
-  --chart-1: oklch(0.61 0.20 145);
+  --ring: oklch(0.61 0.2 145);
+  --chart-1: oklch(0.61 0.2 145);
   --chart-2: oklch(0.78 0.17 140);
   --chart-3: oklch(0.85 0.16 85);
   --chart-4: oklch(0.5 0.15 160);
@@ -109,7 +109,12 @@
   --sidebar-border: oklch(0.28 0.04 148);
   --sidebar-ring: oklch(0.66 0.21 144);
 
-  --gradient-warm: linear-gradient(135deg, oklch(0.52 0.19 146) 0%, oklch(0.63 0.21 144) 60%, oklch(0.76 0.19 138) 100%);
+  --gradient-warm: linear-gradient(
+    135deg,
+    oklch(0.52 0.19 146) 0%,
+    oklch(0.63 0.21 144) 60%,
+    oklch(0.76 0.19 138) 100%
+  );
   --gradient-ember: linear-gradient(180deg, oklch(0.2 0.04 148) 0%, oklch(0.16 0.03 148) 100%);
   --shadow-warm: 0 12px 40px -18px oklch(0.52 0.19 146 / 0.4);
   --shadow-card: 0 1px 0 oklch(0.91 0.015 145), 0 8px 24px -20px oklch(0.2 0.03 145 / 0.25);
@@ -163,13 +168,24 @@
     font-feature-settings: "ss01", "cv11";
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
 }
 
-@utility bg-gradient-warm { background-image: var(--gradient-warm); }
-@utility bg-gradient-ember { background-image: var(--gradient-ember); }
-@utility shadow-warm { box-shadow: var(--shadow-warm); }
-@utility shadow-card { box-shadow: var(--shadow-card); }
+@utility bg-gradient-warm {
+  background-image: var(--gradient-warm);
+}
+@utility bg-gradient-ember {
+  background-image: var(--gradient-ember);
+}
+@utility shadow-warm {
+  box-shadow: var(--shadow-warm);
+}
+@utility shadow-card {
+  box-shadow: var(--shadow-card);
+}

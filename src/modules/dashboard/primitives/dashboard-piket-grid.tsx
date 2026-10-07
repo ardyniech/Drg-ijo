@@ -19,9 +19,7 @@ export function DashboardPiketGrid({ piket }: Props) {
     <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="font-display text-lg font-bold text-foreground">
-            Satgas Piket Hari Ini
-          </h3>
+          <h3 className="font-display text-lg font-bold text-foreground">Satgas Piket Hari Ini</h3>
           <p className="text-xs text-muted-foreground">
             Distribusi rekan jaga per wilayah operasional.
           </p>

@@ -34,7 +34,10 @@ export function AuthCardTabs({
   return (
     <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
       <div className="mb-4 flex items-center justify-between">
-        <Badge variant="outline" className="gap-1.5 border-primary/30 bg-primary/5 text-primary text-[11px]">
+        <Badge
+          variant="outline"
+          className="gap-1.5 border-primary/30 bg-primary/5 text-primary text-[11px]"
+        >
           <Shield className="h-3 w-3" /> Autentikasi Komunitas DRG
         </Badge>
         <span className="text-[11px] text-muted-foreground">Server Terenkripsi</span>

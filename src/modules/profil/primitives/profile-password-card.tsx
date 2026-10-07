@@ -35,21 +35,11 @@ export function ProfilePasswordCard() {
       <CardContent className="space-y-3">
         <div className="space-y-1.5">
           <Label htmlFor="pw1">Password baru</Label>
-          <Input
-            id="pw1"
-            type="password"
-            value={pw1}
-            onChange={(e) => setPw1(e.target.value)}
-          />
+          <Input id="pw1" type="password" value={pw1} onChange={(e) => setPw1(e.target.value)} />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="pw2">Konfirmasi</Label>
-          <Input
-            id="pw2"
-            type="password"
-            value={pw2}
-            onChange={(e) => setPw2(e.target.value)}
-          />
+          <Input id="pw2" type="password" value={pw2} onChange={(e) => setPw2(e.target.value)} />
         </div>
         <Button
           variant="outline"

@@ -1,9 +1,11 @@
+import { UserRole } from "@/hooks/use-me";
+
 export interface LocalUser {
   id: string;
   email: string;
   nama: string;
   no_hp?: string;
-  role: "super_admin" | "admin" | "bendahara" | "satgas" | "anggota" | "dewan_etik";
+  role: UserRole;
   jenjang: "calon" | "muda" | "madya" | "purna";
   status: "aktif" | "nonaktif" | "cuti" | "pending_review";
   passwordHash: string;
@@ -28,47 +30,28 @@ export interface LocalSession {
 
 export const DEFAULT_USERS: LocalUser[] = [
   {
-    id: "usr-admin-01",
-    email: "admin@drg.id",
-    nama: "Admin Utama DRG",
-    no_hp: "081234567890",
-    role: "admin",
+    id: "usr-superadmin",
+    email: "ardy.syafii@gmail.com",
+    nama: "Ardy Syafii",
+    no_hp: "08123456789",
+    role: "super_admin",
     jenjang: "purna",
     status: "aktif",
     passwordHash: "admin12345",
     created_at: "2026-01-01T00:00:00Z",
   },
-  {
-    id: "usr-satgas-01",
-    email: "satgas@drg.id",
-    nama: "Satgas Lapangan DRG",
-    no_hp: "081298765432",
-    role: "satgas",
-    jenjang: "madya",
-    status: "aktif",
-    passwordHash: "satgas12345",
-    created_at: "2026-01-01T00:00:00Z",
-  },
-  {
-    id: "usr-bendahara-01",
-    email: "bendahara@drg.id",
-    nama: "Bendahara Kas DRG",
-    no_hp: "081345678901",
-    role: "bendahara",
-    jenjang: "madya",
-    status: "aktif",
-    passwordHash: "bendahara12345",
-    created_at: "2026-01-01T00:00:00Z",
-  },
-  {
-    id: "usr-driver-01",
-    email: "driver@drg.id",
-    nama: "Bang Parjo Driver",
-    no_hp: "081567890123",
-    role: "anggota",
-    jenjang: "muda",
-    status: "aktif",
-    passwordHash: "driver12345",
-    created_at: "2026-01-01T00:00:00Z",
-  },
 ];
+
+export function createLocalSession(user: LocalUser): LocalSession {
+  return {
+    access_token: `loc_tok_${user.id}_${Date.now()}`,
+    token_type: "bearer",
+    expires_in: 86400 * 30,
+    expires_at: Math.floor(Date.now() / 1000) + 86400 * 30,
+    user: {
+      id: user.id,
+      email: user.email,
+      user_metadata: { nama: user.nama, full_name: user.nama, role: user.role },
+    },
+  };
+}

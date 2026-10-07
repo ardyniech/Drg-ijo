@@ -1,27 +1,30 @@
+import { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
+import { UserRole } from "@/hooks/use-me";
 import {
   useDashboardOverview,
   DashboardHero,
   DashboardStats,
   DashboardPiketGrid,
-  DashboardActivityFeed,
+  DashboardRoleSwitcher,
+  DashboardRoleWidgetRenderer,
 } from "@/modules/dashboard";
-import {
-  useCommunityProgress,
-  ProgressiveOnboardingCard,
-} from "@/modules/onboarding";
+import { useDashboardGreeting } from "@/modules/dashboard/primitives/dashboard-header-greeting";
+import { ActivityLogView } from "@/modules/activity-log";
+import { useCommunityProgress, ProgressiveOnboardingCard } from "@/modules/onboarding";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard Komunitas — DRG App" },
+      { title: "Dashboard Operasional & Peran — DRG App" },
       {
         name: "description",
-        content: "Ringkasan operasional DRG: anggota aktif, saldo kas, kejadian bulan ini, dan jadwal piket hari ini.",
+        content:
+          "Dashboard spesifik peran DRG: Ketua Umum, Sekretaris, Bendahara, Admin, Korlap, Satgas, Dewan Etik, dan Driver.",
       },
     ],
   }),
@@ -36,38 +39,70 @@ function Dashboard() {
     queryKey: ["profile", user?.id],
     enabled: !!user?.id,
     queryFn: async () => {
-      const { data } = await supabase.from("profiles").select("nama, role, pangkalan").eq("id", user!.id).maybeSingle();
+      const { data } = await supabase
+        .from("profiles")
+        .select("nama, role, pangkalan")
+        .eq("id", user!.id)
+        .maybeSingle();
       return data;
     },
   });
 
+  const { data: screeningApps = [] } = useQuery({
+    queryKey: ["screening-apps"],
+    queryFn: async () => {
+      const { data } = await supabase.from("screening_applications").select("id, email");
+      return data ?? [];
+    },
+  });
+
+  const myApp = screeningApps.find((c) => c.email?.toLowerCase() === user?.email?.toLowerCase());
+  const hasSubmittedScreening = Boolean(myApp);
+
+  const [activeRole, setActiveRole] = useState<UserRole>("driver");
+
+  useEffect(() => {
+    if (profile?.role) {
+      const r = profile.role === "member" ? "driver" : (profile.role as UserRole);
+      setActiveRole(r);
+    }
+  }, [profile?.role]);
+
   const progress = useCommunityProgress({
+    hasSubmittedScreening,
     hasCompletedProfile: Boolean(profile?.pangkalan && profile?.nama),
     hasShifts: Boolean((overview?.shiftHariIni ?? 0) > 0),
     hasTransactions: Boolean((overview?.saldo ?? 0) > 0 || (overview?.masukBulanIni ?? 0) > 0),
-    role: profile?.role ?? null,
+    role: activeRole,
   });
 
   const displayName = profile?.nama?.split(" ")[0] || user?.user_metadata?.nama || "Rekan Driver";
-  const hour = new Date().getHours();
-  const salam = hour < 11 ? "Selamat pagi" : hour < 15 ? "Selamat siang" : hour < 18 ? "Selamat sore" : "Selamat malam";
+  const greetingTitle = useDashboardGreeting(displayName);
 
   return (
     <PageShell
-      eyebrow="Dashboard komunitas"
-      title={`${salam}, ${displayName}`}
-      description="Ringkasan operasional DRG hari ini — kas, kejadian, dan piket dalam satu layar terkoordinasi."
+      eyebrow="Dashboard terpadu komunitas"
+      title={greetingTitle}
+      description="Ringkasan operasional & dashboard khusus sesuai jabatan kepengurusan organisasi DRG."
       actions={
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" asChild>
-            <Link to="/kas">Catat Transaksi</Link>
+            <Link to="/roles">Pengurus & SK</Link>
           </Button>
-          <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-            <Link to="/kejadian">Buka Log Kejadian</Link>
+          <Button
+            size="sm"
+            className="bg-primary text-primary-foreground hover:bg-primary/90"
+            asChild
+          >
+            <Link to="/kas">Catat Transaksi</Link>
           </Button>
         </div>
       }
     >
+      <DashboardRoleSwitcher activeRole={activeRole} onRoleChange={setActiveRole} />
+
+      <DashboardRoleWidgetRenderer role={activeRole} />
+
       <ProgressiveOnboardingCard
         level={progress.currentLevel}
         progressPercent={progress.progressPercent}
@@ -90,7 +125,7 @@ function Dashboard() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <DashboardPiketGrid piket={overview?.piket ?? []} />
-        <DashboardActivityFeed feed={overview?.feed ?? []} />
+        <ActivityLogView roleFilter={activeRole === "driver" ? "all" : activeRole} limit={6} />
       </div>
     </PageShell>
   );

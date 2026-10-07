@@ -9,7 +9,7 @@ function getLocalClient() {
   return _adapter;
 }
 
-export const supabase = new Proxy({} as any, {
+export const supabase = new Proxy({} as ReturnType<typeof createLocalSupabaseAdapter>, {
   get(_, prop, receiver) {
     const client = getLocalClient();
     return Reflect.get(client, prop, receiver);

@@ -7,3 +7,4 @@ export * from "./primitives/candidate-audit-history";
 export * from "./primitives/screening-filters";
 export * from "./primitives/screening-table";
 export * from "./primitives/screening-review-dialog";
+export * from "./primitives/user-screening-view";

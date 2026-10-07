@@ -22,8 +22,8 @@ export function DashboardHero({ overview }: Props) {
             <br /> Komunitas terhubung sejak subuh.
           </h2>
           <p className="mt-3 max-w-lg text-sm text-primary-foreground/80 md:text-base">
-            Semua rekan piket terlihat di peta wilayah masing-masing. Tekan
-            tombol SOS di header kapan pun kondisi darurat.
+            Semua rekan piket terlihat di peta wilayah masing-masing. Tekan tombol SOS di header
+            kapan pun kondisi darurat.
           </p>
         </div>
         <div className="rounded-2xl bg-primary-foreground/10 p-5 backdrop-blur">

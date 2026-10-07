@@ -20,7 +20,8 @@ export function ProfilePushCard() {
       <CardContent className="space-y-3">
         {state === "unsupported" ? (
           <p className="text-sm text-muted-foreground">
-            Perangkat/browser ini belum mendukung Push. Coba install aplikasi (Add to Home Screen) atau pakai Chrome.
+            Perangkat/browser ini belum mendukung Push. Coba install aplikasi (Add to Home Screen)
+            atau pakai Chrome.
           </p>
         ) : state === "denied" ? (
           <p className="text-sm text-destructive">
@@ -41,7 +42,11 @@ export function ProfilePushCard() {
             </div>
             <Button
               variant={subscribed ? "outline" : "default"}
-              className={subscribed ? "w-full" : "w-full bg-primary text-primary-foreground hover:bg-primary/90"}
+              className={
+                subscribed
+                  ? "w-full"
+                  : "w-full bg-primary text-primary-foreground hover:bg-primary/90"
+              }
               onClick={() => (subscribed ? unsubscribe() : subscribe())}
               disabled={busy}
             >

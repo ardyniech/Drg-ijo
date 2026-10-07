@@ -1,4 +1,4 @@
-import { DEFAULT_USERS, LocalSession, LocalUser } from "./local-auth-store";
+import { DEFAULT_USERS, LocalSession, LocalUser, createLocalSession } from "./local-auth-store";
 
 const USERS_KEY = "drg_local_users_v1";
 const SESSION_KEY = "drg_local_session_v1";
@@ -9,7 +9,7 @@ let inMemoryUsers: LocalUser[] = [...DEFAULT_USERS];
 let inMemorySession: LocalSession | null = null;
 
 export class LocalAuthClient {
-  private static getStoredUsers(): LocalUser[] {
+  static getUsers(): LocalUser[] {
     if (typeof window === "undefined") return inMemoryUsers;
     try {
       const raw = localStorage.getItem(USERS_KEY);
@@ -23,11 +23,29 @@ export class LocalAuthClient {
     }
   }
 
+  static updateUser(userId: string, patch: Partial<LocalUser>) {
+    const users = this.getUsers().map((u) => (u.id === userId ? { ...u, ...patch } : u));
+    inMemoryUsers = users;
+    if (typeof window !== "undefined") localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    const cur = this.getSession();
+    if (cur?.user.id === userId) {
+      if (patch.nama) cur.user.user_metadata.nama = patch.nama;
+      if (patch.role) cur.user.user_metadata.role = patch.role;
+      this.setSession(cur);
+    }
+  }
+
   static getSession(): LocalSession | null {
     if (typeof window === "undefined") return inMemorySession;
     try {
       const raw = localStorage.getItem(SESSION_KEY);
-      return raw ? JSON.parse(raw) : null;
+      if (!raw) return inMemorySession;
+      const parsed: LocalSession = JSON.parse(raw);
+      if (parsed.expires_at && parsed.expires_at < Math.floor(Date.now() / 1000)) {
+        this.setSession(null);
+        return null;
+      }
+      return parsed;
     } catch {
       return inMemorySession;
     }
@@ -52,21 +70,11 @@ export class LocalAuthClient {
 
   static async signIn(email: string, password: string) {
     const cleanEmail = email.trim().toLowerCase();
-    const user = this.getStoredUsers().find((u) => u.email.toLowerCase() === cleanEmail);
+    const user = this.getUsers().find((u) => u.email.toLowerCase() === cleanEmail);
     if (!user) return { session: null, error: new Error("Akun email ini belum terdaftar.") };
-    if (user.passwordHash !== password) return { session: null, error: new Error("Kata sandi salah.") };
-
-    const session: LocalSession = {
-      access_token: `loc_tok_${user.id}_${Date.now()}`,
-      token_type: "bearer",
-      expires_in: 86400 * 30,
-      expires_at: Math.floor(Date.now() / 1000) + 86400 * 30,
-      user: {
-        id: user.id,
-        email: user.email,
-        user_metadata: { nama: user.nama, full_name: user.nama, role: user.role },
-      },
-    };
+    if (user.passwordHash !== password)
+      return { session: null, error: new Error("Kata sandi salah.") };
+    const session = createLocalSession(user);
     this.setSession(session);
     return { session, error: null };
   }
@@ -75,11 +83,15 @@ export class LocalAuthClient {
     const cleanEmail = payload.email.trim().toLowerCase();
     const cleanName = payload.nama.trim();
     if (!cleanName) return { session: null, error: new Error("Nama lengkap wajib diisi.") };
-    if (payload.password.length < 6) return { session: null, error: new Error("Kata sandi minimal 6 karakter.") };
+    if (payload.password.length < 6)
+      return { session: null, error: new Error("Kata sandi minimal 6 karakter.") };
 
-    const users = this.getStoredUsers();
+    const users = this.getUsers();
     if (users.some((u) => u.email.toLowerCase() === cleanEmail)) {
-      return { session: null, error: new Error("Email ini sudah terdaftar. Silakan langsung masuk.") };
+      return {
+        session: null,
+        error: new Error("Email ini sudah terdaftar. Silakan langsung masuk."),
+      };
     }
 
     const newUser: LocalUser = {
@@ -93,22 +105,11 @@ export class LocalAuthClient {
       passwordHash: payload.password,
       created_at: new Date().toISOString(),
     };
-
     users.push(newUser);
     inMemoryUsers = users;
     if (typeof window !== "undefined") localStorage.setItem(USERS_KEY, JSON.stringify(users));
 
-    const session: LocalSession = {
-      access_token: `loc_tok_${newUser.id}_${Date.now()}`,
-      token_type: "bearer",
-      expires_in: 86400 * 30,
-      expires_at: Math.floor(Date.now() / 1000) + 86400 * 30,
-      user: {
-        id: newUser.id,
-        email: newUser.email,
-        user_metadata: { nama: newUser.nama, full_name: newUser.nama, role: newUser.role },
-      },
-    };
+    const session = createLocalSession(newUser);
     this.setSession(session);
     return { session, error: null };
   }

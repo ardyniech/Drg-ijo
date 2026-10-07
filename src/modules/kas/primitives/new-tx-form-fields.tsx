@@ -47,7 +47,9 @@ export function NewTxFormFields({
         <div>
           <Label>Ledger</Label>
           <Select value={ledger} onValueChange={onLedgerChange}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="sosial">Sosial</SelectItem>
               <SelectItem value="umum">Koperasi</SelectItem>
@@ -57,7 +59,9 @@ export function NewTxFormFields({
         <div>
           <Label>Jenis</Label>
           <Select value={jenis} onValueChange={onJenisChange}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="masuk">Masuk</SelectItem>
               <SelectItem value="keluar">Keluar</SelectItem>
@@ -68,7 +72,11 @@ export function NewTxFormFields({
       <div className="grid grid-cols-2 gap-3">
         <div>
           <Label>Jumlah (Rp)</Label>
-          <Input inputMode="numeric" value={jumlah} onChange={(e) => onJumlahChange(e.target.value.replace(/\D/g, ""))} />
+          <Input
+            inputMode="numeric"
+            value={jumlah}
+            onChange={(e) => onJumlahChange(e.target.value.replace(/\D/g, ""))}
+          />
         </div>
         <div>
           <Label>Tanggal</Label>
@@ -77,7 +85,11 @@ export function NewTxFormFields({
       </div>
       <div>
         <Label>Kategori</Label>
-        <Input value={kategori} onChange={(e) => onKategoriChange(e.target.value)} placeholder="Iuran, santunan, operasional…" />
+        <Input
+          value={kategori}
+          onChange={(e) => onKategoriChange(e.target.value)}
+          placeholder="Iuran, santunan, operasional…"
+        />
       </div>
       <div>
         <Label>Catatan</Label>
@@ -85,7 +97,11 @@ export function NewTxFormFields({
       </div>
       <div>
         <Label>Bukti (opsional)</Label>
-        <Input type="file" accept="image/*,application/pdf" onChange={(e) => onBuktiChange(e.target.files?.[0] ?? null)} />
+        <Input
+          type="file"
+          accept="image/*,application/pdf"
+          onChange={(e) => onBuktiChange(e.target.files?.[0] ?? null)}
+        />
       </div>
       <div className="rounded-lg bg-muted/60 px-3 py-2 text-xs text-muted-foreground">
         Transaksi ≥ Rp 500.000 otomatis berstatus <b>menunggu</b> hingga disetujui.

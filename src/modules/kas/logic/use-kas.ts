@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { recordActivityLog } from "@/modules/activity-log";
 import { Tx } from "../types";
+import { useKasTotals } from "./use-kas-totals";
 
 export function useKas() {
   const qc = useQueryClient();
@@ -29,7 +31,7 @@ export function useKas() {
     queryFn: async () => {
       const { data, error } = await supabase.rpc("kas_balances");
       if (error) throw error;
-      return data ?? [];
+      return (data ?? []) as Array<Record<string, unknown>>;
     },
   });
 
@@ -59,17 +61,18 @@ export function useKas() {
     });
   }, [rows, ledgerFilter, statusFilter, q]);
 
-  const totals = useMemo(() => {
-    const acc = { sosial: 0, umum: 0, menunggu: 0 };
-    balances.forEach((b) => {
-      acc[b.ledger as "sosial" | "umum"] = Number(b.saldo ?? 0);
-      acc.menunggu += Number(b.menunggu ?? 0);
-    });
-    return acc;
-  }, [balances]);
+  const totals = useKasTotals(balances);
 
   const approve = useMutation({
-    mutationFn: async ({ id, status, note }: { id: string; status: "disetujui" | "ditolak"; note?: string }) => {
+    mutationFn: async ({
+      id,
+      status,
+      note,
+    }: {
+      id: string;
+      status: "disetujui" | "ditolak";
+      note?: string;
+    }) => {
       const { data: u } = await supabase.auth.getUser();
       const { error } = await supabase
         .from("kas_transactions")
@@ -77,14 +80,25 @@ export function useKas() {
           status,
           approved_by: u.user?.id ?? null,
           approved_at: new Date().toISOString(),
-          catatan_approver: note ?? null,
+          catatan_approver: note?.trim() || null,
         })
         .eq("id", id);
       if (error) throw error;
+      return { id, status, userId: u.user?.id };
     },
     onSuccess: (_d, v) => {
-      toast.success(v.status === "disetujui" ? "Disetujui" : "Ditolak");
+      toast.success(v.status === "disetujui" ? "Transaksi disetujui" : "Transaksi ditolak");
+      recordActivityLog({
+        actorId: v.userId || "bendahara",
+        actorName: "Bendahara Keuangan",
+        actorRole: "bendahara",
+        action: v.status === "disetujui" ? "Persetujuan Transaksi Kas" : "Penolakan Transaksi Kas",
+        module: "kas",
+        description: `${v.status === "disetujui" ? "Menyetujui" : "Menolak"} transaksi kas #${v.id.slice(-4)}.`,
+      });
+      qc.invalidateQueries({ queryKey: ["kas-tx"] });
       qc.invalidateQueries({ queryKey: ["kas-balances"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-overview"] });
     },
     onError: (e: Error) => toast.error(e.message),
   });

@@ -41,7 +41,10 @@ export function ScreeningFilters({
           className="pl-9"
         />
       </div>
-      <Select value={statusFilter} onValueChange={(v) => onStatusFilterChange(v as ScreeningStatus | "all")}>
+      <Select
+        value={statusFilter}
+        onValueChange={(v) => onStatusFilterChange(v as ScreeningStatus | "all")}
+      >
         <SelectTrigger className="w-[170px]">
           <SelectValue />
         </SelectTrigger>
@@ -53,7 +56,10 @@ export function ScreeningFilters({
           <SelectItem value="ditolak">Ditolak</SelectItem>
         </SelectContent>
       </Select>
-      <Select value={verifFilter} onValueChange={(v) => onVerifFilterChange(v as "all" | "verified" | "unverified")}>
+      <Select
+        value={verifFilter}
+        onValueChange={(v) => onVerifFilterChange(v as "all" | "verified" | "unverified")}
+      >
         <SelectTrigger className="w-[170px]">
           <SelectValue />
         </SelectTrigger>

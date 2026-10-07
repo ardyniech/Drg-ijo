@@ -13,13 +13,7 @@ interface Props {
   onUploadAvatar: (file: File) => void;
 }
 
-export function ProfileSummaryCard({
-  profile,
-  form,
-  authEmail,
-  roles,
-  onUploadAvatar,
-}: Props) {
+export function ProfileSummaryCard({ profile, form, authEmail, roles, onUploadAvatar }: Props) {
   const initials = getInitials(form.nama ?? authEmail);
 
   return (
@@ -44,9 +38,7 @@ export function ProfileSummaryCard({
           )}
         </div>
         <div>
-          <div className="font-display text-lg font-semibold">
-            {form.nama || "Anggota DRG"}
-          </div>
+          <div className="font-display text-lg font-semibold">{form.nama || "Anggota DRG"}</div>
           <div className="text-xs text-muted-foreground">{authEmail}</div>
         </div>
         <div className="flex flex-wrap justify-center gap-1.5">

@@ -12,10 +12,11 @@ describe("getInitials helper", () => {
     expect(getInitials("admin@drg.id")).toBe("AD");
   });
 
-  it("handles null or undefined safely", () => {
+  it("handles null, undefined, empty, or whitespace strings safely", () => {
     expect(getInitials(null)).toBe("?");
     expect(getInitials(undefined)).toBe("?");
     expect(getInitials("")).toBe("?");
+    expect(getInitials("   ")).toBe("?");
   });
 });
 
