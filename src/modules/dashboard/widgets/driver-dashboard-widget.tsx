@@ -11,9 +11,9 @@ export function DriverDashboardWidget() {
             <User className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-foreground">Dashboard Anggota Driver Active</h3>
+            <h3 className="text-sm font-bold text-foreground">Dashboard Sedulur Driver Aktif</h3>
             <p className="text-xs text-muted-foreground">
-              KTA digital, status iuran kas gotong royong, & tombol bantuan darurat
+              KTA digital, status kas gotong royong, & tombol bantuan darurat satu aspal
             </p>
           </div>
         </div>
@@ -26,12 +26,12 @@ export function DriverDashboardWidget() {
             asChild
           >
             <Link to="/profil">
-              <User className="mr-1.5 h-3.5 w-3.5" /> KTA Digital Saya
+              <User className="mr-1.5 h-3.5 w-3.5" /> KTA Digital Dulur
             </Link>
           </Button>
           <Button size="sm" className="bg-signal text-signal-foreground hover:bg-signal/90" asChild>
             <Link to="/kejadian">
-              <Siren className="mr-1.5 h-3.5 w-3.5" /> Minta Bantuan SOS
+              <Siren className="mr-1.5 h-3.5 w-3.5" /> Bantuan SOS Jalur
             </Link>
           </Button>
         </div>
@@ -40,26 +40,26 @@ export function DriverDashboardWidget() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 text-xs">
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <Wallet className="h-3.5 w-3.5 text-emerald-600" /> Status Iuran Saya
+            <Wallet className="h-3.5 w-3.5 text-emerald-600" /> Kas Seduluran
           </div>
-          <div className="mt-1.5 text-xl font-bold text-emerald-600">Terbayar Lunas</div>
-          <div className="text-[10px] text-muted-foreground">Kuintansi QR Tersedia</div>
+          <div className="mt-1.5 text-xl font-bold text-emerald-600">Tertib Lunas</div>
+          <div className="text-[10px] text-muted-foreground">Kwitansi Digital Siap</div>
         </div>
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <Calendar className="h-3.5 w-3.5 text-primary" /> Jadwal Piket
+            <Calendar className="h-3.5 w-3.5 text-primary" /> Jadwal Jaga Jalur
           </div>
           <div className="mt-1.5 text-xl font-bold text-primary">Sabtu, Shift 1</div>
-          <div className="text-[10px] text-muted-foreground">Posko Utama Suhat</div>
+          <div className="text-[10px] text-muted-foreground">Basecamp Suhat</div>
         </div>
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs col-span-2 sm:col-span-1">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <User className="h-3.5 w-3.5 text-amber-600" /> Jenjang Kader
+            <User className="h-3.5 w-3.5 text-amber-600" /> Tingkat Aspal
           </div>
-          <div className="mt-1.5 text-xl font-bold text-amber-600">Kader Madya</div>
-          <div className="text-[10px] text-muted-foreground">Aktif 2 Tahun</div>
+          <div className="mt-1.5 text-xl font-bold text-amber-600">Suhu Gacor</div>
+          <div className="text-[10px] text-muted-foreground">Jawara Aspal • Jam Terbang 2 Thn</div>
         </div>
       </div>
     </div>

@@ -32,8 +32,8 @@ function PersetujuanAkunPage() {
 
   return (
     <PageShell
-      title="Persetujuan & Validasi Akun"
-      description="Verifikasi berkas calon anggota baru, persetujuan mutasi pangkalan, dan kenaikan level struktural satgas."
+      title="Persetujuan Dulur Merapat"
+      description="Verifikasi sedulur baru yang merapat ke pangkalan DRG, persetujuan pindah pangkalan santui, dan pengesahan amanah."
     >
       <div className="space-y-6">
         <ApprovalFilters
@@ -49,12 +49,12 @@ function PersetujuanAkunPage() {
           <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/80 bg-muted/20 p-12 text-center">
             <UserCheck className="h-10 w-10 text-muted-foreground/60" />
             <h3 className="mt-3 text-sm font-semibold text-foreground">
-              {isFiltered ? "Tidak Ada Permohonan yang Cocok" : "Tidak Ada Permohonan"}
+              {isFiltered ? "Tidak Ada Permohonan yang Cocok" : "Semua Berkas Sudah Klir"}
             </h3>
             <p className="mt-1 text-xs text-muted-foreground">
               {isFiltered
                 ? "Tidak ada permohonan yang memenuhi kriteria filter pencarian."
-                : "Semua antrean registrasi dan mutasi anggota telah selesai diproses."}
+                : "Alhamdulillah semua antrean dulur merapat dan mutasi pangkalan sudah tuntas diverifikasi."}
             </p>
             {isFiltered && (
               <Button

@@ -54,7 +54,7 @@ export function NewTxDialog() {
       return numJumlah;
     },
     onSuccess: (numJumlah) => {
-      toast.success("Transaksi kas berhasil disimpan");
+      toast.success("Alhamdulillah! Transaksi kas berhasil dicatat.");
       enqueueOperation({
         idempotencyKey: generatePrefixedId(`kas-${Date.now()}`),
         action: `Pencatatan Kas (${jenis.toUpperCase()})`,
@@ -77,12 +77,12 @@ export function NewTxDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="sm">
-          <Plus className="mr-1.5 h-4 w-4" /> Transaksi baru
+          <Plus className="mr-1.5 h-4 w-4" /> Urunan / Catat Kas
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Transaksi kas baru</DialogTitle>
+          <DialogTitle>Catat Kas Gotong Royong</DialogTitle>
         </DialogHeader>
         <NewTxFormFields
           ledger={ledger}
@@ -104,7 +104,7 @@ export function NewTxDialog() {
             Batal
           </Button>
           <Button onClick={() => mut.mutate()} disabled={mut.isPending || !jumlah}>
-            {mut.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Simpan
+            {mut.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Simpan Kas Dulur
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -52,7 +52,9 @@ function AuthedLayout() {
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center space-y-3">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" />
-          <p className="text-xs text-muted-foreground animate-pulse">Memuat sistem DRG...</p>
+          <p className="text-xs text-muted-foreground animate-pulse">
+            Menghubungkan ke pangkalan DRG...
+          </p>
         </div>
       </div>
     );
@@ -67,13 +69,13 @@ function AuthedLayout() {
           <EmergencySosBanner />
           {me?.isPendingReview && (
             <div className="border-b border-warn/40 bg-warn/15 px-3 py-2 text-center text-xs text-warn-foreground md:px-6">
-              Akun kamu <b>menunggu persetujuan admin</b>. Modul organisasi terkunci sampai
-              disetujui.
+              Akun dulur <b>menunggu verifikasi pangkalan</b>. Sabar ya dulur, modul organisasi
+              terbuka setelah disahkan PIC pangkalan.
             </div>
           )}
           {onBit && error && (
             <div className="border-b border-warn/40 bg-warn/15 px-3 py-1.5 text-center text-[11px] text-warn-foreground md:px-6">
-              GPS tidak bisa diakses: {error}. Cek izin lokasi browser.
+              GPS jalur belum terbaca: {error}. Silakan aktifkan izin lokasi di browser.
             </div>
           )}
           <main className="flex-1">

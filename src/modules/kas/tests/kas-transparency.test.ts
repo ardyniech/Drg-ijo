@@ -6,20 +6,25 @@ import {
 } from "../logic/use-kas-transparency-data";
 import { Tx } from "../types";
 
-describe("Kas Transparency Data Calculations", () => {
-  it("provides valid historical trend data when no transactions exist", () => {
+describe("Kas Transparency Data Calculations (Production Clean)", () => {
+  it("provides clean empty results for production when no transactions exist", () => {
     const trend = calculateTrendData([]);
-    expect(trend.length).toBeGreaterThan(0);
+    expect(trend).toEqual([]);
+
+    const categories = calculateCategoryBreakdown([]);
+    expect(categories).toEqual([]);
 
     const stats = calculateStatsSummary([]);
-    expect(stats.totalSocial).toBeGreaterThan(0);
-    expect(stats.totalCooperative).toBeGreaterThan(0);
+    expect(stats.totalSocial).toBe(0);
+    expect(stats.totalCooperative).toBe(0);
+    expect(stats.totalRelief).toBe(0);
+    expect(stats.activeContributors).toBe(0);
   });
 
-  it("correctly aggregates social and cooperative ledger sums", () => {
-    const mockTx: Tx[] = [
+  it("correctly aggregates social and cooperative ledger sums from real transactions", () => {
+    const realTx: Tx[] = [
       {
-        id: "tx-1",
+        id: "tx-real-1",
         ledger: "sosial",
         jenis: "masuk",
         jumlah: 1000000,
@@ -34,7 +39,7 @@ describe("Kas Transparency Data Calculations", () => {
         catatan_approver: null,
       },
       {
-        id: "tx-2",
+        id: "tx-real-2",
         ledger: "umum",
         jenis: "masuk",
         jumlah: 2000000,
@@ -50,11 +55,14 @@ describe("Kas Transparency Data Calculations", () => {
       },
     ];
 
-    const categories = calculateCategoryBreakdown(mockTx);
-    expect(categories.length).toBeGreaterThan(0);
+    const categories = calculateCategoryBreakdown(realTx);
+    expect(categories.length).toBe(2);
+    expect(categories.find((c) => c.name === "Iuran Sukarela")?.value).toBe(1000000);
+    expect(categories.find((c) => c.name === "Iuran Wajib")?.value).toBe(2000000);
 
-    const stats = calculateStatsSummary(mockTx);
+    const stats = calculateStatsSummary(realTx);
     expect(stats.totalSocial).toBe(1000000);
     expect(stats.totalCooperative).toBe(2000000);
+    expect(stats.activeContributors).toBe(2);
   });
 });

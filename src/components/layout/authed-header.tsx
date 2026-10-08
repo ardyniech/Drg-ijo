@@ -33,15 +33,17 @@ export function AuthedHeader({ onBit, setOnBit, hydrated, today }: AuthedHeaderP
             const next = !onBit;
             setOnBit(next);
             toast[next ? "success" : "message"](
-              next ? "On-Bit aktif — lokasi live dibagikan" : "On-Bit dimatikan — lokasi berhenti",
+              next
+                ? "Ngebit Santui On — lokasi live terpantau sedulur jalur"
+                : "Standby Pangkalan — lokasi live off, ngopi dulu dulur",
             );
           }}
           title={
             hydrated
               ? onBit
-                ? "Ngebit — lokasi live aktif. Klik untuk berhenti."
-                : "Off-Bit — klik untuk mulai share lokasi."
-              : "Memuat GPS…"
+                ? "Ngebit On — lokasi live aktif terpantau dulur. Klik untuk standby."
+                : "Standby — klik untuk mulai ngebit & pantau jalur."
+              : "Menyiapkan GPS…"
           }
           className={
             "hidden sm:inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider transition " +
@@ -51,7 +53,7 @@ export function AuthedHeader({ onBit, setOnBit, hydrated, today }: AuthedHeaderP
           }
         >
           {onBit ? <RadioTower className="h-3 w-3 animate-pulse" /> : <Radio className="h-3 w-3" />}
-          {onBit ? "On-Bit" : "Off-Bit"}
+          {onBit ? "Ngebit On" : "Standby"}
         </button>
         <Button
           asChild
@@ -59,7 +61,7 @@ export function AuthedHeader({ onBit, setOnBit, hydrated, today }: AuthedHeaderP
           className="bg-signal text-signal-foreground shadow-warm hover:bg-signal/90"
         >
           <Link to="/kejadian">
-            <Siren className="mr-1.5 h-4 w-4" /> SOS
+            <Siren className="mr-1.5 h-4 w-4" /> SOS Pantau
           </Link>
         </Button>
         <UserMenu />

@@ -27,8 +27,8 @@ export function PiketCheckInButton({ isToday }: PiketCheckInButtonProps) {
       setTimeout(() => {
         setLoading(false);
         setCheckedIn(true);
-        setVerifiedLocation("Lokasi Manual (GPS Offline)");
-        toast.success("Presensi Piket Berhasil (Mode Offline tercatat).");
+        setVerifiedLocation("Lokasi Manual Basecamp");
+        toast.success("Absen Jaga Jalur Berhasil! Salam Satu Aspal santui.");
       }, 500);
       return;
     }
@@ -43,17 +43,17 @@ export function PiketCheckInButton({ isToday }: PiketCheckInButtonProps) {
         if (match) {
           const locText = `${match.shelterName} (${formatDistanceDisplay(match.distanceMeters)})`;
           setVerifiedLocation(locText);
-          toast.success(`Check-in Terverifikasi di ${locText}`);
+          toast.success(`Absen Terverifikasi di ${locText}! Siap jaga jalur.`);
         } else {
           setVerifiedLocation("Area Terpantau");
-          toast.success("Presensi Piket Berhasil tercatat!");
+          toast.success("Absen Piket Berhasil! Siaga bantu sedulur di jalan.");
         }
       },
       () => {
         setLoading(false);
         setCheckedIn(true);
-        setVerifiedLocation("Basecamp Terdaftar");
-        toast.success("Presensi Piket Berhasil diverifikasi!");
+        setVerifiedLocation("Basecamp Pangkalan");
+        toast.success("Absen Jaga Basecamp Berhasil!");
       },
       { timeout: 4000, maximumAge: 60000 },
     );
@@ -63,7 +63,7 @@ export function PiketCheckInButton({ isToday }: PiketCheckInButtonProps) {
     return (
       <div className="flex flex-col items-center gap-0.5">
         <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
-          <CheckCircle2 className="h-3 w-3 text-emerald-600" /> Hadir Piket
+          <CheckCircle2 className="h-3 w-3 text-emerald-600" /> Siaga Jaga Jalur
         </span>
         {verifiedLocation && (
           <span className="text-[9px] text-muted-foreground truncate max-w-[120px]">
@@ -86,7 +86,7 @@ export function PiketCheckInButton({ isToday }: PiketCheckInButtonProps) {
         <Loader2 className="h-3 w-3 animate-spin" />
       ) : (
         <>
-          <MapPin className="h-3 w-3" /> Check-in GPS
+          <MapPin className="h-3 w-3" /> Absen Basecamp
         </>
       )}
     </Button>

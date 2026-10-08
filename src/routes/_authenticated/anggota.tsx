@@ -4,10 +4,9 @@ import { PageShell } from "@/components/page-shell";
 import {
   MemberFilters,
   MemberDirectoryGrid,
+  MemberTableView,
   MemberHeaderBar,
-  AddMemberDialog,
-  EditMemberDialog,
-  DeleteMemberDialog,
+  MemberDialogManager,
   useAnggota,
   MemberRecord,
 } from "@/modules/anggota";
@@ -27,6 +26,7 @@ export const Route = createFileRoute("/_authenticated/anggota")({
 
 function AnggotaPage() {
   const [isAddOpen, setIsAddOpen] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<MemberRecord | null>(null);
   const [editingMember, setEditingMember] = useState<MemberRecord | null>(null);
   const [deletingMember, setDeletingMember] = useState<MemberRecord | null>(null);
 
@@ -41,14 +41,21 @@ function AnggotaPage() {
     setSelectedPangkalan,
     selectedRole,
     setSelectedRole,
+    selectedJenjang,
+    setSelectedJenjang,
+    viewMode,
+    setViewMode,
     sortBy,
     setSortBy,
     pangkalanOptions,
     resetFilters,
+    exportCsv,
     isLoading,
     canManage,
+    canVerify,
     addMember,
     updateMember,
+    verifyMember,
     deleteMember,
     isAdding,
     isUpdating,
@@ -57,8 +64,8 @@ function AnggotaPage() {
 
   return (
     <PageShell
-      title="Direktori Anggota"
-      description={`Basis data anggota resmi DRG (${stats.total} driver terdaftar), jenjang kaderisasi, dan manajemen pengurus.`}
+      title="Direktori Sedulur Satu Aspal"
+      description={`Keluarga besar driver DRG (${stats.total} sedulur terdaftar se-Malang Raya), tingkat aspal santui, dan guyub pangkalan.`}
     >
       <div className="space-y-4">
         <MemberHeaderBar
@@ -68,6 +75,9 @@ function AnggotaPage() {
           pangkalan={stats.pangkalan}
           canManage={canManage}
           onAddClick={() => setIsAddOpen(true)}
+          onExportCsv={exportCsv}
+          selectedStatus={selectedStatus}
+          onSelectStatus={setSelectedStatus}
         />
 
         <MemberFilters
@@ -79,41 +89,59 @@ function AnggotaPage() {
           setSelectedPangkalan={setSelectedPangkalan}
           selectedRole={selectedRole}
           setSelectedRole={setSelectedRole}
+          selectedJenjang={selectedJenjang}
+          setSelectedJenjang={setSelectedJenjang}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
           sortBy={sortBy}
           setSortBy={setSortBy}
           pangkalanOptions={pangkalanOptions}
         />
 
-        <MemberDirectoryGrid
-          members={members}
-          isLoading={isLoading}
-          onResetFilters={resetFilters}
-          canManage={canManage}
-          onEditMember={(m) => setEditingMember(m)}
-          onDeleteMember={(m) => setDeletingMember(m)}
-        />
+        {viewMode === "grid" ? (
+          <MemberDirectoryGrid
+            members={members}
+            isLoading={isLoading}
+            onResetFilters={resetFilters}
+            onSelectMember={(m) => setSelectedMember(m)}
+            onVerifyMember={verifyMember}
+            canVerify={canVerify}
+            canManage={canManage}
+            onEditMember={(m) => setEditingMember(m)}
+            onDeleteMember={(m) => setDeletingMember(m)}
+          />
+        ) : (
+          <MemberTableView
+            members={members}
+            isLoading={isLoading}
+            onResetFilters={resetFilters}
+            onSelectMember={(m) => setSelectedMember(m)}
+            onVerifyMember={verifyMember}
+            canVerify={canVerify}
+            canManage={canManage}
+            onEditMember={(m) => setEditingMember(m)}
+            onDeleteMember={(m) => setDeletingMember(m)}
+          />
+        )}
 
-        <AddMemberDialog
-          open={isAddOpen}
-          onOpenChange={setIsAddOpen}
-          onAdd={addMember}
+        <MemberDialogManager
+          isAddOpen={isAddOpen}
+          setIsAddOpen={setIsAddOpen}
+          selectedMember={selectedMember}
+          setSelectedMember={setSelectedMember}
+          editingMember={editingMember}
+          setEditingMember={setEditingMember}
+          deletingMember={deletingMember}
+          setDeletingMember={setDeletingMember}
+          addMember={addMember}
+          updateMember={updateMember}
+          verifyMember={verifyMember}
+          deleteMember={deleteMember}
           isAdding={isAdding}
-        />
-
-        <EditMemberDialog
-          member={editingMember}
-          open={!!editingMember}
-          onOpenChange={(open) => !open && setEditingMember(null)}
-          onUpdate={updateMember}
           isUpdating={isUpdating}
-        />
-
-        <DeleteMemberDialog
-          member={deletingMember}
-          open={!!deletingMember}
-          onOpenChange={(open) => !open && setDeletingMember(null)}
-          onConfirmDelete={deleteMember}
           isDeleting={isDeleting}
+          canManage={canManage}
+          canVerify={canVerify}
         />
       </div>
     </PageShell>

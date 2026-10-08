@@ -28,6 +28,17 @@ export function useMemberMutations(actorRole?: string, actorId?: string) {
     onError: (err: Error) => toast.error(err.message),
   });
 
+  const verifyMutation = useMutation({
+    mutationFn: async (id: string) => {
+      return MemberManagementService.verifyMember(id, actorRole);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["anggota", "list"] });
+      toast.success("Anggota berhasil diverifikasi sebagai driver aktif.");
+    },
+    onError: (err: Error) => toast.error(err.message),
+  });
+
   const deleteMutation = useMutation({
     mutationFn: async (targetId: string) => {
       return MemberManagementService.deleteMember(targetId, actorId || "", actorRole);
@@ -43,9 +54,11 @@ export function useMemberMutations(actorRole?: string, actorId?: string) {
     addMember: (p: NewMemberPayload) => addMutation.mutateAsync(p),
     updateMember: (id: string, patch: Partial<LocalUser>) =>
       updateMutation.mutateAsync({ id, patch }),
+    verifyMember: (id: string) => verifyMutation.mutateAsync(id),
     deleteMember: (id: string) => deleteMutation.mutateAsync(id),
     isAdding: addMutation.isPending,
     isUpdating: updateMutation.isPending,
+    isVerifying: verifyMutation.isPending,
     isDeleting: deleteMutation.isPending,
   };
 }

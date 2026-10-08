@@ -14,32 +14,32 @@ export function DashboardHero({ overview }: Props) {
       <div className="relative grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-center">
         <div>
           <Badge className="mb-3 bg-primary-foreground/15 text-primary-foreground hover:bg-primary-foreground/20">
-            <Radio className="mr-1.5 h-3 w-3" /> Mode Piket ·{" "}
-            {overview && overview.shiftHariIni > 0 ? "aktif" : "belum ada jadwal"}
+            <Radio className="mr-1.5 h-3 w-3" /> Piket Basecamp ·{" "}
+            {overview && overview.shiftHariIni > 0 ? "aktif jaga jalur" : "belum ada jadwal"}
           </Badge>
           <h2 className="font-display text-2xl font-bold leading-tight text-primary-foreground md:text-4xl">
-            {overview ? `${overview.shiftHariIni} Satgas siap.` : "Menyiapkan data…"}
-            <br /> Komunitas terhubung sejak subuh.
+            {overview ? `${overview.shiftHariIni} Dulur Satgas Siaga.` : "Menghubungkan pangkalan…"}
+            <br /> Pangkalan terhubung sejak subuh santui.
           </h2>
           <p className="mt-3 max-w-lg text-sm text-primary-foreground/80 md:text-base">
-            Semua rekan piket terlihat di peta wilayah masing-masing. Tekan tombol SOS di header
-            kapan pun kondisi darurat.
+            Semua dulur piket terlihat di radar pangkalan masing-masing. Tekan tombol SOS di header
+            kapan pun dulur butuh bantuan darurat di jalan.
           </p>
         </div>
         <div className="rounded-2xl bg-primary-foreground/10 p-5 backdrop-blur">
           <div className="mb-3 flex items-center justify-between text-primary-foreground/80">
-            <span className="text-xs uppercase tracking-widest">Kejadian aktif</span>
+            <span className="text-xs uppercase tracking-widest">Pantau Jalur Darurat</span>
             <TrendingUp className="h-4 w-4" />
           </div>
           <div className="font-display text-4xl font-bold text-primary-foreground">
             {overview ? overview.insidenAktif : "—"}
           </div>
           <div className="mt-1 text-xs text-primary-foreground/80">
-            perlu respons Satgas sekarang
+            perlu respons gercep sedulur satgas
           </div>
           {overview && overview.menunggu > 0 && (
             <div className="mt-4 rounded-lg bg-primary-foreground/15 px-3 py-2 text-xs text-primary-foreground">
-              {overview.menunggu} transaksi kas menunggu persetujuan
+              {overview.menunggu} iuran kas gotong royong menunggu verifikasi
             </div>
           )}
         </div>

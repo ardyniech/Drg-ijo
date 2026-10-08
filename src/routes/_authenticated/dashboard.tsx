@@ -69,25 +69,25 @@ function Dashboard() {
     role: activeRole,
   });
 
-  const displayName = profile?.nama?.split(" ")[0] || user?.user_metadata?.nama || "Rekan Driver";
+  const displayName = profile?.nama?.split(" ")[0] || user?.user_metadata?.nama || "Sedulur";
   const greetingTitle = useDashboardGreeting(displayName);
 
   return (
     <PageShell
-      eyebrow="Dashboard terpadu komunitas"
+      eyebrow="Pangkalan Terpadu Satu Aspal"
       title={greetingTitle}
-      description="Ringkasan operasional & dashboard khusus sesuai jabatan kepengurusan organisasi DRG."
+      description="Denyut kabar pangkalan: pantau jalur aspal, piket satgas basecamp, saldo gotong royong, dan kabar terkini sedulur DRG."
       actions={
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" asChild>
-            <Link to="/roles">Pengurus & SK</Link>
+            <Link to="/roles">Amanah Pengurus</Link>
           </Button>
           <Button
             size="sm"
             className="bg-primary text-primary-foreground hover:bg-primary/90"
             asChild
           >
-            <Link to="/kas">Catat Transaksi</Link>
+            <Link to="/kas">Urunan Kas Seduluran</Link>
           </Button>
         </div>
       }

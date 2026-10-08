@@ -23,7 +23,7 @@ export function SosQuickTrigger() {
           kategori: "begal_kriminal",
           tingkat: "darurat_tinggi",
           deskripsi:
-            "TOMBOL DARURAT SOS CEPAT DITEKAN! Membutuhkan bantuan satgas terdekat sekarang juga.",
+            "PANGGILAN DARURAT SATU ASPAL! Dulur butuh bantuan gercep satgas terdekat sekarang juga.",
           lat: coords?.lat,
           lng: coords?.lng,
         });
@@ -55,16 +55,16 @@ export function SosQuickTrigger() {
             <button
               onClick={handleStartSos}
               className="group relative flex h-28 w-28 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-lg transition-transform hover:scale-105 active:scale-95 animate-pulse"
-              title="Tekan untuk mengirim sinyal darurat SOS"
+              title="Tekan untuk kirim sinyal darurat ke seluruh dulur satgas"
             >
               <Siren className="h-14 w-14" />
               <span className="sr-only">Kirim SOS</span>
             </button>
             <div className="space-y-1">
-              <h3 className="font-bold text-destructive text-lg">PANIC BUTTON SOS CEPAT</h3>
+              <h3 className="font-bold text-destructive text-lg">TOMBOL DARURAT DULUR JALUR</h3>
               <p className="text-xs text-muted-foreground max-w-sm">
-                Tekan tombol untuk membunyikan alarm satgas & mengirim koordinat GPS darurat
-                seketika.
+                Tekan tombol untuk membunyikan alarm satgas & memancarkan koordinat GPS darurat ke
+                dulur se-pangkalan.
               </p>
             </div>
           </div>
@@ -75,10 +75,11 @@ export function SosQuickTrigger() {
             </div>
             <div className="space-y-1">
               <h4 className="font-bold text-destructive text-sm flex items-center justify-center gap-1.5">
-                <AlertTriangle className="h-4 w-4" /> Mengirim Sinyal SOS dalam {countdown} detik...
+                <AlertTriangle className="h-4 w-4" /> Memanggil Bantuan Dulur Satgas ({countdown}{" "}
+                dtk)...
               </h4>
               <p className="text-xs text-muted-foreground">
-                Ketuk batal jika tidak sengaja tertekan.
+                Klik batal jika tombol tidak sengaja tertekan, santui dulur.
               </p>
             </div>
             <Button
@@ -87,7 +88,7 @@ export function SosQuickTrigger() {
               onClick={handleCancelSos}
               className="border-destructive/40 text-destructive hover:bg-destructive/10"
             >
-              <XCircle className="mr-1.5 h-4 w-4" /> Batalkan Sinyal
+              <XCircle className="mr-1.5 h-4 w-4" /> Batalkan Panggilan
             </Button>
           </div>
         )}

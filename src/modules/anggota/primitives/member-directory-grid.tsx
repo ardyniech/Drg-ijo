@@ -9,6 +9,7 @@ interface MemberDirectoryGridProps {
   members: MemberRecord[];
   isLoading: boolean;
   onResetFilters: () => void;
+  onSelectMember?: (member: MemberRecord) => void;
   onVerifyMember?: (id: string) => void;
   canVerify?: boolean;
   canManage?: boolean;
@@ -20,13 +21,22 @@ export function MemberDirectoryGrid({
   members,
   isLoading,
   onResetFilters,
+  onSelectMember,
   onVerifyMember,
   canVerify = false,
   canManage = false,
   onEditMember,
   onDeleteMember,
 }: MemberDirectoryGridProps) {
-  const [selectedMember, setSelectedMember] = useState<MemberRecord | null>(null);
+  const [internalSelected, setInternalSelected] = useState<MemberRecord | null>(null);
+
+  const handleSelect = (m: MemberRecord) => {
+    if (onSelectMember) {
+      onSelectMember(m);
+    } else {
+      setInternalSelected(m);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -57,9 +67,12 @@ export function MemberDirectoryGrid({
     return (
       <div className="rounded-xl border border-dashed border-border bg-card/50 p-10 text-center">
         <Users className="mx-auto h-9 w-9 text-muted-foreground/40 mb-3" />
-        <h3 className="text-sm font-semibold text-foreground">Tidak ada driver yang cocok</h3>
+        <h3 className="text-sm font-semibold text-foreground">
+          Belum ada sedulur yang cocok di radar
+        </h3>
         <p className="text-xs text-muted-foreground mt-1 max-w-sm mx-auto">
-          Tidak ditemukan data driver dengan filter atau kata kunci pencarian yang dipilih.
+          Coba cek ejaan nama, nomor KTA, atau atur ulang filter pangkalan biar ketemu dulur yang
+          dicari.
         </p>
         <Button
           variant="outline"
@@ -80,7 +93,7 @@ export function MemberDirectoryGrid({
           <MemberCard
             key={member.id}
             member={member}
-            onSelect={(m) => setSelectedMember(m)}
+            onSelect={handleSelect}
             onEdit={onEditMember}
             onDelete={onDeleteMember}
             canManage={canManage}
@@ -88,13 +101,17 @@ export function MemberDirectoryGrid({
         ))}
       </div>
 
-      <MemberDetailModal
-        member={selectedMember}
-        isOpen={!!selectedMember}
-        onClose={() => setSelectedMember(null)}
-        onVerify={onVerifyMember}
-        canVerify={canVerify}
-      />
+      {!onSelectMember && (
+        <MemberDetailModal
+          member={internalSelected}
+          isOpen={!!internalSelected}
+          onClose={() => setInternalSelected(null)}
+          onVerify={onVerifyMember}
+          canVerify={canVerify}
+          onEdit={onEditMember}
+          canManage={canManage}
+        />
+      )}
     </>
   );
 }

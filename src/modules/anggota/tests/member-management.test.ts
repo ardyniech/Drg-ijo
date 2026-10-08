@@ -1,14 +1,18 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { MemberManagementService } from "../storage/member-management-service";
-import { canManageAnggota, canDeleteAnggota } from "../logic/member-permissions";
+import { canManageAnggota, canVerifyAnggota, canDeleteAnggota } from "../logic/member-permissions";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 
 describe("Member Permissions RBAC", () => {
-  it("allows only admin, super_admin, ketua, and dewan_etik to manage members", () => {
+  it("allows admin, super_admin, ketua, sekretaris, and dewan_etik to manage and verify members", () => {
     expect(canManageAnggota("super_admin")).toBe(true);
     expect(canManageAnggota("admin")).toBe(true);
     expect(canManageAnggota("ketua")).toBe(true);
+    expect(canManageAnggota("sekretaris")).toBe(true);
     expect(canManageAnggota("dewan_etik")).toBe(true);
+
+    expect(canVerifyAnggota("sekretaris")).toBe(true);
+    expect(canVerifyAnggota("ketua")).toBe(true);
 
     expect(canManageAnggota("anggota")).toBe(false);
     expect(canManageAnggota("driver")).toBe(false);
@@ -29,7 +33,7 @@ describe("MemberManagementService Storage Operations", () => {
     localStorage.clear();
   });
 
-  it("adds, updates, and deletes member entries with role authorization", () => {
+  it("adds, updates, verifies, and deletes member entries with role authorization", () => {
     // 1. Tambah anggota oleh admin
     const newMember = MemberManagementService.addMember(
       {
@@ -38,7 +42,7 @@ describe("MemberManagementService Storage Operations", () => {
         no_hp: "0811111111",
         role: "anggota",
         jenjang: "calon",
-        status: "aktif",
+        status: "pending_review",
         pangkalan: "Pangkalan Arjosari",
         plat_nomor: "N 1111 AA",
       },
@@ -48,8 +52,14 @@ describe("MemberManagementService Storage Operations", () => {
     expect(newMember.id).toBeDefined();
     expect(newMember.nama).toBe("Driver Satu");
     expect(newMember.nomor_anggota).toContain("DRG-2026-");
+    expect(newMember.status).toBe("pending_review");
 
-    // 2. Reject non-authorized role
+    // 2. Verifikasi status driver oleh sekretaris
+    MemberManagementService.verifyMember(newMember.id, "sekretaris");
+    const verifiedUser = LocalAuthClient.getUsers().find((u) => u.id === newMember.id);
+    expect(verifiedUser?.status).toBe("aktif");
+
+    // 3. Reject non-authorized role
     expect(() =>
       MemberManagementService.addMember(
         {
@@ -64,7 +74,7 @@ describe("MemberManagementService Storage Operations", () => {
       ),
     ).toThrowError(/Akses ditolak/);
 
-    // 3. Update entri anggota oleh dewan_etik
+    // 4. Update entri anggota oleh dewan_etik
     MemberManagementService.updateMember(
       newMember.id,
       {
@@ -78,7 +88,7 @@ describe("MemberManagementService Storage Operations", () => {
     expect(updated?.jenjang).toBe("muda");
     expect(updated?.pangkalan).toBe("Pangkalan Gadang");
 
-    // 4. Hapus entri anggota oleh ketua
+    // 5. Hapus entri anggota oleh ketua
     MemberManagementService.deleteMember(newMember.id, "current_admin_id", "ketua");
     const afterDelete = LocalAuthClient.getUsers().find((u) => u.id === newMember.id);
     expect(afterDelete).toBeUndefined();

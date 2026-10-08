@@ -28,8 +28,8 @@ function PetaRadarPage() {
 
   return (
     <PageShell
-      title="Radar & Peta Satgas"
-      description="Pantau sebaran rekan driver on-bit di sekitar Anda dan lokasi pos pantau resmi DRG."
+      title="Radar Dulur & Peta Basecamp"
+      description="Pantau sebaran dulur on-bit yang sedang narik santui di sekitar jalur dan shelter/pos pantau resmi DRG."
       action={
         <div className="flex items-center gap-2">
           <Select value={selectedPangkalan} onValueChange={setSelectedPangkalan}>
@@ -51,8 +51,8 @@ function PetaRadarPage() {
           <div className="flex items-center gap-2">
             <Radio className="h-4 w-4 text-emerald-500 animate-pulse" />
             <span>
-              Terdeteksi <strong>{drivers.length} driver aktif</strong> dalam radius {maxRadius} km
-              (dari total {allDriversCount} online).
+              Terdeteksi <strong>{drivers.length} sedulur narik di jalan</strong> dalam radius{" "}
+              {maxRadius} km (dari total {allDriversCount} online satu aspal).
             </span>
           </div>
           <div className="flex items-center gap-2">

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Phone, MapPin, Award, Bike, Copy, Check } from "lucide-react";
+import { Phone, MapPin, Bike, Copy, Check } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MemberRecord } from "../types";
 import { MemberStatusBadge } from "./member-status-badge";
+import { MemberJenjangBadge } from "./member-jenjang-badge";
 import { DigitalKtaModal } from "./digital-kta-modal";
 import { MemberCardActions } from "./member-card-actions";
 import { toast } from "sonner";
@@ -48,6 +49,7 @@ export function MemberCard({ member, onSelect, onEdit, onDelete, canManage }: Me
               <button
                 type="button"
                 onClick={handleCopyKta}
+                onPointerDown={(e) => e.stopPropagation()}
                 className="inline-flex items-center gap-1 text-[11px] text-muted-foreground font-mono hover:text-foreground transition-colors mt-0.5"
                 title="Salin No KTA"
               >
@@ -61,7 +63,11 @@ export function MemberCard({ member, onSelect, onEdit, onDelete, canManage }: Me
             </div>
           </div>
 
-          <div className="flex items-center gap-1 shrink-0">
+          <div
+            className="flex items-center gap-1 shrink-0"
+            onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+          >
             <MemberStatusBadge status={member.status} size="sm" />
             {canManage && (
               <MemberCardActions
@@ -82,10 +88,7 @@ export function MemberCard({ member, onSelect, onEdit, onDelete, canManage }: Me
               <MapPin className="h-3 w-3 text-primary shrink-0" />
               <span className="truncate">{member.pangkalan}</span>
             </span>
-            <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 font-medium shrink-0">
-              <Award className="h-3 w-3 shrink-0" />
-              <span className="capitalize">{member.jenjang}</span>
-            </span>
+            <MemberJenjangBadge jenjang={member.jenjang} size="sm" />
           </div>
 
           <div className="flex items-center justify-between text-[11px] pt-1 border-t border-border/60">
@@ -102,6 +105,7 @@ export function MemberCard({ member, onSelect, onEdit, onDelete, canManage }: Me
         <div
           className="flex items-center justify-between pt-2.5 border-t border-border/60"
           onClick={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
         >
           <a
             href={`https://wa.me/${member.no_hp}?text=Halo%20rekan%20${encodeURIComponent(member.nama)}`}

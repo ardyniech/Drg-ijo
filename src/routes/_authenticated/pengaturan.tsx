@@ -29,9 +29,9 @@ function PengaturanPage() {
 
   return (
     <PageShell
-      eyebrow="Preferensi & Keamanan"
-      title="Pengaturan Sistem"
-      description="Kelola notifikasi, kata sandi, izin perangkat GPS, dan pencadangan data sistem."
+      eyebrow="Kenyamanan & Keamanan"
+      title="Setelan Aplikasi & Akun"
+      description="Atur notifikasi pangkalan, kata sandi, izin GPS pantau lokasi live, dan backup data seduluran."
     >
       {isLoading ? (
         <div className="grid place-items-center py-16 text-muted-foreground">

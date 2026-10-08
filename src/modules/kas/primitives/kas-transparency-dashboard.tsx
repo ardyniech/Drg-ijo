@@ -34,7 +34,7 @@ export function KasTransparencyDashboard({ rows }: KasTransparencyDashboardProps
 
       <KasBreakdownChart trendData={trendData} categories={categoryBreakdown} />
 
-      <KasContributionProgress />
+      <KasContributionProgress rows={rows} />
     </div>
   );
 }

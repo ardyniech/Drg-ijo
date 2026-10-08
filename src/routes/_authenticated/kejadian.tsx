@@ -24,8 +24,8 @@ function KejadianPage() {
 
   return (
     <PageShell
-      title="SOS & Kejadian Darurat"
-      description="Pusat komando respons cepat darurat dan pelaporan insiden lapangan komunitas DRG."
+      title="SOS & Pantau Jalur Darurat"
+      description="Komando gercep satu aspal: respons cepat satgas, bantuan dulur mogok atau senggolan, dan koordinasi evakuasi jalur."
       action={<ReportIncidentDialog />}
     >
       <div className="space-y-6">
@@ -35,21 +35,22 @@ function KejadianPage() {
           <TabsList className="grid w-full grid-cols-2 max-w-sm">
             <TabsTrigger value="aktif" className="gap-2">
               <Siren className="h-4 w-4 text-destructive" />
-              <span>Insiden Berjalan ({activeIncidents.length})</span>
+              <span>Jalur Darurat Aktif ({activeIncidents.length})</span>
             </TabsTrigger>
             <TabsTrigger value="arsip" className="gap-2">
               <History className="h-4 w-4" />
-              <span>Arsip Kasus ({pastIncidents.length})</span>
+              <span>Riwayat Bantuan Selesai ({pastIncidents.length})</span>
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="aktif" className="space-y-4 pt-4">
             {isLoading ? (
-              <p className="text-sm text-muted-foreground">Memuat data insiden...</p>
+              <p className="text-sm text-muted-foreground">Memuat data pantau jalur...</p>
             ) : activeIncidents.length === 0 ? (
               <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
                 <p className="text-sm">
-                  Tidak ada insiden aktif saat ini. Semua rekan dalam kondisi aman.
+                  Alhamdulillah jalur aman terkendali! Belum ada panggilan darurat dulur saat ini.
+                  Tetap waspada & santui di jalan.
                 </p>
               </div>
             ) : (

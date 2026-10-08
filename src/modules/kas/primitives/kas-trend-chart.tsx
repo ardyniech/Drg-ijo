@@ -53,7 +53,15 @@ export function KasTrendChart({ data }: KasTrendChartProps) {
       </div>
 
       <div className="h-64 w-full text-xs">
-        {mounted ? (
+        {data.length === 0 ? (
+          <div className="h-full w-full flex flex-col items-center justify-center text-muted-foreground bg-muted/10 rounded-xl p-6 text-center">
+            <p className="font-semibold text-sm text-foreground">Belum ada riwayat transaksi kas</p>
+            <p className="text-xs text-muted-foreground mt-1 max-w-sm">
+              Grafik pertumbuhan saldo akan otomatis muncul setelah transaksi disetujui oleh
+              bendahara.
+            </p>
+          </div>
+        ) : mounted ? (
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={slicedData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>

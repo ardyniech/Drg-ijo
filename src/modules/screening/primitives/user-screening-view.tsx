@@ -41,19 +41,19 @@ export function UserScreeningView({ myApp, email, nama }: Props) {
           <div className="space-y-1">
             <h3 className="font-bold text-xs">
               {isAppr
-                ? "Berkas Disetujui & Terverifikasi"
+                ? "Alhamdulillah! Resmi Diterima Jadi Sedulur DRG"
                 : isRej
-                  ? "Berkas Ditolak"
-                  : "Menunggu Peninjauan PIC"}
+                  ? "Belum Dapat Bergabung Saat Ini"
+                  : "Sedang Ditinjau Dewan Pangkalan Santui"}
             </h3>
             <p className="text-[11px] opacity-90 leading-relaxed">
               {isAppr
-                ? "Selamat! Berkas pendaftaran Anda telah resmi diverifikasi oleh tim Kaderisasi DRG."
+                ? "Selamat datang di keluarga besar DRG! Berkas kenalan Anda telah resmi disahkan oleh dewan pangkalan. Salam satu aspal!"
                 : isRej
-                  ? `Berkas Anda belum memenuhi syarat. Catatan: ${
-                      myApp.catatan_pic || "Tidak ada catatan tambahan."
+                  ? `Mohon maaf dulur, belum dapat bergabung saat ini. Catatan: ${
+                      myApp.catatan_pic || "Tetap semangat dan jaga persaudaraan di jalan."
                     }`
-                  : "Pendaftaran Anda aman di server lokal. Tim Kaderisasi sedang mengevaluasi motivasi dan data pendaftaran Anda."}
+                  : "Kuesioner dulur aman tersimpan. Dewan pangkalan sedang mereview data kenalan Anda dengan teliti & santui."}
             </p>
           </div>
         </div>

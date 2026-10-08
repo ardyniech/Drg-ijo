@@ -61,16 +61,16 @@ export function ReportIncidentDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="bg-primary text-primary-foreground gap-2">
-          <PlusCircle className="h-4 w-4" /> Lapor Kejadian Lapangan
+          <PlusCircle className="h-4 w-4" /> Kabari Kendala di Jalan
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <form onSubmit={handleSubmit} className="space-y-4">
           <DialogHeader>
-            <DialogTitle>Buat Laporan Kejadian</DialogTitle>
+            <DialogTitle>Kabari Kendala / Musibah Jalur</DialogTitle>
             <DialogDescription>
-              Kirimkan detail kendala di jalan agar Korlap dan rekan Satgas bisa mengoordinasikan
-              bantuan.
+              Kirim info kendala di jalan (mogok, ban bocor, senggolan, dll) agar Korlap dan dulur
+              Satgas gercep meluncur bantu.
             </DialogDescription>
           </DialogHeader>
 
@@ -96,7 +96,7 @@ export function ReportIncidentDialog() {
               className="bg-primary text-primary-foreground"
             >
               {createIncident.isPending && <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />}
-              Kirim Laporan
+              Kirim Kabar ke Dulur
             </Button>
           </DialogFooter>
         </form>

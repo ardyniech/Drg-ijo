@@ -5,26 +5,26 @@ export function LandingFeatures() {
     {
       num: "01",
       icon: Wallet,
-      title: "Transparansi Kas & Buku Besar",
-      desc: "Setiap pemasukan iuran wajib, sumbangan sukarela, dan penyaluran santunan tercatat terbuka dengan nomor kwitansi digital.",
+      title: "Kas Gotong Royong Terbuka",
+      desc: "Setiap iuran seduluran, sumbangan santui, dan bantuan dulur musibah tercatat transparan dengan nomor kwitansi digital.",
     },
     {
       num: "02",
       icon: Siren,
-      title: "Satgas Siaga & Radar SOS Darurat",
-      desc: "Sinyal marabahaya satu sentuhan memancarkan koordinat GPS live ke posko satgas terdekat untuk pertolongan darurat di jalan.",
+      title: "Satgas Gercep & Radar SOS",
+      desc: "Satu ketukan darurat langsung kirim koordinat GPS live ke dulur satgas terdekat untuk gercep tolong di jalan.",
     },
     {
       num: "03",
       icon: CalendarCheck2,
-      title: "Jadwal Piket & Absensi GPS",
-      desc: "Distribusi piket shelter adil dan transparan. Check-in berbasis radius pangkalan resmi serta pertukaran shift mandiri.",
+      title: "Piket Basecamp & Titik Kumpul",
+      desc: "Jaga shelter pangkalan bareng-bareng. Absen radius basecamp santui & tukar shift fleksibel antar sedulur.",
     },
     {
       num: "04",
       icon: Award,
-      title: "Kaderisasi & Dewan Etik DRG",
-      desc: "Penjenjangan keanggotaan terverifikasi dan sidang kode etik independen demi menjaga marwah dan kehormatan keluarga besar.",
+      title: "Tingkat Aspal & Marwah Guyub",
+      desc: "Tingkat aspal dari Driver Anyar sampai Sesepuh, serta mediasi kekeluargaan jaga marwah keluarga besar DRG.",
     },
   ];
 
@@ -33,14 +33,14 @@ export function LandingFeatures() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-xl">
           <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-            Fondasi Organisasi
+            Fondasi Seduluran
           </div>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
             Empat Pilar Gerakan Mandiri Driver Riang Gembira.
           </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            Dirancang dari driver, oleh driver, untuk kesejahteraan dan perlindungan bersama di
-            aspal jalanan.
+            Dirancang dari driver, oleh driver, untuk persaudaraan erat dan saling jaga di aspal
+            jalanan.
           </p>
         </div>
 

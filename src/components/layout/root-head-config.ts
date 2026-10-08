@@ -5,17 +5,17 @@ export function getRootHead() {
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "DRG App — Platform Komunitas Driver Riang Gembira" },
+      { title: "DRG App — Guyub & Solidaritas Satu Aspal Santui" },
       {
         name: "description",
         content:
-          "Platform operasional Komunitas DRG: data anggota, kas transparan, SOS & peta lokasi, piket Satgas, dan kaderisasi.",
+          "Platform persaudaraan pengemudi online: guyub pangkalan, kas gotong royong, satgas gercep & radar SOS, piket basecamp, serta jenjang satu aspal.",
       },
-      { property: "og:title", content: "DRG App — Platform Komunitas Driver Riang Gembira" },
+      { property: "og:title", content: "DRG App — Guyub & Solidaritas Satu Aspal Santui" },
       {
         property: "og:description",
         content:
-          "Platform operasional Komunitas DRG: data anggota, kas transparan, SOS & peta lokasi, piket Satgas, dan kaderisasi.",
+          "Platform persaudaraan pengemudi online: guyub pangkalan, kas gotong royong, satgas gercep & radar SOS, piket basecamp, serta jenjang satu aspal.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

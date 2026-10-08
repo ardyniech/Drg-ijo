@@ -23,38 +23,38 @@ export function useCommunityProgress({
     if (role === "driver" || role === "anggota") {
       list.push({
         id: "screening",
-        title: "Isi Kuesioner Screening",
-        desc: "Kirim kuesioner pendaftaran untuk evaluasi berkas resmi oleh kaderisasi.",
+        title: "Isi Kuesioner Kenalan Merapat",
+        desc: "Kirim kuesioner dulur anyar untuk saling kenal dan evaluasi ramah oleh dewan pangkalan.",
         completed: hasSubmittedScreening,
         link: "/screening",
-        actionText: "Mulai Screening",
+        actionText: "Mulai Kenalan",
       });
     }
 
     list.push(
       {
         id: "profile",
-        title: "Lengkapi Profil Driver",
-        desc: "Isi nama pangkalan, nomor darurat, dan nomor plat kendaraan.",
+        title: "Lengkapi Profil Dulur",
+        desc: "Isi pangkalan andalan, kontak darurat keluarga, dan plat nomor motor.",
         completed: hasCompletedProfile,
         link: "/profil",
         actionText: "Lengkapi Profil",
       },
       {
         id: "piket",
-        title: "Pilih Jadwal Piket Satgas",
-        desc: "Ambil slot piket untuk menjaga keamanan rekan sesama driver.",
+        title: "Pilih Jadwal Jaga Jalur",
+        desc: "Ambil slot piket santui di basecamp untuk saling jaga sedulur di jalan.",
         completed: hasShifts,
         link: "/piket",
-        actionText: "Ambil Slot Piket",
+        actionText: "Pilih Jadwal Piket",
       },
       {
         id: "kas",
-        title: "Transparansi Kas Komunitas",
-        desc: "Pahami iuran sosial dan simpanan koperasi saling bantu.",
+        title: "Pahami Kas Gotong Royong",
+        desc: "Cek keterbukaan iuran sosial & santunan dulur saling bantu satu aspal.",
         completed: hasTransactions,
         link: "/kas",
-        actionText: "Lihat Buku Kas",
+        actionText: "Lihat Kas Seduluran",
       },
     );
 

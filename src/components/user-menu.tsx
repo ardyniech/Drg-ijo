@@ -44,18 +44,18 @@ export function UserMenu() {
             <p className="text-xs leading-none text-muted-foreground">{email}</p>
             <div className="mt-1 flex items-center gap-1 text-[10px] text-primary">
               <ShieldCheck className="h-3 w-3" />
-              <span className="capitalize">{role} Terverifikasi</span>
+              <span className="capitalize">Sedulur {role} Terverifikasi</span>
             </div>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => navigate({ to: "/profil" })}>
           <User className="mr-2 h-4 w-4" />
-          <span>Profil Saya</span>
+          <span>Profil & KTA Dulur</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => navigate({ to: "/pengaturan" })}>
           <Settings className="mr-2 h-4 w-4" />
-          <span>Pengaturan Sistem</span>
+          <span>Setelan Akun & Pangkalan</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -63,7 +63,7 @@ export function UserMenu() {
           className="text-destructive focus:text-destructive"
         >
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Keluar</span>
+          <span>Pamit / Keluar Santui</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

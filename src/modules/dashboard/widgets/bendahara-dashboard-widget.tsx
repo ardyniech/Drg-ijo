@@ -11,9 +11,11 @@ export function BendaharaDashboardWidget() {
             <Wallet className="h-5 w-5" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-foreground">Dashboard Bendahara Keuangan</h3>
+            <h3 className="text-sm font-bold text-foreground">
+              Dashboard Bendahara Kas Gotong Royong
+            </h3>
             <p className="text-xs text-muted-foreground">
-              Arus kas sosial, iuran gotong royong, kuintansi QR & modal koperasi
+              Amanah pembukuan: kas seduluran, santunan dulur musibah, & dana guyub pangkalan
             </p>
           </div>
         </div>
@@ -21,7 +23,7 @@ export function BendaharaDashboardWidget() {
         <div className="flex items-center gap-2">
           <Button size="sm" className="bg-emerald-600 text-white hover:bg-emerald-700" asChild>
             <Link to="/kas">
-              <ArrowUpRight className="mr-1.5 h-3.5 w-3.5" /> Kelola Keuangan Kas
+              <ArrowUpRight className="mr-1.5 h-3.5 w-3.5" /> Buku Kas Seduluran
             </Link>
           </Button>
         </div>
@@ -30,26 +32,26 @@ export function BendaharaDashboardWidget() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 text-xs">
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <TrendingUp className="h-3.5 w-3.5 text-emerald-600" /> Saldo Kas Utama
+            <TrendingUp className="h-3.5 w-3.5 text-emerald-600" /> Kas Utama Satu Aspal
           </div>
           <div className="mt-1.5 text-xl font-bold text-emerald-600">Rp 14.850.000</div>
-          <div className="text-[10px] text-muted-foreground">+Rp 2.450.000 bulan ini</div>
+          <div className="text-[10px] text-muted-foreground">+Rp 2.450.000 guyub bulan ini</div>
         </div>
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <PiggyBank className="h-3.5 w-3.5 text-amber-600" /> Dana Koperasi DRG
+            <PiggyBank className="h-3.5 w-3.5 text-amber-600" /> Dana Guyub Koperasi
           </div>
           <div className="mt-1.5 text-xl font-bold text-amber-600">Rp 8.200.000</div>
-          <div className="text-[10px] text-muted-foreground">Saham 128 Anggota</div>
+          <div className="text-[10px] text-muted-foreground">Gotong Royong 128 Sedulur</div>
         </div>
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs col-span-2 sm:col-span-1">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <Wallet className="h-3.5 w-3.5 text-primary" /> Status Iuran Bulan Ini
+            <Wallet className="h-3.5 w-3.5 text-primary" /> Kepatuhan Urunan
           </div>
-          <div className="mt-1.5 text-xl font-bold text-primary">88% Terbayar</div>
-          <div className="text-[10px] text-muted-foreground">Kuintansi QR Otomatis</div>
+          <div className="mt-1.5 text-xl font-bold text-primary">88% Tertib Lunas</div>
+          <div className="text-[10px] text-muted-foreground">Kwitansi Digital Siap</div>
         </div>
       </div>
     </div>

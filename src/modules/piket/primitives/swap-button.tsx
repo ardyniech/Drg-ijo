@@ -70,22 +70,22 @@ export function SwapButton({ shiftId, currentUserId }: Props) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className="mt-1 inline-flex items-center gap-1 text-[10px] font-semibold text-primary hover:underline">
-          <RefreshCw className="h-3 w-3" /> Tukar
+          <RefreshCw className="h-3 w-3" /> Tukar Shift
         </button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Ajukan tukar shift</DialogTitle>
+          <DialogTitle>Rembug Tukar Shift Santui</DialogTitle>
         </DialogHeader>
         <div className="grid gap-3">
           <div>
-            <Label>Rekan tujuan</Label>
+            <Label>Sedulur Pengganti</Label>
             <Select value={target || "open"} onValueChange={setTarget}>
               <SelectTrigger>
-                <SelectValue placeholder="Terbuka untuk siapa saja" />
+                <SelectValue placeholder="Terbuka untuk siapa saja (Open Rembug)" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="open">Terbuka untuk siapa saja</SelectItem>
+                <SelectItem value="open">Terbuka untuk siapa saja (Open Rembug)</SelectItem>
                 {members
                   .filter((m) => m.id !== currentUserId)
                   .map((m) => (
@@ -101,7 +101,7 @@ export function SwapButton({ shiftId, currentUserId }: Props) {
             <Input
               value={alasan}
               onChange={(e) => setAlasan(e.target.value)}
-              placeholder="Contoh: Ada urusan keluarga / servis kendaraan..."
+              placeholder="Contoh: Ada order jarak jauh, servis rantai/ban, urusan keluarga..."
             />
           </div>
         </div>
@@ -110,7 +110,8 @@ export function SwapButton({ shiftId, currentUserId }: Props) {
             Batal
           </Button>
           <Button onClick={() => submit.mutate()} disabled={submit.isPending}>
-            {submit.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Kirim
+            {submit.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} Kirim Kabar ke
+            Dulur
           </Button>
         </DialogFooter>
       </DialogContent>

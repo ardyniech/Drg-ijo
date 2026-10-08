@@ -27,7 +27,16 @@ export function KasBreakdownChart({ trendData, categories }: KasBreakdownChartPr
         </p>
 
         <div className="h-56 w-full text-xs">
-          {mounted ? (
+          {recentTrend.length === 0 ? (
+            <div className="h-full w-full flex flex-col items-center justify-center text-muted-foreground bg-muted/10 rounded-xl p-4 text-center">
+              <p className="font-semibold text-xs text-foreground">
+                Belum ada data arus kas bulanan
+              </p>
+              <p className="text-[11px] text-muted-foreground mt-0.5 max-w-xs">
+                Perbandingan pemasukan dan pengeluaran akan otomatis dirangkum di sini.
+              </p>
+            </div>
+          ) : mounted ? (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={recentTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--border)" />

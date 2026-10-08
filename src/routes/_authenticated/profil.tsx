@@ -33,9 +33,9 @@ function ProfilPage() {
 
   return (
     <PageShell
-      eyebrow="Identitas Driver"
-      title="Profil Anggota"
-      description="Kelola biodata diri, armada kendaraan operasional, dan nomor kontak darurat kamu."
+      eyebrow="Identitas Satu Aspal"
+      title="Profil Dulur"
+      description="Kelola biodata dulur, armada motor andalan di jalan, pangkalan pavorit, dan nomor kontak darurat keluarga."
     >
       {isLoading || !profile ? (
         <div className="grid place-items-center py-16 text-muted-foreground">

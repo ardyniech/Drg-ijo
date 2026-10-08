@@ -59,7 +59,7 @@ function AuthPage() {
 
         <div className="mt-4 text-center">
           <Link to="/" className="text-xs text-muted-foreground hover:text-foreground">
-            ← Kembali ke beranda
+            ← Kembali ke beranda pangkalan
           </Link>
         </div>
       </div>

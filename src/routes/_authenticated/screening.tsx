@@ -46,12 +46,12 @@ function ScreeningPage() {
   if (!me?.isAdmin) {
     return (
       <PageShell
-        eyebrow="Calon Anggota"
-        title="Screening Pendaftaran"
+        eyebrow="Dulur Anyar"
+        title="Screening Pendaftaran Merapat"
         description={
           myApp
-            ? "Status pengajuan dan evaluasi berkas pendaftaran Anda."
-            : "Silakan isi kuesioner screening untuk mengajukan keanggotaan resmi."
+            ? "Status pengajuan dan evaluasi berkas perkenalan Anda di pangkalan DRG."
+            : "Silakan isi kuesioner screening untuk merapat resmi jadi keluarga besar satu aspal."
         }
       >
         <UserScreeningView myApp={myApp} email={me?.email || ""} nama={me?.nama || ""} />
@@ -61,9 +61,9 @@ function ScreeningPage() {
 
   return (
     <PageShell
-      eyebrow="PIC Kaderisasi"
-      title="Screening Calon Anggota"
-      description="Skor terkalkulasi dari bobot rahasia. Klik baris untuk review & putuskan."
+      eyebrow="Orientasi & Marwah Jalur"
+      title="Screening Dulur Anyar Merapat"
+      description="Kenalan santui calon dulur DRG: orientasi etika jalanan, masa pengenalan pangkalan, dan persaudaraan satu aspal."
       actions={
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={exportCsv} disabled={filtered.length === 0}>

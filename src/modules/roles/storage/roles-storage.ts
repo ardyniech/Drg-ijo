@@ -38,10 +38,10 @@ export function getMemberRoleRecords(): MemberRoleRecord[] {
     id: u.id,
     nama: u.nama,
     email: u.email,
-    no_hp: u.no_hp || "08123456789",
-    pangkalan: "Pangkalan Utama Suhat",
+    no_hp: u.no_hp || "-",
+    pangkalan: u.pangkalan || "Pangkalan Utama",
     role: u.role as UserRole,
-    jenjang: u.jenjang || "madya",
+    jenjang: u.jenjang || "calon",
     status: (u.status === "aktif" ? "aktif" : "pending_review") as MemberRoleRecord["status"],
     assignedAt: u.created_at,
   }));

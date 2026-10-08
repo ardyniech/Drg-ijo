@@ -33,15 +33,15 @@ function DewanEtikPage() {
 
   return (
     <PageShell
-      title="Dewan Etik & Kode Perilaku"
-      description="Penegakan tata tertib komunitas, mediasi perselisihan lapangan, dan transparansi keputusan sidang etik."
+      title="Marwah & Etika Satu Aspal"
+      description="Jaga kerukunan sedulur, mediasi senggolan pangkalan atau jalur, dan musyawarah kekeluargaan demi marwah keluarga besar DRG."
       action={
         <Button
           onClick={() => setIsReportOpen(true)}
           className="gap-2 rounded-xl text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white"
         >
           <Plus className="h-4 w-4" />
-          Lapor Pelanggaran
+          Adukan Senggolan Jalur
         </Button>
       }
     >
@@ -57,12 +57,12 @@ function DewanEtikPage() {
           <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/80 bg-muted/20 p-12 text-center">
             <ShieldAlert className="h-10 w-10 text-muted-foreground/60" />
             <h3 className="mt-3 text-sm font-semibold text-foreground">
-              {isFiltered ? "Tidak Ada Perkara yang Cocok" : "Tidak Ada Perkara Etik"}
+              {isFiltered ? "Tidak Ada Perkara yang Cocok" : "Pangkalan Rukun & Adem Ayem"}
             </h3>
             <p className="mt-1 text-xs text-muted-foreground">
               {isFiltered
                 ? "Tidak ada perkara yang memenuhi kriteria pencarian Anda."
-                : "Semua kondisi ketertiban komunitas berjalan kondusif tanpa aduan aktif."}
+                : "Alhamdulillah semua kondisi pangkalan guyub rukun, tidak ada senggolan aktif."}
             </p>
             {isFiltered && (
               <Button

@@ -38,15 +38,15 @@ export function AuthCardTabs({
           variant="outline"
           className="gap-1.5 border-primary/30 bg-primary/5 text-primary text-[11px]"
         >
-          <Shield className="h-3 w-3" /> Autentikasi Komunitas DRG
+          <Shield className="h-3 w-3" /> Salam Satu Aspal • Komunitas DRG
         </Badge>
-        <span className="text-[11px] text-muted-foreground">Server Terenkripsi</span>
+        <span className="text-[11px] text-muted-foreground">Keluarga Besar DRG</span>
       </div>
 
       <Tabs value={tab} onValueChange={(v) => setTab(v as "signin" | "signup")}>
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="signin">Masuk</TabsTrigger>
-          <TabsTrigger value="signup">Daftar Baru</TabsTrigger>
+          <TabsTrigger value="signin">Masuk Pangkalan</TabsTrigger>
+          <TabsTrigger value="signup">Daftar Dulur Anyar</TabsTrigger>
         </TabsList>
         <TabsContent value="signin">
           <SignInForm

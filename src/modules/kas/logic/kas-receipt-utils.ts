@@ -20,15 +20,15 @@ export function generateWaSlipText(tx: Tx): string {
   const noKwitansi = formatNoKwitansi(tx.id);
   const tanggalFormat = formatTanggal(tx.tanggal);
   return (
-    `*BUKTI RESMI TRANSAKSI KAS DRG*\n` +
-    `No. Registrasi: ${noKwitansi}\n` +
-    `Tanggal: ${tanggalFormat}\n` +
-    `Kategori: ${tx.kategori || "Iuran Wajib"}\n` +
-    `Jenis: ${tx.jenis === "masuk" ? "Penerimaan / Masuk" : "Pengeluaran"}\n` +
-    `Jumlah: ${rupiah(Number(tx.jumlah))}\n` +
-    `Status: ${tx.status.toUpperCase()}\n` +
-    `Ledger: Kas ${tx.ledger.toUpperCase()}\n` +
-    `Keterangan: ${tx.deskripsi || "—"}\n\n` +
-    `_Tercatat resmi dalam Sistem Pembukuan DRG App_`
+    `*SLIP KAS GOTONG ROYONG SATU ASPAL DRG*\n` +
+    `No. Kwitansi: ${noKwitansi}\n` +
+    `Hari/Tanggal: ${tanggalFormat}\n` +
+    `Kategori: ${tx.kategori || "Iuran Seduluran"}\n` +
+    `Arus Kas: ${tx.jenis === "masuk" ? "Urunan Masuk (+)" : "Penyaluran Santunan (-)"}\n` +
+    `Nominal: ${rupiah(Number(tx.jumlah))}\n` +
+    `Status: ${tx.status === "disetujui" ? "SAH DIVERIFIKASI BENDAHARA" : "MENUNGGU REMBUG"}\n` +
+    `Pos Kas: Kas ${tx.ledger.toUpperCase()}\n` +
+    `Catatan: ${tx.deskripsi || "—"}\n\n` +
+    `_Keluarga Besar Driver Riang Gembira (DRG) • Salam Satu Aspal Santui_`
   );
 }

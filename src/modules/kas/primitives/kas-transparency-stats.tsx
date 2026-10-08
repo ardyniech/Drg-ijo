@@ -1,5 +1,5 @@
 import { rupiah } from "../types";
-import { ShieldCheck, HeartHandshake, Building2, Users, ArrowUpRight } from "lucide-react";
+import { ShieldCheck, HeartHandshake, Building2, Users } from "lucide-react";
 
 interface KasTransparencyStatsProps {
   summary: {
@@ -22,9 +22,7 @@ export function KasTransparencyStats({ summary }: KasTransparencyStatsProps) {
         <div className="mt-2 font-mono text-2xl font-bold tabular-nums text-foreground">
           {rupiah(summary.totalSocial)}
         </div>
-        <div className="mt-1 flex items-center gap-1 text-[11px] text-emerald-600 font-medium">
-          <ArrowUpRight className="h-3 w-3" /> +12.4% bulan ini
-        </div>
+        <div className="mt-1 text-[11px] text-emerald-600 font-medium">Buku Kas Sosial Aktif</div>
       </div>
 
       <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
@@ -35,9 +33,7 @@ export function KasTransparencyStats({ summary }: KasTransparencyStatsProps) {
         <div className="mt-2 font-mono text-2xl font-bold tabular-nums text-foreground">
           {rupiah(summary.totalCooperative)}
         </div>
-        <div className="mt-1 flex items-center gap-1 text-[11px] text-blue-600 font-medium">
-          <ArrowUpRight className="h-3 w-3" /> +8.1% bulan ini
-        </div>
+        <div className="mt-1 text-[11px] text-blue-600 font-medium">Buku Kas Koperasi Aktif</div>
       </div>
 
       <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
@@ -48,7 +44,7 @@ export function KasTransparencyStats({ summary }: KasTransparencyStatsProps) {
         <div className="mt-2 font-mono text-2xl font-bold tabular-nums text-foreground">
           {rupiah(summary.totalRelief)}
         </div>
-        <div className="mt-1 text-[11px] text-muted-foreground">Terverifikasi Majelis DRG</div>
+        <div className="mt-1 text-[11px] text-muted-foreground">Terverifikasi Transaksi Riil</div>
       </div>
 
       <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
@@ -60,7 +56,7 @@ export function KasTransparencyStats({ summary }: KasTransparencyStatsProps) {
           {summary.complianceRate}%
         </div>
         <div className="mt-1 text-[11px] text-muted-foreground">
-          {summary.activeContributors} Anggota Aktif
+          {summary.activeContributors} Kontributor Terdaftar
         </div>
       </div>
     </div>

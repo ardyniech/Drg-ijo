@@ -23,10 +23,12 @@ export function ProgressiveOnboardingCard({
         <div className="flex items-center gap-3">
           <CheckCircle2 className="h-5 w-5 text-success" />
           <div>
-            <h4 className="font-bold text-foreground">Akun Driver Siap Penuh (Level {level})</h4>
+            <h4 className="font-bold text-foreground">
+              Akun Sedulur Siap Gaspol (Tingkat {level})
+            </h4>
             <p className="text-xs text-muted-foreground">
-              Semua modul komunitas telah aktif untuk peran {roleTitle}. Tetap jaga keselamatan di
-              jalan!
+              Semua fitur pangkalan telah aktif untuk amanah {roleTitle}. Tetap jaga keselamatan,
+              utamakan seduluran & santui di jalan!
             </p>
           </div>
         </div>
@@ -40,14 +42,12 @@ export function ProgressiveOnboardingCard({
         <div>
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="border-accent text-accent-foreground font-semibold">
-              <Sparkles className="mr-1 h-3 w-3 text-accent" /> Level {level} Driver
+              <Sparkles className="mr-1 h-3 w-3 text-accent" /> Tingkat {level} Dulur
             </Badge>
-            <span className="text-xs text-muted-foreground">
-              {progressPercent}% Langkah Terpenuhi
-            </span>
+            <span className="text-xs text-muted-foreground">{progressPercent}% Misi Selesai</span>
           </div>
           <h3 className="mt-2 font-display text-base font-bold text-foreground">
-            Langkah Selanjutnya: {nextMission.title}
+            Misi Selanjutnya: {nextMission.title}
           </h3>
           <p className="mt-1 text-xs text-muted-foreground max-w-xl">{nextMission.desc}</p>
         </div>

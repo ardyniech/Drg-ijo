@@ -1,10 +1,12 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { MemberRecord, MemberSortOption } from "../types";
+import { MemberRecord, MemberSortOption, MemberViewMode } from "../types";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
+import { normalizeOjolJenjangKey } from "@/lib/ojol-jenjang";
 import { useMe } from "@/hooks/use-me";
-import { canManageAnggota } from "./member-permissions";
+import { canManageAnggota, canVerifyAnggota } from "./member-permissions";
 import { useMemberMutations } from "./use-member-mutations";
+import { exportMembersToCsv } from "./export-members-csv";
 
 export function useAnggota() {
   const { data: me } = useMe();
@@ -12,9 +14,12 @@ export function useAnggota() {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [selectedPangkalan, setSelectedPangkalan] = useState("all");
   const [selectedRole, setSelectedRole] = useState("all");
+  const [selectedJenjang, setSelectedJenjang] = useState("all");
+  const [viewMode, setViewMode] = useState<MemberViewMode>("grid");
   const [sortBy, setSortBy] = useState<MemberSortOption>("terbaru");
 
   const canManage = canManageAnggota(me?.role);
+  const canVerify = canVerifyAnggota(me?.role);
   const mutations = useMemberMutations(me?.role, me?.id);
 
   const query = useQuery({
@@ -71,7 +76,10 @@ export function useAnggota() {
         const matchesStatus = selectedStatus === "all" || m.status === selectedStatus;
         const matchesPangkalan = selectedPangkalan === "all" || m.pangkalan === selectedPangkalan;
         const matchesRole = selectedRole === "all" || m.role === selectedRole;
-        return matchesSearch && matchesStatus && matchesPangkalan && matchesRole;
+        const matchesJenjang =
+          selectedJenjang === "all" ||
+          normalizeOjolJenjangKey(m.jenjang) === normalizeOjolJenjangKey(selectedJenjang);
+        return matchesSearch && matchesStatus && matchesPangkalan && matchesRole && matchesJenjang;
       })
       .sort((a, b) => {
         if (sortBy === "nama_asc") return a.nama.localeCompare(b.nama);
@@ -79,7 +87,15 @@ export function useAnggota() {
         if (sortBy === "kta") return a.no_kta.localeCompare(b.no_kta);
         return b.id.localeCompare(a.id);
       });
-  }, [allMembers, search, selectedStatus, selectedPangkalan, selectedRole, sortBy]);
+  }, [
+    allMembers,
+    search,
+    selectedStatus,
+    selectedPangkalan,
+    selectedRole,
+    selectedJenjang,
+    sortBy,
+  ]);
 
   return {
     members: filteredMembers,
@@ -93,18 +109,25 @@ export function useAnggota() {
     setSelectedPangkalan,
     selectedRole,
     setSelectedRole,
+    selectedJenjang,
+    setSelectedJenjang,
+    viewMode,
+    setViewMode,
     sortBy,
     setSortBy,
     pangkalanOptions,
+    exportCsv: () => exportMembersToCsv(filteredMembers),
     resetFilters: () => {
       setSearch("");
       setSelectedStatus("all");
       setSelectedPangkalan("all");
       setSelectedRole("all");
+      setSelectedJenjang("all");
       setSortBy("terbaru");
     },
     isLoading: query.isLoading,
     canManage,
+    canVerify,
     ...mutations,
   };
 }

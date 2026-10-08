@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { LocalUser } from "@/modules/auth/logic/local-auth-store";
 import { MemberVehicleFields } from "./member-vehicle-fields";
+import { MemberRoleFields } from "./member-role-fields";
 
 export interface MemberFormData {
   nama: string;
@@ -86,46 +87,7 @@ export function MemberFormFields({ form, onChange, isEdit = false }: Props) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1">
-          <Label htmlFor="m-form-role">Peran / Jabatan</Label>
-          <Select
-            value={form.role}
-            onValueChange={(v) => onChange({ role: v as LocalUser["role"] })}
-          >
-            <SelectTrigger id="m-form-role">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="anggota">Anggota Driver</SelectItem>
-              <SelectItem value="satgas">Satgas Lapangan</SelectItem>
-              <SelectItem value="korlap">Korlap</SelectItem>
-              <SelectItem value="bendahara">Bendahara</SelectItem>
-              <SelectItem value="sekretaris">Sekretaris</SelectItem>
-              <SelectItem value="dewan_etik">Dewan Etik</SelectItem>
-              <SelectItem value="admin">Administrator</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="m-form-jenjang">Jenjang Karir</Label>
-          <Select
-            value={form.jenjang}
-            onValueChange={(v) => onChange({ jenjang: v as LocalUser["jenjang"] })}
-          >
-            <SelectTrigger id="m-form-jenjang">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="calon">Calon</SelectItem>
-              <SelectItem value="muda">Muda</SelectItem>
-              <SelectItem value="madya">Madya</SelectItem>
-              <SelectItem value="purna">Purna</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
+      <MemberRoleFields form={form} onChange={onChange} />
       <MemberVehicleFields form={form} onChange={onChange} />
     </div>
   );

@@ -22,16 +22,16 @@ export function LandingHeader({ isLoggedIn, userName }: LandingHeaderProps) {
 
         <nav className="hidden items-center gap-6 text-xs font-semibold text-muted-foreground md:flex">
           <a href="#pilar" className="transition-colors hover:text-foreground">
-            Pilar Gerakan
+            Pilar Seduluran
           </a>
           <a href="#transparansi" className="transition-colors hover:text-foreground">
-            Transparansi Kas
+            Kas Gotong Royong
           </a>
           <a href="#satgas" className="transition-colors hover:text-foreground">
-            Satgas & SOS
+            Satgas & SOS Jalur
           </a>
           <a href="#faq" className="transition-colors hover:text-foreground">
-            Tanya Jawab
+            Tanya Santui
           </a>
         </nav>
 
@@ -43,7 +43,7 @@ export function LandingHeader({ isLoggedIn, userName }: LandingHeaderProps) {
               className="h-9 gap-1.5 rounded-lg bg-primary font-medium text-primary-foreground shadow-warm hover:bg-primary/90"
             >
               <Link to="/dashboard">
-                <span>Dashboard ({userName?.split(" ")[0] || "Akun"})</span>
+                <span>Pangkalan ({userName?.split(" ")[0] || "Dulur"})</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </Button>
@@ -57,7 +57,7 @@ export function LandingHeader({ isLoggedIn, userName }: LandingHeaderProps) {
               >
                 <Link to="/auth">
                   <LogIn className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span>Masuk</span>
+                  <span>Masuk Pangkalan</span>
                 </Link>
               </Button>
               <Button
@@ -66,7 +66,7 @@ export function LandingHeader({ isLoggedIn, userName }: LandingHeaderProps) {
                 className="h-9 gap-1.5 rounded-lg bg-primary px-3.5 text-xs font-semibold text-primary-foreground shadow-warm hover:bg-primary/90"
               >
                 <Link to="/daftar">
-                  <span>Daftar Jadi Anggota</span>
+                  <span>Merapat (Daftar)</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
               </Button>

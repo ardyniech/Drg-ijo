@@ -42,7 +42,7 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar className="border-r border-border/80 select-none">
+    <Sidebar className="border-r border-sidebar-border select-none">
       <SidebarHeader className="px-3 py-4">
         <Link to="/dashboard" onClick={handleNav} className="flex items-center gap-3 group/brand">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-gradient-warm text-primary-foreground shadow-warm transition-transform group-hover/brand:scale-105">
@@ -50,9 +50,11 @@ export function AppSidebar() {
           </div>
           {!collapsed && (
             <div className="flex flex-col leading-tight min-w-0">
-              <span className="font-display text-base font-bold text-foreground">DRG App</span>
-              <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
-                Riang Gembira
+              <span className="font-display text-base font-bold text-neutral-900 dark:text-neutral-50">
+                DRG App
+              </span>
+              <span className="text-[10px] uppercase tracking-widest text-neutral-500 dark:text-neutral-400 font-semibold">
+                Satu Aspal Santui
               </span>
             </div>
           )}
@@ -63,8 +65,12 @@ export function AppSidebar() {
         {groups.map((group) => (
           <SidebarGroup key={group.label} className="mb-2">
             {!collapsed && (
-              <SidebarGroupLabel className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground/70 px-3 pb-1">
-                {group.label}
+              <SidebarGroupLabel className="text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-600 dark:text-neutral-400 px-3 pb-1">
+                {group.label === "Operasional"
+                  ? "Pangkalan & Jalur"
+                  : group.label === "Administrasi"
+                    ? "Guyub & Seduluran"
+                    : "Tingkat & Marwah"}
               </SidebarGroupLabel>
             )}
             <SidebarGroupContent>
@@ -84,7 +90,7 @@ export function AppSidebar() {
         ))}
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border/60 p-3 bg-muted/15">
+      <SidebarFooter className="border-t border-sidebar-border p-3 bg-muted/20 dark:bg-muted/10">
         <SidebarUserFooter collapsed={collapsed} />
       </SidebarFooter>
     </Sidebar>

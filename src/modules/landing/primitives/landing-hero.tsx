@@ -35,12 +35,12 @@ export function LandingHero({ isLoggedIn, userName }: LandingHeroProps) {
             </div>
 
             <h1 className="font-display text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl text-balance leading-[1.12]">
-              Guyub di Jalan, Solidaritas Nyata di Kehidupan.
+              Guyub di Jalan, Solidaritas Nyata Satu Aspal.
             </h1>
 
             <p className="mt-5 text-base text-muted-foreground sm:text-lg max-w-xl text-pretty leading-relaxed">
-              Wadah independen pengemudi online: keterbukaan kas gotong royong, koordinasi posko
-              satgas siaga 24 jam, dan penjenjangan anggota dengan asas kehormatan.
+              Wadah persaudaraan independen dulur pengemudi online: keterbukaan kas gotong royong,
+              satgas siaga gercep 24 jam di jalan, dan tingkatan aspal santui penuh seduluran.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -50,7 +50,7 @@ export function LandingHero({ isLoggedIn, userName }: LandingHeroProps) {
                 className="h-12 gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-warm hover:bg-primary/90"
               >
                 <Link to="/daftar">
-                  <span>Daftar Jadi Anggota</span>
+                  <span>Merapat Jadi Sedulur</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -62,7 +62,7 @@ export function LandingHero({ isLoggedIn, userName }: LandingHeroProps) {
                 className="h-12 gap-2 rounded-xl border-border bg-card px-5 text-sm font-semibold text-foreground hover:bg-muted"
               >
                 <Link to="/auth">
-                  <span>Masuk ke Akun</span>
+                  <span>Masuk Pangkalan</span>
                 </Link>
               </Button>
             </div>
@@ -70,11 +70,11 @@ export function LandingHero({ isLoggedIn, userName }: LandingHeroProps) {
             <div className="mt-8 flex flex-wrap items-center gap-6 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5 font-medium">
                 <ShieldCheck className="h-4 w-4 text-primary" />
-                Verifikasi PIC Kaderisasi
+                Solidaritas Satu Aspal
               </span>
               <span className="flex items-center gap-1.5 font-medium">
                 <HeartHandshake className="h-4 w-4 text-primary" />
-                Dana Santunan Terbuka
+                Kas Santunan Terbuka
               </span>
             </div>
           </div>

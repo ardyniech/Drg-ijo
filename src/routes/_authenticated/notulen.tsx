@@ -12,17 +12,19 @@ function NotulenPage() {
 
   return (
     <PageShell
-      title="Notulen Rapat & Musyawarah"
-      description="Arsip resmi keputusan musyawarah, rapat koordinasi Satgas, dan AD/ART Komunitas DRG."
+      title="Notulen Rembug & Kopdar Pangkalan"
+      description="Arsip guyub rembug sedulur, hasil musyawarah kopi darat (kopdar), kesepakatan jalur, dan keputusan dewan pangkalan DRG."
       action={<NewNotulenDialog />}
     >
       <div className="space-y-6">
         {isLoading ? (
-          <p className="text-sm text-muted-foreground">Memuat arsip notulen...</p>
+          <p className="text-sm text-muted-foreground">Memuat arsip rembug...</p>
         ) : notulenList.length === 0 ? (
           <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
             <FileText className="mx-auto h-8 w-8 text-muted-foreground/50 mb-2" />
-            <p className="text-sm">Belum ada notulen rapat yang tersimpan.</p>
+            <p className="text-sm">
+              Belum ada catatan rembug atau kopdar yang tersimpan. Yuk agendakan ngopi bareng!
+            </p>
           </div>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">

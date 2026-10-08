@@ -26,7 +26,7 @@ export function KasTable({ rows, isLoading, canApprove, canApproveTier, onApprov
   if (rows.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
-        Tidak ada transaksi sesuai filter.
+        Belum ada catatan transaksi yang cocok. Yuk gas gotong royong bareng sedulur!
       </div>
     );
   }
@@ -37,12 +37,12 @@ export function KasTable({ rows, isLoading, canApprove, canApproveTier, onApprov
         <table className="w-full text-sm">
           <thead className="bg-muted/50 text-xs uppercase tracking-wider text-muted-foreground">
             <tr>
-              <th className="px-4 py-2 text-left">Tanggal</th>
-              <th className="px-4 py-2 text-left">Ledger</th>
-              <th className="px-4 py-2 text-left">Kategori</th>
-              <th className="px-4 py-2 text-right">Jumlah</th>
-              <th className="px-4 py-2 text-left">Status</th>
-              <th className="px-4 py-2 text-right">Aksi</th>
+              <th className="px-4 py-2 text-left">Hari / Tanggal</th>
+              <th className="px-4 py-2 text-left">Buku Kas</th>
+              <th className="px-4 py-2 text-left">Kategori & Uraian</th>
+              <th className="px-4 py-2 text-right">Nominal Urunan</th>
+              <th className="px-4 py-2 text-left">Status Verif</th>
+              <th className="px-4 py-2 text-right">Kwitansi & Aksi</th>
             </tr>
           </thead>
           <tbody>

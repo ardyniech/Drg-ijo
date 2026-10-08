@@ -53,9 +53,9 @@ function KasPage() {
 
   return (
     <PageShell
-      eyebrow="Bendahara & Transparansi"
-      title="Kas Komunitas & Dana Sosial"
-      description="Dashboard transparansi iuran anggota, dana sosial, dan iuran koperasi terverifikasi."
+      eyebrow="Gotong Royong & Guyub Seduluran"
+      title="Kas Sedulur & Uang Solidaritas DRG"
+      description="Transparansi iuran kas gotong royong, santunan dulur musibah di jalan, dan dana guyub basecamp 100% terbuka."
       actions={
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center gap-1 rounded-xl bg-muted p-1 text-xs">
@@ -68,7 +68,7 @@ function KasPage() {
               }`}
             >
               <BarChart3 className="h-3.5 w-3.5 text-primary" />
-              <span>Transparansi</span>
+              <span>Transparansi Guyub</span>
             </button>
             <button
               onClick={() => setViewMode("table")}
@@ -79,7 +79,7 @@ function KasPage() {
               }`}
             >
               <TableIcon className="h-3.5 w-3.5 text-muted-foreground" />
-              <span>Rincian Ledger</span>
+              <span>Buku Kas Jalur</span>
             </button>
           </div>
           <KasExportModal rows={filtered} />

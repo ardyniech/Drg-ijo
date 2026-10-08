@@ -87,6 +87,13 @@ export class MemberManagementService {
     LocalAuthClient.updateUser(id, patch);
   }
 
+  static verifyMember(id: string, actorRole?: string) {
+    if (!canManageAnggota(actorRole)) {
+      throw new Error("Akses ditolak: Hanya Pengurus yang dapat memverifikasi status anggota.");
+    }
+    LocalAuthClient.updateUser(id, { status: "aktif" });
+  }
+
   static deleteMember(targetId: string, currentUserId: string, actorRole?: string) {
     if (!canDeleteAnggota(currentUserId, targetId, actorRole)) {
       throw new Error(

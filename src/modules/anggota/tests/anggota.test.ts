@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { MemberRecord } from "../types";
+import { exportMembersToCsv } from "../logic/export-members-csv";
 
 describe("Anggota Storage & Directory Logic (Dynamic Production Mode)", () => {
   beforeEach(() => {
@@ -14,14 +15,12 @@ describe("Anggota Storage & Directory Logic (Dynamic Production Mode)", () => {
   });
 
   it("maps registered users into verified drivers with valid KTA numbers", async () => {
-    // Register first user (Super Admin)
     await LocalAuthClient.signUp({
       email: "founder@drg.id",
       nama: "Founder Super Admin",
       password: "password12345",
     });
 
-    // Register second user (Member)
     await LocalAuthClient.signUp({
       email: "driver1@drg.id",
       nama: "Driver Satu",
@@ -89,5 +88,32 @@ describe("Anggota Storage & Directory Logic (Dynamic Production Mode)", () => {
 
     const sortedAlpha = [...mockList].sort((a, b) => a.nama.localeCompare(b.nama));
     expect(sortedAlpha[0].nama).toBe("Agus Pratama");
+  });
+
+  it("exports member list to formatted CSV download without error", () => {
+    const mockList: MemberRecord[] = [
+      {
+        id: "usr-1",
+        nama: "Budi Santoso",
+        no_kta: "DRG-2026-001",
+        no_hp: "0812345678",
+        pangkalan: "Pangkalan Suhat",
+        role: "driver",
+        jenjang: "Madya",
+        status: "aktif",
+        bergabung_sejak: "01 Jan 2026",
+        plat_nomor: "N 1234 AB",
+        jenis_kendaraan: "Honda Vario",
+      },
+    ];
+
+    // Mock DOM URL and link click
+    const createObjectURL = vi.fn().mockReturnValue("blob:mock-url");
+    const revokeObjectURL = vi.fn();
+    globalThis.URL.createObjectURL = createObjectURL;
+    globalThis.URL.revokeObjectURL = revokeObjectURL;
+
+    expect(() => exportMembersToCsv(mockList, "test-export")).not.toThrow();
+    expect(createObjectURL).toHaveBeenCalled();
   });
 });

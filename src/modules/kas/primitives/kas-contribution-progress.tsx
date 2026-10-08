@@ -1,28 +1,56 @@
 import { Progress } from "@/components/ui/progress";
-import { rupiah } from "../types";
+import { rupiah, Tx } from "../types";
 import { ShieldAlert, Heart, Coins } from "lucide-react";
 
-export function KasContributionProgress() {
+interface Props {
+  rows?: Tx[];
+}
+
+export function KasContributionProgress({ rows = [] }: Props) {
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+
+  const isCurrentMonth = (tglStr: string) => {
+    const d = new Date(tglStr);
+    return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+  };
+
+  const approved = rows.filter((r) => r.status === "disetujui");
+  const approvedThisMonth = approved.filter((r) => isCurrentMonth(r.tanggal));
+
+  const iuranKoperasi = approvedThisMonth
+    .filter((r) => r.ledger === "umum" && r.jenis === "masuk")
+    .reduce((sum, r) => sum + (Number(r.jumlah) || 0), 0);
+
+  const danaSosial = approvedThisMonth
+    .filter((r) => r.ledger === "sosial" && r.jenis === "masuk")
+    .reduce((sum, r) => sum + (Number(r.jumlah) || 0), 0);
+
+  const cadanganOperasional = approved
+    .filter((r) => r.ledger === "umum")
+    .reduce(
+      (acc, r) => acc + (r.jenis === "masuk" ? Number(r.jumlah) || 0 : -Number(r.jumlah || 0)),
+      0,
+    );
+
   const targets = [
     {
       label: "Iuran Wajib Koperasi Bulan Ini",
-      current: 18500000,
+      current: Math.max(0, iuranKoperasi),
       target: 20000000,
-      color: "bg-emerald-600",
       icon: Coins,
     },
     {
       label: "Dana Sosial Darurat & Santunan Duka",
-      current: 12400000,
+      current: Math.max(0, danaSosial),
       target: 15000000,
-      color: "bg-blue-600",
       icon: Heart,
     },
     {
       label: "Cadangan Operasional Satgas & Alat",
-      current: 8200000,
+      current: Math.max(0, cadanganOperasional),
       target: 10000000,
-      color: "bg-amber-600",
       icon: ShieldAlert,
     },
   ];

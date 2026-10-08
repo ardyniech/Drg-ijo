@@ -42,8 +42,8 @@ function RoleManagementPage() {
 
   return (
     <PageShell
-      title="Struktur Pengurus & Manajemen Peran"
-      description="Penetapan jabatan organisasi Komunitas DRG: Ketua, Sekretaris, Bendahara, Satgas, Dewan Etik, dan Korlap."
+      title="Amanah Pengurus & Struktur Sedulur"
+      description="Pemberian amanah organisasi keluarga besar DRG: Ketua, Sekretaris, Bendahara Kas, Satgas Lapangan, Dewan Etik Jalur, dan Korlap Pangkalan."
     >
       <div className="space-y-6">
         <RoleStatsCards stats={stats} />
@@ -51,9 +51,9 @@ function RoleManagementPage() {
         <Tabs value={tab} onValueChange={(v) => setTab(v as "members" | "matrix" | "audit")}>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <TabsList className="grid grid-cols-3 w-full sm:w-auto text-xs">
-              <TabsTrigger value="members">Daftar Pengurus</TabsTrigger>
-              <TabsTrigger value="matrix">Matriks Akses</TabsTrigger>
-              <TabsTrigger value="audit">Riwayat Mandat</TabsTrigger>
+              <TabsTrigger value="members">Daftar Dulur Pengurus</TabsTrigger>
+              <TabsTrigger value="matrix">Kewenangan Fitur</TabsTrigger>
+              <TabsTrigger value="audit">Riwayat Serah Terima</TabsTrigger>
             </TabsList>
 
             {tab === "members" && (

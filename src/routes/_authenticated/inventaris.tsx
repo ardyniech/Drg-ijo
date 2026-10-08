@@ -20,8 +20,8 @@ function InventarisPage() {
 
   return (
     <PageShell
-      title="Inventaris & Logistik Satgas"
-      description={`Manajemen peralatan operasional satgas (${totalItems} unit tercatat): HT Radio, Rompi, P3K, dan perkakas pos pantau.`}
+      title="Inventaris & Perlengkapan Basecamp"
+      description={`Peralatan gotong royong dulur (${totalItems} unit tercatat): HT pantau jalur, rompi satgas, kotak P3K medis, dan perkakas pangkalan.`}
       action={
         <Select value={selectedKategori} onValueChange={setSelectedKategori}>
           <SelectTrigger className="w-44 h-8 text-xs">
@@ -29,10 +29,10 @@ function InventarisPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Semua Kategori</SelectItem>
-            <SelectItem value="Komunikasi">Komunikasi (HT)</SelectItem>
-            <SelectItem value="Keselamatan">Keselamatan (Rompi)</SelectItem>
+            <SelectItem value="Komunikasi">Komunikasi Jalur (HT)</SelectItem>
+            <SelectItem value="Keselamatan">Rompi & Helm Satgas</SelectItem>
             <SelectItem value="P3K">Kotak P3K Medis</SelectItem>
-            <SelectItem value="Perlengkapan Pos">Perlengkapan Pos</SelectItem>
+            <SelectItem value="Perlengkapan Pos">Perlengkapan Basecamp</SelectItem>
           </SelectContent>
         </Select>
       }

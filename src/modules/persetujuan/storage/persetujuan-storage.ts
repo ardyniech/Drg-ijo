@@ -2,6 +2,7 @@ import { ApprovalItem } from "../types";
 import { INITIAL_APPROVALS } from "./initial-approvals";
 import { recordActivityLog } from "@/modules/activity-log";
 import { enqueueOperation } from "@/core/sync";
+import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 
 const STORAGE_KEY = "drg_approvals_data_v1";
 let inMemoryStore: ApprovalItem[] | null = null;
@@ -48,7 +49,7 @@ export function addApplicantApproval(applicant: {
     applicantPhone: applicant.no_hp,
     applicantEmail: applicant.email,
     plateNumber: "N/A (Verifikasi)",
-    appliedBase: applicant.kota ? `Pangkalan ${applicant.kota}` : "Pangkalan Utama Suhat",
+    appliedBase: applicant.kota ? `Pangkalan ${applicant.kota}` : "Pangkalan Utama",
     appliedRole: "Calon Anggota",
     status: "pending",
     appliedAt: new Date().toISOString(),
@@ -77,6 +78,13 @@ export function resolveApproval(
   );
   saveApprovalsList(updated);
   if (target) {
+    if (status === "approved" && target.applicantEmail) {
+      const users = LocalAuthClient.getUsers();
+      const matched = users.find(
+        (u) => u.email.toLowerCase() === target.applicantEmail.toLowerCase(),
+      );
+      if (matched) LocalAuthClient.updateUser(matched.id, { status: "aktif" });
+    }
     enqueueOperation({
       idempotencyKey: `appr-${id}-${Date.now()}`,
       action: status === "approved" ? "Persetujuan Akun" : "Penolakan Akun",

@@ -55,13 +55,17 @@ export function KasTableRow({ row: r, canApprove, canApproveTier, onSelectTx, on
         <Badge
           className={
             r.status === "disetujui"
-              ? "bg-emerald-500/20 text-emerald-700"
+              ? "bg-emerald-500/20 text-emerald-700 font-medium"
               : r.status === "ditolak"
                 ? "bg-muted text-muted-foreground line-through"
-                : "bg-amber-500/20 text-amber-700"
+                : "bg-amber-500/20 text-amber-700 font-medium"
           }
         >
-          {r.status}
+          {r.status === "disetujui"
+            ? "Sah Masuk Kas"
+            : r.status === "ditolak"
+              ? "Ditolak Rembug"
+              : "Menunggu Verif"}
         </Badge>
       </td>
       <td className="px-4 py-3 text-right">
@@ -71,7 +75,7 @@ export function KasTableRow({ row: r, canApprove, canApproveTier, onSelectTx, on
             variant="ghost"
             className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
             onClick={() => onSelectTx(r)}
-            title="Lihat Kwitansi"
+            title="Lihat Kwitansi Satu Aspal"
           >
             <Receipt className="h-3.5 w-3.5" />
           </Button>

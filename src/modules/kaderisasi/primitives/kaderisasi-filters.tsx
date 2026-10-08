@@ -6,7 +6,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, GraduationCap } from "lucide-react";
+import { Search, Bike } from "lucide-react";
+import { OJOL_KADERISASI_FILTER_OPTIONS } from "@/lib/ojol-jenjang";
 
 interface KaderisasiFiltersProps {
   search: string;
@@ -28,23 +29,23 @@ export function KaderisasiFilters({
         <Input
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="Cari nama atau ID anggota..."
+          placeholder="Cari nama, plat nomor, atau KTA..."
           className="h-10 pl-9 rounded-xl text-xs bg-background"
         />
       </div>
 
-      <div className="w-full sm:w-48">
+      <div className="w-full sm:w-56">
         <Select value={levelFilter} onValueChange={onLevelFilterChange}>
           <SelectTrigger className="h-10 rounded-xl text-xs bg-background">
-            <GraduationCap className="mr-2 h-4 w-4 text-muted-foreground" />
-            <SelectValue placeholder="Semua Jenjang" />
+            <Bike className="mr-2 h-4 w-4 text-primary" />
+            <SelectValue placeholder="Semua Tingkat Aspal" />
           </SelectTrigger>
           <SelectContent className="rounded-xl text-xs">
-            <SelectItem value="all">Semua Jenjang</SelectItem>
-            <SelectItem value="Calon">Calon Anggota</SelectItem>
-            <SelectItem value="Muda">Anggota Muda</SelectItem>
-            <SelectItem value="Madya">Anggota Madya</SelectItem>
-            <SelectItem value="Utama">Anggota Utama</SelectItem>
+            {OJOL_KADERISASI_FILTER_OPTIONS.map((opt) => (
+              <SelectItem key={opt.val} value={opt.val}>
+                {opt.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

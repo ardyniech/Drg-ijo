@@ -10,6 +10,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { runStorageMigrationGuard } from "@/core/sync";
+import { initSystemThemeSync } from "@/shared/utils/system-theme";
 import { Toaster } from "@/components/ui/sonner";
 import { RootNotFoundComponent, RootErrorComponent } from "@/components/layout/root-error-boundary";
 import { getRootHead } from "@/components/layout/root-head-config";
@@ -71,6 +72,7 @@ function RootComponent() {
   const clientToUse = context?.queryClient ?? activeClient;
 
   useEffect(() => {
+    const unsubTheme = initSystemThemeSync();
     runStorageMigrationGuard();
     if (
       typeof window !== "undefined" &&
@@ -105,6 +107,9 @@ function RootComponent() {
         navigator.serviceWorker.register("/sw.js").catch(() => {});
       }
     }
+    return () => {
+      unsubTheme();
+    };
   }, []);
 
   return (

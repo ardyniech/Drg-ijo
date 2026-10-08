@@ -1,6 +1,6 @@
 {
   "name": "DRG Community App",
-  "description": "Platform operasional terintegrasi komunitas driver: direktori anggota terverifikasi, transparansi kas sosial & koperasi, SOS darurat cepat, dan manajemen piket satgas.",
+  "description": "Platform persaudaraan pengemudi online: guyub pangkalan, kas gotong royong, satgas gercep & radar SOS, piket basecamp, serta jenjang satu aspal santui.",
   "requestFramePermissions": ["geolocation", "camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

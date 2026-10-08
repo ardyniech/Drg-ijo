@@ -4,10 +4,16 @@ export const MEMBER_MANAGE_ROLES: readonly string[] = [
   "super_admin",
   "admin",
   "ketua",
+  "sekretaris",
   "dewan_etik",
 ];
 
 export function canManageAnggota(role?: string | null): boolean {
+  if (!role) return false;
+  return MEMBER_MANAGE_ROLES.includes(role);
+}
+
+export function canVerifyAnggota(role?: string | null): boolean {
   if (!role) return false;
   return MEMBER_MANAGE_ROLES.includes(role);
 }

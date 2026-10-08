@@ -29,3 +29,5 @@ export interface MemberRecord {
 }
 
 export type MemberSortOption = "nama_asc" | "nama_desc" | "terbaru" | "kta";
+
+export type MemberViewMode = "grid" | "table";

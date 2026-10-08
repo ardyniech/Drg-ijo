@@ -4,7 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { GraduationCap, Award, ChevronRight } from "lucide-react";
+import { Bike, Award, ChevronRight } from "lucide-react";
+import { getOjolJenjang } from "@/lib/ojol-jenjang";
 import { KaderisasiCertificateDialog } from "./kaderisasi-certificate-dialog";
 import { KaderisasiStatsGrid } from "./kaderisasi-stats-grid";
 
@@ -15,6 +16,8 @@ interface KaderisasiCardProps {
 
 export function KaderisasiCard({ item, onEvaluate }: KaderisasiCardProps) {
   const [showCert, setShowCert] = useState(false);
+  const currentOjol = getOjolJenjang(item.currentLevel);
+  const targetOjol = getOjolJenjang(item.targetLevel);
 
   const getBadgeVariant = (status: MemberKaderisasi["status"]) => {
     switch (status) {
@@ -30,10 +33,10 @@ export function KaderisasiCard({ item, onEvaluate }: KaderisasiCardProps) {
   };
 
   const statusLabel = {
-    eligible: "Siap Evaluasi",
-    in_review: "Sedang Ditinjau",
-    promoted: "Telah Naik Jenjang",
-    needs_improvement: "Perlu Pembinaan",
+    eligible: "Siap Naik Kelas",
+    in_review: "Sedang Ditinjau Suhu",
+    promoted: "Resmi Naik Tingkat",
+    needs_improvement: "Perlu Tambah Jam Terbang",
   }[item.status];
 
   return (
@@ -43,7 +46,7 @@ export function KaderisasiCard({ item, onEvaluate }: KaderisasiCardProps) {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-3.5">
               <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-amber-500/10 text-amber-600">
-                <GraduationCap className="h-6 w-6" />
+                <Bike className="h-6 w-6" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
@@ -54,12 +57,16 @@ export function KaderisasiCard({ item, onEvaluate }: KaderisasiCardProps) {
                     {item.memberId}
                   </Badge>
                 </div>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  Jenjang:{" "}
-                  <span className="font-semibold text-foreground">{item.currentLevel}</span>
-                  {" → "}
-                  <span className="font-semibold text-primary">{item.targetLevel}</span>
-                </p>
+                <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground flex-wrap">
+                  <span className="text-[11px]">Tingkat Aspal:</span>
+                  <span className="font-semibold text-foreground">
+                    {currentOjol.title} ({currentOjol.nickname})
+                  </span>
+                  <span>→</span>
+                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                    {targetOjol.title} ({targetOjol.nickname})
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -69,9 +76,9 @@ export function KaderisasiCard({ item, onEvaluate }: KaderisasiCardProps) {
                 variant="ghost"
                 onClick={() => setShowCert(true)}
                 className="gap-1 rounded-xl text-xs"
-                title="Lihat Sertifikat"
+                title="Lihat Piagam Aspal"
               >
-                <Award className="h-3.5 w-3.5 text-amber-600" /> Sertifikat
+                <Award className="h-3.5 w-3.5 text-amber-600" /> Piagam
               </Button>
               <Badge
                 variant="outline"

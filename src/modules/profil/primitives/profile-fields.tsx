@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ProfileRow } from "../types";
+import { OJOL_JENJANG_SELECT_OPTIONS } from "@/lib/ojol-jenjang";
 
 interface JenjangProps {
   value: ProfileRow["jenjang"];
@@ -19,7 +20,7 @@ export function JenjangSelectField({ value, onChange, canEdit }: JenjangProps) {
   return (
     <div className="space-y-1.5">
       <Label htmlFor="jenjang" className="flex items-center gap-1.5">
-        <span>Jenjang Karir</span>
+        <span>Tingkat Aspal Santui</span>
         {!canEdit && (
           <span className="text-[10px] text-muted-foreground font-normal bg-muted px-1.5 py-0.5 rounded-md border">
             Terkunci
@@ -35,16 +36,17 @@ export function JenjangSelectField({ value, onChange, canEdit }: JenjangProps) {
           <SelectValue />
         </SelectTrigger>
         <SelectContent suppressHydrationWarning>
-          {["calon", "muda", "madya", "purna"].map((j) => (
-            <SelectItem key={j} value={j}>
-              {j.charAt(0).toUpperCase() + j.slice(1)}
+          {OJOL_JENJANG_SELECT_OPTIONS.map((opt) => (
+            <SelectItem key={opt.value} value={opt.value}>
+              <span className="font-medium">{opt.label}</span>{" "}
+              <span className="text-[11px] text-muted-foreground">({opt.nickname})</span>
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
       {!canEdit && (
         <p className="text-[10px] text-muted-foreground leading-tight">
-          Hanya dapat diubah oleh Ketua Umum, Admin, atau Dewan Etik.
+          Tingkat aspal hanya dapat disahkan oleh Dewan Presidium / Admin Basecamp.
         </p>
       )}
     </div>

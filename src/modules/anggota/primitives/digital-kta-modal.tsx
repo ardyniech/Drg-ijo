@@ -1,4 +1,4 @@
-import { ShieldCheck, QrCode, Award, Share2 } from "lucide-react";
+import { ShieldCheck, QrCode, Award, Share2, Printer } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -9,11 +9,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MemberRecord } from "../types";
+import { getOjolJenjang } from "@/lib/ojol-jenjang";
 import { toast } from "sonner";
 
 export function DigitalKtaModal({ member }: { member: MemberRecord }) {
+  const ojolJenjang = getOjolJenjang(member.jenjang);
+
   const handleShare = () => {
-    const text = `*KARTU TANDA ANGGOTA RESMI DRG*\nNama: ${member.nama}\nNo KTA: ${member.no_kta}\nPangkalan: ${member.pangkalan}\nJenjang: ${member.jenjang}\nStatus: ${member.status.toUpperCase()}\n\n_Diverifikasi oleh Dewan Pengurus Komunitas DRG_`;
+    const text = `*KARTU TANDA ANGGOTA RESMI DRG*\nNama: ${member.nama}\nNo KTA: ${member.no_kta}\nPangkalan: ${member.pangkalan}\nTingkat Aspal: ${ojolJenjang.title} (${ojolJenjang.nickname})\nStatus: ${member.status.toUpperCase()}\nMotto: "${ojolJenjang.roadQuote}"\n\n_Diverifikasi oleh Dewan Pengurus Komunitas DRG • Salam Satu Aspal Santui_`;
     navigator.clipboard.writeText(text);
     toast.success("Info KTA Digital disalin ke clipboard!");
   };
@@ -69,8 +72,13 @@ export function DigitalKtaModal({ member }: { member: MemberRecord }) {
                 <p className="font-semibold text-slate-200">{member.pangkalan}</p>
               </div>
               <div>
-                <p className="text-slate-400">Jenjang Kader</p>
-                <p className="font-semibold text-emerald-400">{member.jenjang}</p>
+                <p className="text-slate-400">Tingkat Aspal</p>
+                <p className="font-semibold text-emerald-400 flex items-center gap-1">
+                  <span>{ojolJenjang.title}</span>
+                  <span className="text-[10px] text-slate-400 font-normal">
+                    ({ojolJenjang.nickname})
+                  </span>
+                </p>
               </div>
               <div>
                 <p className="text-slate-400">Kendaraan</p>
@@ -88,14 +96,29 @@ export function DigitalKtaModal({ member }: { member: MemberRecord }) {
               <ShieldCheck className="h-3 w-3 text-emerald-400" />
               <span>Sah DPP DRG</span>
             </div>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={handleShare}
-              className="h-6 gap-1 px-2 text-[10px] text-emerald-300 hover:bg-emerald-900/40 hover:text-emerald-200"
-            >
-              <Share2 className="h-3 w-3" /> Bagikan KTA
-            </Button>
+            <div className="flex items-center gap-1">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => {
+                  if (typeof window !== "undefined") {
+                    window.print();
+                  }
+                }}
+                className="h-6 gap-1 px-2 text-[10px] text-emerald-300 hover:bg-emerald-900/40 hover:text-emerald-200"
+                title="Cetak KTA"
+              >
+                <Printer className="h-3 w-3" /> Cetak
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={handleShare}
+                className="h-6 gap-1 px-2 text-[10px] text-emerald-300 hover:bg-emerald-900/40 hover:text-emerald-200"
+              >
+                <Share2 className="h-3 w-3" /> Bagikan
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>

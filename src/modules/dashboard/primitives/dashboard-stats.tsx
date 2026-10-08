@@ -10,30 +10,30 @@ interface Props {
 export function DashboardStats({ overview }: Props) {
   const stats = [
     {
-      label: "Anggota Aktif",
+      label: "Sedulur Aktif",
       value: overview ? String(overview.anggotaAktif) : "—",
-      delta: overview ? `dari ${overview.anggotaTotal} terdata` : "",
+      delta: overview ? `dari ${overview.anggotaTotal} terdata pangkalan` : "",
       icon: Users,
       to: "/anggota" as const,
     },
     {
-      label: "Saldo Kas",
+      label: "Kas Gotong Royong",
       value: overview ? formatRupiah(overview.saldo) : "—",
-      delta: overview ? `+${formatRupiah(overview.masukBulanIni)} bulan ini` : "",
+      delta: overview ? `+${formatRupiah(overview.masukBulanIni)} guyub bulan ini` : "",
       icon: Wallet,
       to: "/kas" as const,
     },
     {
-      label: "Kejadian Bulan Ini",
+      label: "Pantau Jalur Darurat",
       value: overview ? String(overview.insidenBulanIni) : "—",
-      delta: overview ? `${overview.insidenAktif} masih aktif` : "",
+      delta: overview ? `${overview.insidenAktif} butuh respon gercep` : "",
       icon: Siren,
       to: "/kejadian" as const,
     },
     {
-      label: "Piket Hari Ini",
+      label: "Piket Satgas Hari Ini",
       value: overview ? String(overview.shiftHariIni) : "—",
-      delta: overview ? `${overview.wilayahHariIni} wilayah` : "",
+      delta: overview ? `${overview.wilayahHariIni} zona pangkalan` : "",
       icon: CalendarClock,
       to: "/piket" as const,
     },

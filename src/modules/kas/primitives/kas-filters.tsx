@@ -28,30 +28,30 @@ export function KasFilters({
   return (
     <div className="mb-4 flex flex-wrap gap-2">
       <Input
-        placeholder="Cari kategori/deskripsi…"
+        placeholder="Cari transaksi, santunan, urunan..."
         value={q}
         onChange={(e) => onQChange(e.target.value)}
         className="max-w-xs"
       />
       <Select value={ledgerFilter} onValueChange={onLedgerFilterChange}>
-        <SelectTrigger className="w-[150px]">
+        <SelectTrigger className="w-[165px]">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Semua ledger</SelectItem>
-          <SelectItem value="sosial">Sosial</SelectItem>
-          <SelectItem value="umum">Koperasi</SelectItem>
+          <SelectItem value="all">Semua Buku Kas</SelectItem>
+          <SelectItem value="sosial">Kas Sosial Santunan</SelectItem>
+          <SelectItem value="umum">Kas Koperasi Guyub</SelectItem>
         </SelectContent>
       </Select>
       <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-        <SelectTrigger className="w-[160px]">
+        <SelectTrigger className="w-[175px]">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Semua status</SelectItem>
-          <SelectItem value="menunggu">Menunggu</SelectItem>
-          <SelectItem value="disetujui">Disetujui</SelectItem>
-          <SelectItem value="ditolak">Ditolak</SelectItem>
+          <SelectItem value="all">Semua Status</SelectItem>
+          <SelectItem value="menunggu">Menunggu Verif</SelectItem>
+          <SelectItem value="disetujui">Sah Masuk Kas</SelectItem>
+          <SelectItem value="ditolak">Ditolak Rembug</SelectItem>
         </SelectContent>
       </Select>
     </div>

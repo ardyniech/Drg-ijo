@@ -39,7 +39,7 @@ export function KasReceiptModal({ tx, open, onOpenChange }: KasReceiptModalProps
               <Receipt className="h-5 w-5" />
             </div>
             <div>
-              <DialogTitle className="text-base font-bold">Kwitansi Kas DRG</DialogTitle>
+              <DialogTitle className="text-base font-bold">Kwitansi Kas Satu Aspal</DialogTitle>
               <p className="text-xs text-muted-foreground font-mono">{noKwitansi}</p>
             </div>
           </div>
@@ -53,13 +53,14 @@ export function KasReceiptModal({ tx, open, onOpenChange }: KasReceiptModalProps
                 tx.status === "disetujui" ? "bg-emerald-600 text-white" : "bg-amber-500 text-white"
               }
             >
-              <CheckCircle2 className="mr-1 h-3 w-3" /> {tx.status.toUpperCase()}
+              <CheckCircle2 className="mr-1 h-3 w-3" />{" "}
+              {tx.status === "disetujui" ? "SAH DIVERIFIKASI" : "MENUNGGU REMBUG"}
             </Badge>
           </div>
 
           <div className="text-center py-2">
             <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-              Total Nilai
+              Nominal Urunan
             </p>
             <p
               className={`text-2xl font-bold font-mono ${tx.jenis === "masuk" ? "text-emerald-600" : "text-amber-600"}`}

@@ -35,9 +35,9 @@ function PiketPage() {
 
   return (
     <PageShell
-      eyebrow="Satgas"
-      title="Jadwal Piket"
-      description="Kelola shift mingguan, ajukan tukar shift, dan pantau permintaan."
+      eyebrow="Piket Satgas & Basecamp"
+      title="Jadwal Piket Jaga Jalur"
+      description="Gotong royong jaga basecamp & pantau jalur. Atur shift piket, tukar shift santui antar sedulur, dan catat kehadiran dulur bertugas."
       actions={
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" size="sm" onClick={() => setWeekStart(addDays(weekStart, -7))}>

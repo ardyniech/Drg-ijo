@@ -69,10 +69,10 @@ export function IncidentCard({ incident }: { incident: IncidentRecord }) {
             }
           >
             {incident.status === "aktif"
-              ? "Butuh Bantuan"
+              ? "Darurat Butuh Bantuan"
               : incident.status === "dalam_penanganan"
-                ? "Ditangani Satgas"
-                : "Selesai"}
+                ? "Sedulur Sedang Merapat"
+                : "Alhamdulillah Klir"}
           </Badge>
         </div>
       </CardHeader>
@@ -85,22 +85,22 @@ export function IncidentCard({ incident }: { incident: IncidentRecord }) {
         {incident.responders.length > 0 && (
           <div className="flex items-center gap-1.5 text-xs text-primary font-medium">
             <Users className="h-3.5 w-3.5" />
-            <span>Satgas Meluncur: {incident.responders.join(", ")}</span>
+            <span>Sedulur Meluncur Bantu: {incident.responders.join(", ")}</span>
           </div>
         )}
         <div className="flex items-center justify-between gap-2 pt-2 border-t border-border/50">
           <a
-            href={`https://wa.me/${waPhone}?text=Halo%20rekan%20${encodeURIComponent(incident.driver_name)},%20Satgas%20DRG%20merespons%20laporan%20SOS%20Anda.`}
+            href={`https://wa.me/${waPhone}?text=Halo%20dulur%20${encodeURIComponent(incident.driver_name)},%20Satgas%20DRG%20merespons%20panggilan%20darurat%20satu%20aspal.%20Posisi%20kami%20meluncur.`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
           >
-            <Phone className="h-3.5 w-3.5" /> Hubungi Driver
+            <Phone className="h-3.5 w-3.5" /> Telepon Dulur
           </a>
           <div className="flex gap-2">
             {incident.status === "aktif" && (
               <Button size="sm" variant="outline" onClick={handleRespond} className="text-xs h-7">
-                <ShieldCheck className="mr-1 h-3.5 w-3.5 text-primary" /> Saya Meluncur
+                <ShieldCheck className="mr-1 h-3.5 w-3.5 text-primary" /> Gas Meluncur Bantu
               </Button>
             )}
             {!isResolved && (
@@ -109,7 +109,7 @@ export function IncidentCard({ incident }: { incident: IncidentRecord }) {
                 onClick={handleResolve}
                 className="text-xs h-7 bg-primary text-primary-foreground"
               >
-                <CheckCircle className="mr-1 h-3.5 w-3.5" /> Tandai Selesai
+                <CheckCircle className="mr-1 h-3.5 w-3.5" /> Urusan Klir / Selesai
               </Button>
             )}
           </div>

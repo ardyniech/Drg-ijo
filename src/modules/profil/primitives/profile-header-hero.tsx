@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Upload, Edit3, ShieldCheck, MapPin, Calendar, Car } from "lucide-react";
+import { Upload, Edit3, ShieldCheck, MapPin, Calendar, Car, Bike } from "lucide-react";
 import { ProfileRow, getInitials } from "../types";
+import { getOjolJenjang } from "@/lib/ojol-jenjang";
 
 interface Props {
   profile: ProfileRow;
@@ -12,6 +13,7 @@ interface Props {
 
 export function ProfileHeaderHero({ profile, roles, onUploadAvatar, onOpenEdit }: Props) {
   const initials = getInitials(profile.nama ?? profile.email);
+  const ojolInfo = getOjolJenjang(profile.jenjang);
   const joinDate = profile.created_at
     ? new Intl.DateTimeFormat("id-ID", { month: "short", year: "numeric" }).format(
         new Date(profile.created_at),
@@ -64,16 +66,21 @@ export function ProfileHeaderHero({ profile, roles, onUploadAvatar, onOpenEdit }
             </div>
             <p className="text-xs text-muted-foreground">{profile.email || "driver@drg.id"}</p>
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 pt-0.5">
-              <Badge className="bg-primary/15 text-primary hover:bg-primary/20 capitalize text-[11px]">
-                {profile.jenjang}
+              <Badge className="bg-primary/15 text-primary hover:bg-primary/20 text-[11px] gap-1">
+                <Bike className="h-3 w-3" />
+                {ojolInfo.title} ({ojolInfo.nickname})
               </Badge>
-              <Badge variant="outline" className="capitalize text-[11px]">
-                Status: {profile.status}
+              <Badge variant="outline" className="text-[11px]">
+                {profile.status === "aktif"
+                  ? "Sah Satu Aspal"
+                  : profile.status === "pending_review"
+                    ? "Menunggu PIC"
+                    : "Rehat Jalur"}
               </Badge>
               {roles.map((r) => (
                 <Badge key={r} variant="secondary" className="text-[11px] capitalize">
                   <ShieldCheck className="mr-1 h-3 w-3" />
-                  {r}
+                  {r.replace("_", " ")}
                 </Badge>
               ))}
             </div>

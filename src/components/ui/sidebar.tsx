@@ -36,7 +36,7 @@ export const Sidebar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTM
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           className={cn(
-            "fixed inset-y-0 left-0 z-40 flex flex-col border-r border-border/80 bg-card/95 backdrop-blur-md text-sidebar-foreground transition-all duration-300 ease-out shadow-xs md:sticky md:top-0 md:h-screen",
+            "fixed inset-y-0 left-0 z-40 flex flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 ease-out shadow-xs md:sticky md:top-0 md:h-screen",
             effectiveOpen
               ? "w-64"
               : isMobile

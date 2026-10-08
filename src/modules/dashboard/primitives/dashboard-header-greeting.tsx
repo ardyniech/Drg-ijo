@@ -5,20 +5,20 @@ interface Props {
 }
 
 export function useDashboardGreeting(displayName: string) {
-  const [salam, setSalam] = useState("Selamat datang");
+  const [salam, setSalam] = useState("Salam satu aspal");
 
   useEffect(() => {
     const hour = new Date().getHours();
     const currentSalam =
       hour < 11
-        ? "Selamat pagi"
+        ? "Salam satu aspal & selamat pagi"
         : hour < 15
-          ? "Selamat siang"
+          ? "Gas tipis-tipis & selamat siang"
           : hour < 18
-            ? "Selamat sore"
-            : "Selamat malam";
+            ? "Salam santui & selamat sore"
+            : "Kopi darat santui & selamat malam";
     setSalam(currentSalam);
   }, []);
 
-  return `${salam}, ${displayName}`;
+  return `${salam}, Dulur ${displayName}! 🏍️`;
 }
