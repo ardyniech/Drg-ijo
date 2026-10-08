@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ShieldCheck, HeartHandshake, CheckCircle } from "lucide-react";
+import { ArrowRight, ShieldCheck, HeartHandshake, CheckCircle, Users } from "lucide-react";
 
 interface LandingHeroProps {
   isLoggedIn?: boolean;
@@ -35,12 +35,11 @@ export function LandingHero({ isLoggedIn, userName }: LandingHeroProps) {
             </div>
 
             <h1 className="font-display text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl text-balance leading-[1.12]">
-              Guyub di Jalan, Solidaritas Nyata Satu Aspal.
+              Guyub Bareng, Saling Jaga, Saling Bantu di Aspal
             </h1>
 
             <p className="mt-5 text-base text-muted-foreground sm:text-lg max-w-xl text-pretty leading-relaxed">
-              Wadah persaudaraan independen dulur pengemudi online: keterbukaan kas gotong royong,
-              satgas siaga gercep 24 jam di jalan, dan tingkatan aspal santui penuh seduluran.
+              Wadah kekeluargaan driver ojol & taksi online. Kita bangun bareng, jaga bareng, bantu bareng biar makin aman, rukun & sejahtera di jalanan.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -50,7 +49,7 @@ export function LandingHero({ isLoggedIn, userName }: LandingHeroProps) {
                 className="h-12 gap-2 rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground shadow-warm hover:bg-primary/90"
               >
                 <Link to="/daftar">
-                  <span>Merapat Jadi Sedulur</span>
+                  <span>Yuk Gabung</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -62,19 +61,23 @@ export function LandingHero({ isLoggedIn, userName }: LandingHeroProps) {
                 className="h-12 gap-2 rounded-xl border-border bg-card px-5 text-sm font-semibold text-foreground hover:bg-muted"
               >
                 <Link to="/auth">
-                  <span>Masuk Pangkalan</span>
+                  <span>Masuk Akun</span>
                 </Link>
               </Button>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-6 text-xs text-muted-foreground">
+            <div className="mt-6 flex flex-wrap items-center gap-5 text-xs text-muted-foreground">
+              <span className="flex items-center gap-1.5 font-medium">
+                <Users className="h-4 w-4 text-primary" />
+                Udah dipercaya bareng-bareng buat jaga saudara di Malang Raya
+              </span>
               <span className="flex items-center gap-1.5 font-medium">
                 <ShieldCheck className="h-4 w-4 text-primary" />
-                Solidaritas Satu Aspal
+                Verifikasi singkat • Gratiss
               </span>
               <span className="flex items-center gap-1.5 font-medium">
                 <HeartHandshake className="h-4 w-4 text-primary" />
-                Kas Santunan Terbuka
+                Dana Santunan Terbuka
               </span>
             </div>
           </div>
@@ -83,17 +86,18 @@ export function LandingHero({ isLoggedIn, userName }: LandingHeroProps) {
             <div className="relative overflow-hidden rounded-2xl border border-border/80 bg-muted/40 shadow-xl">
               <img
                 src="/src/assets/images/drg_hero_community_1791295114418.jpg"
-                alt="Pertemuan hangat anggota Komunitas Driver Riang Gembira (DRG)"
+                alt="Keluarga besar DRG – guyub rukun saling bantu di jalan"
                 className="aspect-16/10 w-full object-cover"
                 loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              <div className="absolute bottom-3 left-4 right-4 text-white">
+              <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent pointer-events-none" />
+              <div className="absolute bottom-3 left-4 right-4 text-white drop-shadow-sm">
                 <p className="text-xs font-semibold">Basecamp Shelter Utama DRG</p>
-                <p className="text-[11px] text-white/80">
-                  Keluarga besar mitra roda dua & roda empat
-                </p>
+                <p className="text-[11px] text-white/90">Keluarga besar driver Malang Raya</p>
               </div>
             </div>
           </div>

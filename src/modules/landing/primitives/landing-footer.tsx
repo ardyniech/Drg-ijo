@@ -12,34 +12,33 @@ export function LandingFooter() {
               </div>
               <span className="font-display text-base font-bold text-foreground">DRG App</span>
             </div>
-            <p className="mt-2 max-w-sm text-xs leading-relaxed text-muted-foreground">
-              Komunitas Driver Riang Gembira (DRG). Bergerak mandiri untuk solidaritas,
-              perlindungan, dan kesejahteraan rekan di jalan.
+            <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground text-pretty">
+              Komunitas Driver Riang Gembira (DRG). Guyub, rukun, saling bantu. Keluarga besar driver Malang Raya.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-x-6 gap-y-2 font-medium">
             <Link to="/daftar" className="hover:text-foreground">
-              Pendaftaran Anggota
+              Yuk Gabung
             </Link>
             <Link to="/auth" className="hover:text-foreground">
-              Masuk ke Akun
+              Masuk Akun
             </Link>
-            <a href="#pilar" className="hover:text-foreground">
-              Pilar Gerakan
+            <a href="#gabung" className="hover:text-foreground">
+              Cara Gabung
             </a>
-            <a href="#transparansi" className="hover:text-foreground">
-              Buku Kas
+            <a href="#pilar" className="hover:text-foreground">
+              Pilar Kita
             </a>
             <a href="#faq" className="hover:text-foreground">
-              Pusat Bantuan
+              Biar Makin Paham
             </a>
           </div>
         </div>
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-6 sm:flex-row">
           <div>Basecamp Utama: Jl. Soekarno-Hatta, Malang Raya, Jawa Timur</div>
-          <div>© {new Date().getFullYear()} Komunitas DRG. Hak cipta dilindungi.</div>
+          <div>© {new Date().getFullYear()} Komunitas DRG. Kita jaga nama baik bareng.</div>
         </div>
       </div>
     </footer>

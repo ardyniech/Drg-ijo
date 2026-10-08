@@ -5,26 +5,26 @@ export function LandingFeatures() {
     {
       num: "01",
       icon: Wallet,
-      title: "Kas Gotong Royong Terbuka",
-      desc: "Setiap iuran seduluran, sumbangan santui, dan bantuan dulur musibah tercatat transparan dengan nomor kwitansi digital.",
+      title: "Kas Gotong Royong yang Terbuka",
+      desc: "Kita nabung bareng, kita bantu bareng. Semua pemasukan & penyaluran santunan bisa dilihat jelas sama keluarga DRG.",
     },
     {
       num: "02",
       icon: Siren,
-      title: "Satgas Gercep & Radar SOS",
-      desc: "Satu ketukan darurat langsung kirim koordinat GPS live ke dulur satgas terdekat untuk gercep tolong di jalan.",
+      title: "Satgas Siaga, Saling Jaga di Jalan",
+      desc: "Kalo ada saudara kita butuh bantuan, tombol SOS langsung hubungin rekan piket terdekat. Kita nggak biarin saudara sendirian.",
     },
     {
       num: "03",
       icon: CalendarCheck2,
-      title: "Piket Basecamp & Titik Kumpul",
-      desc: "Jaga shelter pangkalan bareng-bareng. Absen radius basecamp santui & tukar shift fleksibel antar sedulur.",
+      title: "Piket Bareng, Adil Bareng",
+      desc: "Jadwal piket dibagi rata sama kita semua. Check-in jelas, bisa tukar shift juga biar tetep guyub & nggak berat sebelah.",
     },
     {
       num: "04",
       icon: Award,
-      title: "Tingkat Aspal & Marwah Guyub",
-      desc: "Tingkat aspal dari Driver Anyar sampai Sesepuh, serta mediasi kekeluargaan jaga marwah keluarga besar DRG.",
+      title: "Kaderisasi & Etik, Jaga Marwah Bareng",
+      desc: "Kita jaga nama baik keluarga besar DRG lewat pembinaan bareng dan penyelesaian masalah dengan hati yang rukun.",
     },
   ];
 
@@ -32,15 +32,12 @@ export function LandingFeatures() {
     <section id="pilar" className="border-b border-border/60 bg-background py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-xl">
-          <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-            Fondasi Seduluran
-          </div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-primary">Yang Bikin Kita Solid Bareng</div>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
-            Empat Pilar Gerakan Mandiri Driver Riang Gembira.
+            Kita Bangun Bareng, Jaga Bareng, Bantu Bareng
           </h2>
-          <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            Dirancang dari driver, oleh driver, untuk persaudaraan erat dan saling jaga di aspal
-            jalanan.
+          <p className="mt-3 text-sm text-muted-foreground sm:text-base text-pretty leading-relaxed">
+            Bukan cuma komunitas, tapi keluarga. Semua ini kita jaga bareng biar kehidupan di aspal makin aman, rukun & sejahtera.
           </p>
         </div>
 
@@ -48,21 +45,17 @@ export function LandingFeatures() {
           {pillars.map((item) => (
             <div
               key={item.num}
-              className="group relative flex flex-col justify-between rounded-2xl border border-border/80 bg-card p-6 shadow-xs transition-all hover:border-primary/40 hover:shadow-md"
+              className="group relative flex flex-col justify-between rounded-2xl border border-border/80 bg-card p-6 shadow-xs transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
             >
               <div>
                 <div className="flex items-center justify-between">
-                  <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary/10 text-primary">
+                  <div className="grid h-10 w-10 place-items-center rounded-xl border border-primary/15 bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-sm">
                     <item.icon className="h-5 w-5" />
                   </div>
-                  <span className="font-mono text-xs font-semibold text-muted-foreground/60">
-                    {item.num}
-                  </span>
+                  <span className="font-mono text-xs font-semibold text-muted-foreground/60">{item.num}</span>
                 </div>
-                <h3 className="mt-4 font-display text-base font-bold text-foreground">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{item.desc}</p>
+                <h3 className="mt-4 font-display text-base font-bold text-foreground">{item.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">{item.desc}</p>
               </div>
             </div>
           ))}

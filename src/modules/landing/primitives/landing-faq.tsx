@@ -1,25 +1,31 @@
 import { useState } from "react";
 import { ChevronDown, HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 export function LandingFaq() {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   const faqs = [
     {
-      q: "Siapa saja yang berhak mendaftar menjadi anggota DRG?",
-      a: "Semua pengemudi transportasi online (ojek online R2 maupun taksi online R4) yang beroperasi aktif dan berkomitmen menjunjung tinggi nilai persaudaraan dan kejujuran.",
+      q: "Siapa aja yang boleh gabung ke keluarga DRG?",
+      a: "Rekan-rekan pengemudi transportasi online (ojol roda 2 maupun taksi online roda 4) yang aktif di jalan dan mau menjunjung tinggi nilai guyub, rukun, saling bantu satu sama lain.",
     },
     {
-      q: "Bagaimana proses setelah mengisi formulir pendaftaran?",
-      a: "Data Anda akan ditinjau langsung oleh tim PIC Kaderisasi. Anda akan dihubungi untuk wawancara singkat di shelter terdekat sebelum mendapatkan status Anggota Resmi.",
+      q: "Gimana prosesnya kalo mau gabung?",
+      a: "Singkat aja. Isi formulir, nanti tim kaderisasi kita bakal kontak singkat buat kenalan bareng di shelter terdekat. Tujuannya biar kita kenal satu sama lain, bukan sekadar data.",
     },
     {
-      q: "Bagaimana transparansi pengelolaan dana kas dan sosial?",
-      a: "Setiap mutasi kas tercatat secara terbuka di buku besar digital aplikasi ini. Anggota dapat melihat riwayat pengeluaran dan kwitansi bantuan kapan saja.",
+      q: "Kas gotong royongnya beneran terbuka?",
+      a: "Iya, beneran terbuka. Semua mutasi kas kita catat di buku besar digital, bisa dilihat sama semua anggota keluarga DRG. Kita pegang prinsip: nabung bareng, bantu bareng, jelas bareng.",
     },
     {
-      q: "Apa yang terjadi saat anggota menekan tombol SOS darurat?",
-      a: "Aplikasi memancarkan koordinat lokasi akurat Anda ke tim Satgas yang sedang bertugas piket, sehingga rekan terdekat dapat langsung meluncur ke lokasi kejadian.",
+      q: "Kalo tekan tombol SOS, bakal gimana?",
+      a: "Langsung kirim lokasi akurat ke Satgas yang lagi piket. Jadi rekan-rekan terdekat bisa langsung meluncur bantu saudara kita yang lagi kesusahan di aspal. Kita nggak biarin saudara sendirian.",
+    },
+    {
+      q: "Harus bayar berapa buat gabung?",
+      a: "Pendaftaran awalnya gratis. Adanya iuran gotong royong itu kita atur bareng lewat musyawarah keluarga, dan pemakaiannya selalu kita laporkan terbuka ke anggota.",
     },
   ];
 
@@ -29,13 +35,13 @@ export function LandingFaq() {
         <div className="text-center">
           <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
             <HelpCircle className="h-3.5 w-3.5" />
-            Tanya Jawab Komunitas
+            Biar Makin Paham
           </div>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Pertanyaan yang Sering Diajukan
+            Pertanyaan Biar Makin Paham Bareng
           </h2>
-          <p className="mt-2 text-xs text-muted-foreground sm:text-sm">
-            Informasi penting seputar keanggotaan dan operasional Driver Riang Gembira.
+          <p className="mt-2 text-sm text-muted-foreground sm:text-base text-pretty leading-relaxed">
+            Masih bingung? Tenang aja, kita jelasin santai kayak ngobrol bareng di basecamp.
           </p>
         </div>
 
@@ -43,10 +49,7 @@ export function LandingFaq() {
           {faqs.map((f, i) => {
             const isOpen = openIdx === i;
             return (
-              <div
-                key={f.q}
-                className="overflow-hidden rounded-xl border border-border/80 bg-card transition-colors"
-              >
+              <div key={f.q} className="overflow-hidden rounded-xl border border-border/80 bg-card transition-colors">
                 <button
                   type="button"
                   onClick={() => setOpenIdx(isOpen ? null : i)}
@@ -54,19 +57,27 @@ export function LandingFaq() {
                 >
                   <span>{f.q}</span>
                   <ChevronDown
-                    className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-primary" : ""
-                    }`}
+                    className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ease-out ${isOpen ? "rotate-180 text-primary" : ""}`}
                   />
                 </button>
                 {isOpen && (
-                  <div className="border-t border-border/50 px-4 pb-4 pt-2 text-xs leading-relaxed text-muted-foreground">
+                  <div className="border-t border-border/50 px-4 pb-4 pt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
                     {f.a}
                   </div>
                 )}
               </div>
             );
           })}
+        </div>
+
+        <div className="mt-8 rounded-2xl border border-border/80 bg-muted/30 p-5 text-center">
+          <p className="text-sm font-medium text-foreground">Masih penasaran? Yuk kenalan bareng aja dulu</p>
+          <p className="mt-1 text-xs text-muted-foreground">Nggak ada paksaan, kita ngobrol santai aja</p>
+          <div className="mt-3 flex justify-center">
+            <Button asChild size="sm" className="rounded-lg">
+              <Link to="/daftar">Yuk Gabung Sekarang</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </section>

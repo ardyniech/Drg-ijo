@@ -1,6 +1,8 @@
-export * from "./primitives/landing-header";
-export * from "./primitives/landing-hero";
-export * from "./primitives/landing-features";
-export * from "./primitives/landing-stats";
-export * from "./primitives/landing-faq";
-export * from "./primitives/landing-footer";
+export { LandingHeader } from "./primitives/landing-header";
+export { LandingHero } from "./primitives/landing-hero";
+export { LandingJoinSteps } from "./primitives/landing-join-steps";
+export { LandingFeatures } from "./primitives/landing-features";
+export { LandingStats } from "./primitives/landing-stats";
+export { LandingSosSpotlight } from "./primitives/landing-sos-spotlight";
+export { LandingFaq } from "./primitives/landing-faq";
+export { LandingFooter } from "./primitives/landing-footer";
