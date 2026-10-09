@@ -15,6 +15,7 @@ import {
   Activity,
   Settings,
   Info,
+  Landmark,
   LucideIcon,
 } from "lucide-react";
 
@@ -39,6 +40,7 @@ export const operasionalNav: NavItem[] = [
 export const administrasiBaseNav: NavItem[] = [
   { title: "Direktori Sedulur", url: "/anggota", icon: Users },
   { title: "Kas Gotong Royong", url: "/kas", icon: Wallet },
+  { title: "Koperasi & Pinjaman", url: "/koperasi", icon: Landmark },
   { title: "Notulen Rembug & Kopdar", url: "/notulen", icon: FileText },
   { title: "Inventaris Basecamp", url: "/inventaris", icon: Boxes },
   { title: "Catatan Aktivitas", url: "/activity-log", icon: Activity },
