@@ -13,7 +13,8 @@ export function LandingFooter() {
               <span className="font-display text-base font-bold text-foreground">DRG App</span>
             </div>
             <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground text-pretty">
-              Komunitas Driver Riang Gembira (DRG). Guyub, rukun, saling bantu. Keluarga besar driver Malang Raya.
+              Komunitas Driver Riang Gembira (DRG). Guyub, rukun, saling bantu. Keluarga besar
+              driver Malang Raya.
             </p>
           </div>
 
@@ -23,6 +24,9 @@ export function LandingFooter() {
             </Link>
             <Link to="/auth" className="hover:text-foreground">
               Masuk Akun
+            </Link>
+            <Link to="/about" className="hover:text-foreground">
+              Tentang & Status Fitur
             </Link>
             <a href="#gabung" className="hover:text-foreground">
               Cara Gabung

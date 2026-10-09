@@ -10,7 +10,12 @@ import {
   SidebarHeader,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { operasionalNav, getAdminNav, kaderisasiNav } from "@/components/layout/sidebar-nav-config";
+import {
+  operasionalNav,
+  getAdminNav,
+  kaderisasiNav,
+  infoNav,
+} from "@/components/layout/sidebar-nav-config";
 import { SidebarUserFooter } from "@/components/layout/sidebar-user-footer";
 import { SidebarMenuItemRow } from "@/components/layout/sidebar-menu-item-row";
 
@@ -33,7 +38,15 @@ export function AppSidebar() {
     { label: "Operasional", items: operasionalNav },
     { label: "Administrasi", items: getAdminNav(isAdmin) },
     { label: "Kaderisasi", items: kaderisasiNav },
+    { label: "Info", items: infoNav },
   ];
+
+  const groupLabels: Record<string, string> = {
+    Operasional: "Pangkalan & Jalur",
+    Administrasi: "Guyub & Seduluran",
+    Kaderisasi: "Tingkat & Marwah",
+    Info: "Tentang Aplikasi",
+  };
 
   const isActive = (url: string) =>
     url === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(url);
@@ -66,11 +79,7 @@ export function AppSidebar() {
           <SidebarGroup key={group.label} className="mb-2">
             {!collapsed && (
               <SidebarGroupLabel className="text-[10px] font-bold uppercase tracking-[0.14em] text-neutral-600 dark:text-neutral-400 px-3 pb-1">
-                {group.label === "Operasional"
-                  ? "Pangkalan & Jalur"
-                  : group.label === "Administrasi"
-                    ? "Guyub & Seduluran"
-                    : "Tingkat & Marwah"}
+                {groupLabels[group.label] ?? group.label}
               </SidebarGroupLabel>
             )}
             <SidebarGroupContent>

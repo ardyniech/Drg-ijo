@@ -21,16 +21,19 @@ export function LandingHeader({ isLoggedIn, userName }: LandingHeaderProps) {
         </Link>
 
         <nav className="hidden items-center gap-6 text-xs font-semibold text-muted-foreground md:flex">
-          <a href="#pilar" className="transition-colors hover:text-foreground">
+          <a href="/#pilar" className="transition-colors hover:text-foreground">
             Pilar Seduluran
           </a>
-          <a href="#transparansi" className="transition-colors hover:text-foreground">
+          <a href="/#transparansi" className="transition-colors hover:text-foreground">
             Kas Gotong Royong
           </a>
-          <a href="#satgas" className="transition-colors hover:text-foreground">
+          <a href="/#satgas" className="transition-colors hover:text-foreground">
             Satgas & SOS Jalur
           </a>
-          <a href="#faq" className="transition-colors hover:text-foreground">
+          <Link to="/about" className="transition-colors hover:text-foreground">
+            Tentang & Status
+          </Link>
+          <a href="/#faq" className="transition-colors hover:text-foreground">
             Tanya Santui
           </a>
         </nav>

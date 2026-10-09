@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Activity,
   Settings,
+  Info,
   LucideIcon,
 } from "lucide-react";
 
@@ -49,6 +50,8 @@ export const kaderisasiNav: NavItem[] = [
   { title: "Tingkat Satu Aspal", url: "/kaderisasi", icon: GraduationCap },
   { title: "Marwah & Etika Jalur", url: "/etik", icon: ShieldAlert },
 ];
+
+export const infoNav: NavItem[] = [{ title: "Tentang & Status Fitur", url: "/about", icon: Info }];
 
 export function getAdminNav(isAdmin: boolean): NavItem[] {
   if (!isAdmin) return administrasiBaseNav;
