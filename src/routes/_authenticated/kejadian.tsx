@@ -6,6 +6,7 @@ import {
   ReportIncidentDialog,
   useKejadian,
 } from "@/modules/kejadian";
+import { SafetyIntelligenceDialog } from "@/modules/dispatch-ai";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Siren, History } from "lucide-react";
 
@@ -26,7 +27,12 @@ function KejadianPage() {
     <PageShell
       title="SOS & Pantau Jalur Darurat"
       description="Komando gercep satu aspal: respons cepat satgas, bantuan dulur mogok atau senggolan, dan koordinasi evakuasi jalur."
-      action={<ReportIncidentDialog />}
+      action={
+        <div className="flex flex-wrap items-center gap-2">
+          <SafetyIntelligenceDialog />
+          <ReportIncidentDialog />
+        </div>
+      }
     >
       <div className="space-y-6">
         <SosQuickTrigger />

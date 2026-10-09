@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Siren, Radio, RadioTower } from "lucide-react";
 import { toast } from "sonner";
 import { SyncStatusBadge } from "@/core/sync";
+import { RealtimeIndicator } from "@/core/realtime";
 import { PWAInstallButton } from "./pwa-install-button";
 
 interface AuthedHeaderProps {
@@ -19,6 +20,7 @@ export function AuthedHeader({ onBit, setOnBit, hydrated, today }: AuthedHeaderP
     <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-border/60 bg-background/85 px-3 backdrop-blur md:px-6">
       <SidebarTrigger className="text-foreground" />
       <SyncStatusBadge />
+      <RealtimeIndicator />
       <div className="ml-auto flex items-center gap-2">
         <span
           className="hidden lg:inline text-xs capitalize text-muted-foreground"

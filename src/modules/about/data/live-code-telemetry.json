@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-09T15:14:27.887Z",
+  "generatedAt": "2026-10-09T23:25:58.677Z",
   "source": "AST & live filesystem introspection",
-  "totalModules": 22,
+  "totalModules": 23,
   "activeModules": [
     "about",
     "activity-log",
@@ -9,6 +9,7 @@
     "auth",
     "daftar",
     "dashboard",
+    "dispatch-ai",
     "etik",
     "inventaris",
     "kaderisasi",

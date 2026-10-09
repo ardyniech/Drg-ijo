@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-09T15:14:27.759Z",
+  "generatedAt": "2026-10-09T23:25:58.586Z",
   "source": "codebase automated feature tree inspection",
   "counts": {
-    "siap": 22,
-    "sebagian": 2,
-    "rencana": 2,
-    "total": 26
+    "siap": 25,
+    "sebagian": 1,
+    "rencana": 1,
+    "total": 27
   },
   "branches": [
     {
@@ -152,7 +152,8 @@
         },
         {
           "label": "Outbox pattern sync engine",
-          "status": "sebagian"
+          "status": "siap",
+          "note": "Antrean mutasi FIFO dengan retry exponential backoff."
         },
         {
           "label": "Cadangkan & pulihkan arsip data (JSON)",
@@ -165,9 +166,14 @@
           "note": "Dapat dipasang di Home Screen Android & iOS Safari."
         },
         {
-          "label": "Realtime multi-device database sync",
-          "status": "rencana",
-          "note": "Terjadwal pada integrasi backend tersentralisasi."
+          "label": "Realtime multi-device channel & broadcast",
+          "status": "siap",
+          "note": "SSE event broadcast instan lintas perangkat dan tab pengemudi."
+        },
+        {
+          "label": "AI Dispatching & Safety Intelligence",
+          "status": "siap",
+          "note": "Model Gemini-3.8-Flash untuk analisis kegawatan insiden & rute satgas."
         }
       ]
     }

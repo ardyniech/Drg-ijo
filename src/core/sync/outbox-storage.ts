@@ -17,6 +17,7 @@ const OutboxOperationSchema = z.object({
   status: z.enum(["pending", "syncing", "synced", "failed"]),
   retryCount: z.number(),
   lastError: z.string().optional(),
+  nextRetryAt: z.string().optional(),
 });
 
 export function getOutboxQueue(): OutboxOperation[] {

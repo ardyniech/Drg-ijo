@@ -170,9 +170,14 @@ const BRANCH_DEFINITIONS = [
         readyNote: "Dapat dipasang di Home Screen Android & iOS Safari.",
       },
       {
-        label: "Realtime multi-device database sync",
-        check: () => false,
-        plannedNote: "Terjadwal pada integrasi backend tersentralisasi.",
+        label: "Realtime multi-device channel & broadcast",
+        check: () => existsSync(join(root, "src/core/realtime/realtime-channel.ts")),
+        readyNote: "SSE event broadcast instan lintas perangkat dan tab pengemudi.",
+      },
+      {
+        label: "AI Dispatching & Safety Intelligence",
+        check: () => existsSync(join(root, "src/routes/api.ai.dispatch.ts")),
+        readyNote: "Model Gemini-3.8-Flash untuk analisis kegawatan insiden & rute satgas.",
       },
     ],
   },

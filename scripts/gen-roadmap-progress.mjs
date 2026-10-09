@@ -121,8 +121,14 @@ const PHASES_CONFIG = [
         text: "Web Push notification background",
         check: () => existsSync(join(root, "public/sw.js")),
       },
-      { text: "Koneksi multi-device realtime", check: () => false },
-      { text: "AI Dispatching & Safety Intelligence", check: () => false },
+      {
+        text: "Koneksi multi-device realtime",
+        check: () => existsSync(join(root, "src/core/realtime/realtime-channel.ts")),
+      },
+      {
+        text: "AI Dispatching & Safety Intelligence",
+        check: () => existsSync(join(root, "src/routes/api.ai.dispatch.ts")),
+      },
     ],
   },
 ];

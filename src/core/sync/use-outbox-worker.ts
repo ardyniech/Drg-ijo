@@ -1,6 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { getOutboxQueue, updateOperationStatus, clearSyncedOperations } from "./outbox-storage";
-import { SyncEngineStatus } from "./types";
+import {
+  getOutboxQueue,
+  updateOperationStatus,
+  clearSyncedOperations,
+  getEligiblePendingOps,
+  markOpFailedWithBackoff,
+} from "./outbox-queue";
+import { SyncEngineStatus, SyncPushResponse } from "./types";
 
 export function useOutboxWorker() {
   const [isOnline, setIsOnline] = useState(() =>
@@ -16,32 +22,43 @@ export function useOutboxWorker() {
   const failedCount = queue.filter((i) => i.status === "failed").length;
 
   const flushQueue = useCallback(async () => {
-    if (isFlushing.current) return;
-    const currentQueue = getOutboxQueue();
-    const toSync = currentQueue.filter((i) => i.status === "pending" || i.status === "failed");
+    if (isFlushing.current || typeof window === "undefined" || !navigator.onLine) return;
+    const toSync = getEligiblePendingOps(15);
     if (toSync.length === 0) return;
 
     isFlushing.current = true;
     setIsSyncing(true);
 
-    for (const op of toSync) {
-      updateOperationStatus(op.id, "syncing");
-      setQueueVersion((v) => v + 1);
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        updateOperationStatus(op.id, "synced");
-      } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : "Gagal sinkronisasi data";
-        updateOperationStatus(op.id, "failed", msg);
+    toSync.forEach((op) => updateOperationStatus(op.id, "syncing"));
+    setQueueVersion((v) => v + 1);
+
+    try {
+      const res = await fetch("/api/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ operations: toSync }),
+      });
+
+      if (!res.ok) throw new Error(`Server returned HTTP ${res.status}`);
+      const data = (await res.json()) as SyncPushResponse;
+
+      if (data.success && Array.isArray(data.acknowledgedIds)) {
+        data.acknowledgedIds.forEach((id) => updateOperationStatus(id, "synced"));
+        clearSyncedOperations();
+        setLastSyncedAt(
+          new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }),
+        );
+      } else {
+        throw new Error("Gagal konfirmasi sinkronisasi dari server");
       }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Koneksi ke server terputus";
+      toSync.forEach((op) => markOpFailedWithBackoff(op.id, msg));
+    } finally {
+      setIsSyncing(false);
+      isFlushing.current = false;
       setQueueVersion((v) => v + 1);
     }
-
-    clearSyncedOperations();
-    setLastSyncedAt(new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }));
-    setIsSyncing(false);
-    isFlushing.current = false;
-    setQueueVersion((v) => v + 1);
   }, []);
 
   useEffect(() => {
@@ -67,9 +84,5 @@ export function useOutboxWorker() {
     lastSyncedAt,
   };
 
-  return {
-    syncStatus,
-    flushQueue,
-    queueVersion,
-  };
+  return { syncStatus, flushQueue, queueVersion };
 }

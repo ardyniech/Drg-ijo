@@ -11,6 +11,14 @@ export interface OutboxOperation {
   status: OutboxStatus;
   retryCount: number;
   lastError?: string;
+  nextRetryAt?: string;
+}
+
+export interface SyncPushResponse {
+  success: boolean;
+  acknowledgedIds: string[];
+  serverTimestamp: string;
+  errors?: Record<string, string>;
 }
 
 export interface SyncEngineStatus {
