@@ -1,7 +1,19 @@
 {
-  "generatedAt": "2026-10-09T02:53:47.502Z",
+  "generatedAt": "2026-10-09T03:10:30.114Z",
   "source": "git log",
   "entries": [
+    {
+      "hash": "9fbe403",
+      "date": "09 Oct 2026",
+      "type": "feat",
+      "scope": "about",
+      "subject": "add auto-generated development log & reframe piket to \"jaga satu aspal\"",
+      "body": [
+        "- auto devlog: scripts/gen-development-log.mjs, vite hook, prebuild/predev",
+        "- add AboutDevelopmentLog section (filtered by type/date) + wire to About",
+        "- reframe piket UI to free-flow \"Jaga Satu Aspal\" (all members, road-based,"
+      ]
+    },
     {
       "hash": "5a4591b",
       "date": "09 Oct 2026",

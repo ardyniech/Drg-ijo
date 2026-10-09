@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "DRG Satu Aspal Santui \u2014 Architecture",
+    "output": "drg-architecture.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "users",
+      "type": "external",
+      "label": "Sedulur Driver",
+      "sublabel": "Browser (SPA)",
+      "pos": [
+        40,
+        340
+      ],
+      "size": [
+        140,
+        64
+      ]
+    },
+    {
+      "id": "router",
+      "type": "frontend",
+      "label": "TanStack Router",
+      "sublabel": "Route tree",
+      "pos": [
+        240,
+        340
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "modules",
+      "type": "backend",
+      "label": "Feature Modules",
+      "sublabel": "Core modules",
+      "pos": [
+        460,
+        340
+      ],
+      "size": [
+        160,
+        76
+      ]
+    },
+    {
+      "id": "query",
+      "type": "frontend",
+      "label": "TanStack Query",
+      "sublabel": "Cache + mutations",
+      "pos": [
+        460,
+        200
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "auth",
+      "type": "backend",
+      "label": "LocalAuthClient",
+      "sublabel": "Auth/session (browser)",
+      "pos": [
+        240,
+        200
+      ],
+      "size": [
+        150,
+        64
+      ]
+    },
+    {
+      "id": "adapter",
+      "type": "backend",
+      "label": "Local Supabase Adapter",
+      "sublabel": "Supabase-like API (localStorage)",
+      "pos": [
+        760,
+        340
+      ],
+      "size": [
+        190,
+        76
+      ]
+    },
+    {
+      "id": "storage",
+      "type": "database",
+      "label": "Browser localStorage",
+      "sublabel": "DRG_* keys (v1/v2)",
+      "pos": [
+        1040,
+        340
+      ],
+      "size": [
+        160,
+        76
+      ]
+    },
+    {
+      "id": "rbac",
+      "type": "security",
+      "label": "RBAC/Permissions",
+      "sublabel": "useIs, role checks",
+      "pos": [
+        460,
+        480
+      ],
+      "size": [
+        160,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Trusted Device (Local-first)",
+      "wraps": [
+        "users",
+        "router",
+        "modules",
+        "query",
+        "auth",
+        "adapter"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "u-router",
+      "from": "users",
+      "to": "router"
+    },
+    {
+      "id": "router-mod",
+      "from": "router",
+      "to": "modules"
+    },
+    {
+      "id": "mod-query",
+      "from": "modules",
+      "to": "query",
+      "variant": "dashed"
+    },
+    {
+      "id": "auth-mod",
+      "from": "auth",
+      "to": "modules",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "mod-adapter",
+      "from": "modules",
+      "to": "adapter",
+      "label": "data ops",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "adapter-store",
+      "from": "adapter",
+      "to": "storage",
+      "label": "read/write",
+      "variant": "emphasis",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "rbac-mod",
+      "from": "rbac",
+      "to": "modules",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "UI Layer",
+      "items": [
+        "TanStack Router pages",
+        "shadcn/ui, Tailwind",
+        "Landing+Auth+App"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Domain",
+      "items": [
+        "Modular feature slice",
+        "Hooks + primitives",
+        "Santui/ojol tone"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "State",
+      "items": [
+        "TanStack Query cache",
+        "Optimistic updates"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Persistence",
+      "items": [
+        "localStorage first",
+        "Zero server required",
+        "Export/restore built-in"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Security",
+      "items": [
+        "Role-based checks",
+        "Local-only, honest no mock leaks"
+      ]
+    }
+  ]
+}
