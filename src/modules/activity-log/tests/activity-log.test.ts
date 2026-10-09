@@ -1,5 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { getActivityLogs, recordActivityLog, resetActivityLogs } from "../storage/activity-log-storage";
+import {
+  getActivityLogs,
+  recordActivityLog,
+  resetActivityLogs,
+} from "../storage/activity-log-storage";
 
 describe("Activity Log Module", () => {
   beforeEach(() => {

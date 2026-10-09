@@ -9,11 +9,11 @@ import {
   KasBalanceCards,
   KasFilters,
   KasTable,
-  NewTxDialog,
-  KasExportModal,
   KasTransparencyDashboard,
+  KasHeaderActions,
+  KasSkList,
+  type KasViewMode,
 } from "@/modules/kas";
-import { BarChart3, Table as TableIcon } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/kas")({
   head: () => ({ meta: [{ title: "Kas Komunitas — DRG App" }] }),
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_authenticated/kas")({
 });
 
 function KasPage() {
-  const [viewMode, setViewMode] = useState<"dashboard" | "table">("dashboard");
+  const [viewMode, setViewMode] = useState<KasViewMode>("dashboard");
   const isBendahara = useIs(["bendahara", "admin", "super_admin"]);
   const isAdmin = useIs(["admin", "super_admin"]);
   const canApprove = isBendahara || isAdmin;
@@ -57,41 +57,19 @@ function KasPage() {
       title="Kas Sedulur & Uang Solidaritas DRG"
       description="Transparansi iuran kas gotong royong, santunan dulur musibah di jalan, dan dana guyub basecamp 100% terbuka."
       actions={
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center gap-1 rounded-xl bg-muted p-1 text-xs">
-            <button
-              onClick={() => setViewMode("dashboard")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors ${
-                viewMode === "dashboard"
-                  ? "bg-background text-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <BarChart3 className="h-3.5 w-3.5 text-primary" />
-              <span>Transparansi Guyub</span>
-            </button>
-            <button
-              onClick={() => setViewMode("table")}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-colors ${
-                viewMode === "table"
-                  ? "bg-background text-foreground shadow-xs"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              <TableIcon className="h-3.5 w-3.5 text-muted-foreground" />
-              <span>Buku Kas Jalur</span>
-            </button>
-          </div>
-          <KasExportModal rows={filtered} />
-          {canApprove && <NewTxDialog />}
-        </div>
+        <KasHeaderActions
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          filteredRows={filtered}
+          canApprove={canApprove}
+        />
       }
     >
       <KasBalanceCards totals={totals} />
 
-      {viewMode === "dashboard" ? (
-        <KasTransparencyDashboard rows={rows} />
-      ) : (
+      {viewMode === "dashboard" && <KasTransparencyDashboard rows={rows} />}
+
+      {viewMode === "table" && (
         <div className="space-y-4">
           <KasFilters
             q={q}
@@ -111,6 +89,8 @@ function KasPage() {
           />
         </div>
       )}
+
+      {viewMode === "sk" && <KasSkList />}
     </PageShell>
   );
 }

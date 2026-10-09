@@ -3,7 +3,10 @@ import { InventarisStorage } from "../storage/inventaris-storage";
 
 describe("InventarisStorage (Production Mode)", () => {
   beforeEach(() => {
-    localStorage.clear();
+    if (typeof window !== "undefined" && window.localStorage) {
+      localStorage.clear();
+    }
+    InventarisStorage.saveItems([]);
   });
 
   it("should return empty array when no items exist", () => {
@@ -16,8 +19,8 @@ describe("InventarisStorage (Production Mode)", () => {
       id: "inv-1",
       kode_alat: "HT-01",
       nama_barang: "Handie Talkie",
-      kategori: "Komunikasi",
-      kondisi: "Baik",
+      kategori: "Komunikasi" as const,
+      kondisi: "Baik" as const,
       status: "tersedia" as const,
       lokasi_pos: "Basecamp Suhat",
     };

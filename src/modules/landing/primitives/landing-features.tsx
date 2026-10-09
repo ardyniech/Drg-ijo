@@ -32,12 +32,15 @@ export function LandingFeatures() {
     <section id="pilar" className="border-b border-border/60 bg-background py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-xl">
-          <div className="text-xs font-semibold uppercase tracking-wider text-primary">Yang Bikin Kita Solid Bareng</div>
+          <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+            Yang Bikin Kita Solid Bareng
+          </div>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl text-balance">
             Kita Bangun Bareng, Jaga Bareng, Bantu Bareng
           </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base text-pretty leading-relaxed">
-            Bukan cuma komunitas, tapi keluarga. Semua ini kita jaga bareng biar kehidupan di aspal makin aman, rukun & sejahtera.
+            Bukan cuma komunitas, tapi keluarga. Semua ini kita jaga bareng biar kehidupan di aspal
+            makin aman, rukun & sejahtera.
           </p>
         </div>
 
@@ -52,10 +55,16 @@ export function LandingFeatures() {
                   <div className="grid h-10 w-10 place-items-center rounded-xl border border-primary/15 bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-sm">
                     <item.icon className="h-5 w-5" />
                   </div>
-                  <span className="font-mono text-xs font-semibold text-muted-foreground/60">{item.num}</span>
+                  <span className="font-mono text-xs font-semibold text-muted-foreground/60">
+                    {item.num}
+                  </span>
                 </div>
-                <h3 className="mt-4 font-display text-base font-bold text-foreground">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">{item.desc}</p>
+                <h3 className="mt-4 font-display text-base font-bold text-foreground">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
+                  {item.desc}
+                </p>
               </div>
             </div>
           ))}

@@ -1,20 +1,40 @@
-import { Calendar, MapPin, Users, CheckCircle2 } from "lucide-react";
+import { Calendar, MapPin, Users, CheckCircle2, Share2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { NotulenRecord } from "../types";
 
 export function NotulenCard({ notulen }: { notulen: NotulenRecord }) {
+  const handleCopyWa = () => {
+    const text = `📋 *NOTULEN REMBUG KELUARGA DRG*\nJudul: ${notulen.judul}\nTanggal: ${notulen.tanggal} | Lokasi: ${notulen.lokasi}\nPemimpin: ${notulen.pemimpin_rapat} | Peserta: ${notulen.peserta_count} Hadir\n\n*Poin Keputusan:*\n${notulen.poin_keputusan.map((p, idx) => `${idx + 1}. ${p}`).join("\n")}\n\n_Salam Satu Aspal — DRG Malang_`;
+    navigator.clipboard.writeText(text);
+    if ("vibrate" in navigator) navigator.vibrate(50);
+    toast.success("Ringkasan notulen disalin! Siap dibagikan ke grup WA.");
+  };
+
   return (
     <Card className="border-border/70 hover:border-primary/40 transition-colors">
       <CardHeader className="p-4 pb-2">
         <div className="flex items-start justify-between gap-2">
           <CardTitle className="text-sm font-bold text-foreground">{notulen.judul}</CardTitle>
-          <Badge
-            variant="outline"
-            className="bg-emerald-500/10 text-emerald-700 border-emerald-500/30 text-[10px] shrink-0"
-          >
-            {notulen.status === "disahkan" ? "Disahkan" : "Draft"}
-          </Badge>
+          <div className="flex items-center gap-1.5">
+            <Badge
+              variant="outline"
+              className="bg-emerald-500/10 text-emerald-700 border-emerald-500/30 text-[10px] shrink-0"
+            >
+              {notulen.status === "disahkan" ? "Disahkan" : "Draft"}
+            </Badge>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={handleCopyWa}
+              title="Salin Ringkasan ke WhatsApp"
+              className="h-6 w-6 text-muted-foreground hover:text-primary"
+            >
+              <Share2 className="h-3.5 w-3.5" />
+            </Button>
+          </div>
         </div>
         <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground pt-1">
           <span className="flex items-center gap-1">

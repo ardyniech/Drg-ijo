@@ -9,11 +9,7 @@
   "background_color": "#f8fbf8",
   "theme_color": "#00B14F",
   "lang": "id",
-  "categories": [
-    "social",
-    "productivity",
-    "utilities"
-  ],
+  "categories": ["social", "productivity", "utilities"],
   "icons": [
     {
       "src": "/icon-192.png",

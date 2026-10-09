@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
-import { InventarisTable, useInventaris } from "@/modules/inventaris";
+import { InventarisTable, useInventaris, NewItemDialog } from "@/modules/inventaris";
 import {
   Select,
   SelectContent,
@@ -22,19 +22,22 @@ function InventarisPage() {
     <PageShell
       title="Inventaris & Perlengkapan Basecamp"
       description={`Peralatan gotong royong dulur (${totalItems} unit tercatat): HT pantau jalur, rompi satgas, kotak P3K medis, dan perkakas pangkalan.`}
-      action={
-        <Select value={selectedKategori} onValueChange={setSelectedKategori}>
-          <SelectTrigger className="w-44 h-8 text-xs">
-            <SelectValue placeholder="Semua Kategori" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Semua Kategori</SelectItem>
-            <SelectItem value="Komunikasi">Komunikasi Jalur (HT)</SelectItem>
-            <SelectItem value="Keselamatan">Rompi & Helm Satgas</SelectItem>
-            <SelectItem value="P3K">Kotak P3K Medis</SelectItem>
-            <SelectItem value="Perlengkapan Pos">Perlengkapan Basecamp</SelectItem>
-          </SelectContent>
-        </Select>
+      actions={
+        <div className="flex flex-wrap items-center gap-2">
+          <Select value={selectedKategori} onValueChange={setSelectedKategori}>
+            <SelectTrigger className="w-44 h-8 text-xs">
+              <SelectValue placeholder="Semua Kategori" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Semua Kategori</SelectItem>
+              <SelectItem value="Komunikasi">Komunikasi Jalur (HT)</SelectItem>
+              <SelectItem value="Keselamatan">Rompi & Helm Satgas</SelectItem>
+              <SelectItem value="P3K">Kotak P3K Medis</SelectItem>
+              <SelectItem value="Perlengkapan Pos">Perlengkapan Basecamp</SelectItem>
+            </SelectContent>
+          </Select>
+          <NewItemDialog />
+        </div>
       }
     >
       <div className="space-y-6">

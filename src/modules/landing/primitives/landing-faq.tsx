@@ -49,7 +49,10 @@ export function LandingFaq() {
           {faqs.map((f, i) => {
             const isOpen = openIdx === i;
             return (
-              <div key={f.q} className="overflow-hidden rounded-xl border border-border/80 bg-card transition-colors">
+              <div
+                key={f.q}
+                className="overflow-hidden rounded-xl border border-border/80 bg-card transition-colors"
+              >
                 <button
                   type="button"
                   onClick={() => setOpenIdx(isOpen ? null : i)}
@@ -71,8 +74,12 @@ export function LandingFaq() {
         </div>
 
         <div className="mt-8 rounded-2xl border border-border/80 bg-muted/30 p-5 text-center">
-          <p className="text-sm font-medium text-foreground">Masih penasaran? Yuk kenalan bareng aja dulu</p>
-          <p className="mt-1 text-xs text-muted-foreground">Nggak ada paksaan, kita ngobrol santai aja</p>
+          <p className="text-sm font-medium text-foreground">
+            Masih penasaran? Yuk kenalan bareng aja dulu
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Nggak ada paksaan, kita ngobrol santai aja
+          </p>
           <div className="mt-3 flex justify-center">
             <Button asChild size="sm" className="rounded-lg">
               <Link to="/daftar">Yuk Gabung Sekarang</Link>

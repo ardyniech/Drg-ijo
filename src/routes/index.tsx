@@ -38,7 +38,8 @@ function LandingPage() {
   useEffect(() => {
     const session = LocalAuthClient.getSession();
     if (session?.user) {
-      const nama = session.user.user_metadata?.nama || session.user.email?.split("@")[0] || "Anggota";
+      const nama =
+        session.user.user_metadata?.nama || session.user.email?.split("@")[0] || "Anggota";
       setUserState({
         isLoggedIn: true,
         name: nama,

@@ -16,7 +16,8 @@ export function LandingSosSpotlight() {
               Satu Sentuhan, Saling Jaga Satu Sama Lain
             </h2>
             <p className="mt-4 text-base text-muted-foreground sm:text-lg max-w-xl text-pretty leading-relaxed">
-              Kalo ada saudara kita kesusahan di aspal, tombol SOS langsung kirim lokasi GPS ke Satgas yang lagi piket. Soalnya kita bukan cuma rekan kerja, kita keluarga besar DRG.
+              Kalo ada saudara kita kesusahan di aspal, tombol SOS langsung kirim lokasi GPS ke
+              Satgas yang lagi piket. Soalnya kita bukan cuma rekan kerja, kita keluarga besar DRG.
             </p>
 
             <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -42,11 +43,14 @@ export function LandingSosSpotlight() {
                 </div>
                 <div>
                   <div className="text-sm font-bold text-foreground">Tombol SOS Darurat</div>
-                  <div className="text-xs text-muted-foreground">Langsung terhubung ke Satgas piket terdekat</div>
+                  <div className="text-xs text-muted-foreground">
+                    Langsung terhubung ke Satgas piket terdekat
+                  </div>
                 </div>
               </div>
               <div className="mt-4 rounded-xl border border-border/80 bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
-                "Kalau ada rekan butuh bantuan, nggak usah ragu. Kita gas saling bantu, itu udah budaya kita bareng-bareng."
+                "Kalau ada rekan butuh bantuan, nggak usah ragu. Kita gas saling bantu, itu udah
+                budaya kita bareng-bareng."
               </div>
             </div>
           </div>

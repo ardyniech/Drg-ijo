@@ -1,7 +1,23 @@
 {
-  "generatedAt": "2026-10-09T05:23:23.800Z",
+  "generatedAt": "2026-10-09T08:14:18.863Z",
   "source": "git log",
   "entries": [
+    {
+      "hash": "1648a1c",
+      "date": "09 Oct 2026",
+      "type": "chore",
+      "scope": "env",
+      "subject": "fix activity-log test isolation & configure dev port 3000",
+      "body": []
+    },
+    {
+      "hash": "1ebcf0c",
+      "date": "09 Oct 2026",
+      "type": "fix",
+      "scope": "data",
+      "subject": "devlog auto, kas label santui, role-members-table fix",
+      "body": []
+    },
     {
       "hash": "443dcc0",
       "date": "09 Oct 2026",

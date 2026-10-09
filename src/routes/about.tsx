@@ -2,7 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { LandingHeader, LandingFooter } from "@/modules/landing";
-import { AboutHero, FeatureTreeView, AboutHonestyNote, AboutRoadmap, AboutDevelopmentLog } from "@/modules/about";
+import {
+  AboutHero,
+  FeatureTreeView,
+  AboutHonestyNote,
+  AboutRoadmap,
+  AboutDevelopmentLog,
+} from "@/modules/about";
 
 export const Route = createFileRoute("/about")({
   head: () => ({

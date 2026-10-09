@@ -7,7 +7,8 @@ const TYPE_CHIP: Record<string, string> = {
   fix: "border-rose-600/40 bg-rose-500/10 text-rose-800 dark:border-rose-400/30 dark:bg-rose-400/15 dark:text-rose-200",
   refactor:
     "border-indigo-600/40 bg-indigo-500/10 text-indigo-800 dark:border-indigo-400/30 dark:bg-indigo-400/15 dark:text-indigo-200",
-  chore: "border-slate-500/40 bg-slate-500/10 text-slate-700 dark:border-slate-400/30 dark:bg-slate-400/15 dark:text-slate-200",
+  chore:
+    "border-slate-500/40 bg-slate-500/10 text-slate-700 dark:border-slate-400/30 dark:bg-slate-400/15 dark:text-slate-200",
   ui: "border-amber-600/40 bg-amber-500/10 text-amber-800 dark:border-amber-400/30 dark:bg-amber-400/15 dark:text-amber-200",
   data: "border-sky-600/40 bg-sky-500/10 text-sky-800 dark:border-sky-400/30 dark:bg-sky-400/15 dark:text-sky-200",
   docs: "border-teal-600/40 bg-teal-500/10 text-teal-800 dark:border-teal-400/30 dark:bg-teal-400/15 dark:text-teal-200",
@@ -90,9 +91,7 @@ export function AboutDevelopmentLog() {
             <div className="mb-3 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
               <GitCommitHorizontal className="h-3.5 w-3.5 text-primary" />
               {date}
-              <span className="font-mono font-normal normal-case">
-                · {entries.length} commit
-              </span>
+              <span className="font-mono font-normal normal-case">· {entries.length} commit</span>
             </div>
             <ul className="space-y-2">
               {entries.map((e) => (
@@ -109,13 +108,9 @@ export function AboutDevelopmentLog() {
                       {developmentLogTypeLabel(e.type)}
                     </span>
                     {e.scope && (
-                      <span className="font-mono text-[11px] text-muted-foreground">
-                        {e.scope}
-                      </span>
+                      <span className="font-mono text-[11px] text-muted-foreground">{e.scope}</span>
                     )}
-                    <span className="font-mono text-[11px] text-muted-foreground">
-                      {e.hash}
-                    </span>
+                    <span className="font-mono text-[11px] text-muted-foreground">{e.hash}</span>
                   </div>
                   <p className="mt-2 text-sm font-medium text-foreground leading-snug">
                     {e.subject}

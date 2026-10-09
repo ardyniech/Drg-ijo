@@ -33,7 +33,8 @@ export function LandingJoinSteps() {
             Gampang Banget Buat Gabung Jadi Keluarga DRG
           </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base text-pretty leading-relaxed">
-            Kita buka pintunya lebar buat rekan-rekan driver. Prosesnya simpel, tetep dijaga bareng biar keluarga kita solid.
+            Kita buka pintunya lebar buat rekan-rekan driver. Prosesnya simpel, tetep dijaga bareng
+            biar keluarga kita solid.
           </p>
         </div>
 
@@ -48,10 +49,14 @@ export function LandingJoinSteps() {
                   <div className="grid h-10 w-10 place-items-center rounded-xl border border-primary/15 bg-gradient-to-br from-primary/20 to-primary/5 text-primary shadow-sm">
                     <s.icon className="h-5 w-5" />
                   </div>
-                  <span className="font-mono text-xs font-semibold text-muted-foreground/60">{s.num}</span>
+                  <span className="font-mono text-xs font-semibold text-muted-foreground/60">
+                    {s.num}
+                  </span>
                 </div>
                 <h3 className="mt-4 font-display text-lg font-bold text-foreground">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">{s.desc}</p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
+                  {s.desc}
+                </p>
               </div>
             </div>
           ))}

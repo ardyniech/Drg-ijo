@@ -41,3 +41,28 @@ export const rupiah = (n: number) =>
     currency: "IDR",
     maximumFractionDigits: 0,
   }).format(n);
+
+export type KasSkCategory =
+  | "santunan_laka"
+  | "santunan_duka"
+  | "bantuan_kesehatan"
+  | "bantuan_kendaraan"
+  | "modal_koperasi";
+
+export interface KasSkRecord {
+  id: string;
+  no_sk: string;
+  tanggal: string;
+  kategori: KasSkCategory;
+  judul: string;
+  nominal: number;
+  penerima_nama: string;
+  penerima_kta: string;
+  penerima_pangkalan: string;
+  alasan: string;
+  dasar_keputusan: string;
+  nama_ketua: string;
+  nama_bendahara: string;
+  status: "disahkan" | "diajukan" | "dicairkan";
+  created_at: string;
+}
