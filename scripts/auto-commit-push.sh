@@ -13,6 +13,11 @@ echo "🚗 [DRG Git Auto-Sync] Memeriksa status repositori..."
 git config user.name "ardyniech"
 git config user.email "54908304+ardyniech@users.noreply.github.com"
 
+# Perbarui log dan roadmap otomatis dari kode sumber terkini
+echo "🔄 Memperbarui development log & roadmap progress otomatis..."
+node scripts/gen-development-log.mjs || true
+node scripts/gen-roadmap-progress.mjs || true
+
 # Periksa apakah ada perubahan
 if [ -z "$(git status --porcelain)" ]; then
   echo "✅ Repositori bersih, tidak ada perubahan yang perlu di-commit."

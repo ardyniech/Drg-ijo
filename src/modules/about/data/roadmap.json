@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-10-09T08:28:29.931Z",
+  "source": "codebase feature inspection",
+  "phases": [
+    {
+      "phase": "Fase 1",
+      "title": "Fondasi & Antarmuka",
+      "progress": 100,
+      "status": "selesai",
+      "completedItems": 3,
+      "totalItems": 3,
+      "items": [
+        "Desain sistem & tema hangat",
+        "Routing, layout, sidebar",
+        "PWA dasar & landing page"
+      ]
+    },
+    {
+      "phase": "Fase 2",
+      "title": "Modul Organisasi & Kas",
+      "progress": 100,
+      "status": "selesai",
+      "completedItems": 6,
+      "totalItems": 6,
+      "items": [
+        "Anggota, peran, SK Mandat",
+        "Kas gotong royong & SK Kas",
+        "Notulen rembug & ekspor WA",
+        "Inventaris posko & tambah alat",
+        "Dewan etik & sidang disiplin",
+        "Persetujuan akun & KTA digital"
+      ]
+    },
+    {
+      "phase": "Fase 3",
+      "title": "Koperasi & Finansial Santui",
+      "progress": 100,
+      "status": "selesai",
+      "completedItems": 5,
+      "totalItems": 5,
+      "items": [
+        "Koperasi simpan pinjam 0% bunga",
+        "Pembayaran iuran via QRIS dinamis",
+        "SOS pantau jalur & web audio alert",
+        "Jadwal piket satgas & tukar shift",
+        "Radar dulur & peta pangkalan"
+      ]
+    },
+    {
+      "phase": "Fase 4",
+      "title": "Sinkronisasi Server & Outbox",
+      "progress": 75,
+      "status": "jalan",
+      "completedItems": 3,
+      "totalItems": 4,
+      "items": [
+        "Local-first outbox pattern sync",
+        "Audit log activity tracking",
+        "Database migration verifier",
+        "Disaster recovery backup & restore"
+      ]
+    },
+    {
+      "phase": "Fase 5",
+      "title": "Multi-Perangkat & Telemetri AI",
+      "progress": 33,
+      "status": "jalan",
+      "completedItems": 1,
+      "totalItems": 3,
+      "items": [
+        "Web Push notification background",
+        "Koneksi multi-device realtime",
+        "AI Dispatching & Safety Intelligence"
+      ]
+    }
+  ]
+}

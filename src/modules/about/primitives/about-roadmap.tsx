@@ -1,25 +1,31 @@
-import { CheckCircle2, Loader2, Circle } from "lucide-react";
-import { roadmapPhases, type RoadmapPhase } from "../data/roadmap";
+import { CheckCircle2, Loader2, Circle, Sparkles } from "lucide-react";
+import { roadmapPhases, roadmapData, type RoadmapPhase } from "../data/roadmap";
 
 const statusMeta: Record<RoadmapPhase["status"], { icon: typeof Circle; className: string }> = {
-  selesai: { icon: CheckCircle2, className: "text-success" },
-  jalan: { icon: Loader2, className: "text-amber-600 dark:text-amber-300" },
+  selesai: { icon: CheckCircle2, className: "text-emerald-600" },
+  jalan: { icon: Loader2, className: "text-amber-600" },
   rencana: { icon: Circle, className: "text-muted-foreground" },
 };
 
 export function AboutRoadmap() {
   return (
     <section className="mx-auto w-full max-w-5xl px-4 pb-16 sm:px-6">
-      <div className="max-w-2xl">
-        <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-          Peta Pengembangan
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div className="max-w-2xl">
+          <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+            Peta Pengembangan
+          </div>
+          <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl text-balance">
+            Sejauh Mana Kami Sudah Melangkah
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
+            Progres tiap fase dihitung otomatis dari modul dan fitur nyata dalam basis kode.
+          </p>
         </div>
-        <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl text-balance">
-          Sejauh Mana Kami Sudah Melangkah
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground text-pretty">
-          Perkiraan progres tiap fase, dari fondasi sampai rencana multi-perangkat.
-        </p>
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/60 px-3 py-1.5 rounded-full border border-border/60 self-start sm:self-auto">
+          <Sparkles className="h-3.5 w-3.5 text-primary" />
+          <span>Auto-Sync Realtime: {roadmapData.source}</span>
+        </div>
       </div>
 
       <div className="mt-8 grid gap-4 md:grid-cols-2">
@@ -43,14 +49,23 @@ export function AboutRoadmap() {
                     </h3>
                   </div>
                 </div>
-                <span className="font-mono text-xs font-semibold text-muted-foreground">
-                  {phase.progress}%
-                </span>
+                <div className="text-right">
+                  <span className="font-mono text-xs font-bold text-foreground">
+                    {phase.progress}%
+                  </span>
+                  {phase.completedItems !== undefined && (
+                    <p className="text-[10px] text-muted-foreground">
+                      {phase.completedItems}/{phase.totalItems} siap
+                    </p>
+                  )}
+                </div>
               </div>
 
               <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
                 <div
-                  className="h-full rounded-full bg-primary transition-all"
+                  className={`h-full rounded-full transition-all ${
+                    phase.progress === 100 ? "bg-emerald-600" : "bg-primary"
+                  }`}
                   style={{ width: `${phase.progress}%` }}
                 />
               </div>

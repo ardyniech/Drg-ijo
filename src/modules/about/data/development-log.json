@@ -1,7 +1,15 @@
 {
-  "generatedAt": "2026-10-09T08:21:41.366Z",
+  "generatedAt": "2026-10-09T08:28:29.866Z",
   "source": "git log",
   "entries": [
+    {
+      "hash": "2e6a16c",
+      "date": "09 Oct 2026",
+      "type": "feat",
+      "scope": "koperasi",
+      "subject": "implement Phase 3 Simpan Pinjam 0% & dynamic QRIS iuran kas",
+      "body": []
+    },
     {
       "hash": "a7a41ef",
       "date": "09 Oct 2026",
