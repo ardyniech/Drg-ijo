@@ -1,9 +1,10 @@
-import { UserCog, Siren, Wallet, Archive, Database, type LucideIcon } from "lucide-react";
+import { UserCog, Siren, Wallet, Archive, Database, Sparkles, type LucideIcon } from "lucide-react";
 import { StatusBadge } from "./status-badge";
 import { FeatureTreeNode } from "./feature-tree-node";
 import {
   featureBranches,
   featureStatusMeta,
+  featureTreeData,
   type FeatureStatus,
   type FeatureNode,
 } from "../data/feature-tree";
@@ -26,17 +27,22 @@ export function FeatureTreeView() {
 
   return (
     <section className="mx-auto w-full max-w-5xl px-4 py-12 sm:px-6 md:py-16">
-      <div className="max-w-2xl">
-        <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-          Pohon Fitur & Status
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div className="max-w-2xl">
+          <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+            Pohon Fitur & Status
+          </div>
+          <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl text-balance">
+            Kesiapan Fitur Nyata dalam Aplikasi
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
+            Status diinspeksi secara otomatis dari modul, controller, dan storage yang aktif.
+          </p>
         </div>
-        <h2 className="mt-2 font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl text-balance">
-          Apa Saja yang Sudah Ada, dan Sejauh Mana
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted-foreground text-pretty">
-          Rincian jujur setiap fitur. Status menandai kesiapan nyata di aplikasi, bukan sekadar
-          rencana di atas kertas.
-        </p>
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted/60 px-3 py-1.5 rounded-full border border-border/60 self-start sm:self-auto">
+          <Sparkles className="h-3.5 w-3.5 text-primary" />
+          <span>Auto-Verified: {featureTreeData.source}</span>
+        </div>
       </div>
 
       <div className="mt-6 flex flex-wrap items-center gap-2.5">

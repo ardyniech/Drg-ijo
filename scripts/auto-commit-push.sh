@@ -17,6 +17,7 @@ git config user.email "54908304+ardyniech@users.noreply.github.com"
 echo "🔄 Memperbarui development log & roadmap progress otomatis..."
 node scripts/gen-development-log.mjs || true
 node scripts/gen-roadmap-progress.mjs || true
+node scripts/gen-feature-tree.mjs || true
 
 # Periksa apakah ada perubahan
 if [ -z "$(git status --porcelain)" ]; then

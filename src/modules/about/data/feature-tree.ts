@@ -1,8 +1,9 @@
 import type { FeatureBranch } from "./types";
-import { operationalBranches } from "./branches-operational";
-import { organizationBranches } from "./branches-organization";
+import rawFeatureTreeData from "./feature-tree.json";
 
 export type { FeatureStatus, FeatureNode, FeatureBranch } from "./types";
 export { featureStatusMeta } from "./status-meta";
 
-export const featureBranches: FeatureBranch[] = [...operationalBranches, ...organizationBranches];
+export const featureTreeData = rawFeatureTreeData;
+export const featureBranches: FeatureBranch[] = (rawFeatureTreeData.branches ||
+  []) as FeatureBranch[];

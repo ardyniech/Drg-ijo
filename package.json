@@ -4,9 +4,9 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "predev": "node scripts/gen-development-log.mjs && node scripts/gen-roadmap-progress.mjs",
+    "predev": "node scripts/gen-development-log.mjs && node scripts/gen-roadmap-progress.mjs && node scripts/gen-feature-tree.mjs",
     "dev": "vite dev --port 3000 --host 0.0.0.0",
-    "prebuild": "node scripts/gen-development-log.mjs && node scripts/gen-roadmap-progress.mjs",
+    "prebuild": "node scripts/gen-development-log.mjs && node scripts/gen-roadmap-progress.mjs && node scripts/gen-feature-tree.mjs",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "build:vaio": "NODE_OPTIONS='--max-old-space-size=1024' NITRO_PRESET=node-server vite build",

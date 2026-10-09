@@ -1,0 +1,175 @@
+{
+  "generatedAt": "2026-10-09T08:45:52.348Z",
+  "source": "codebase automated feature tree inspection",
+  "counts": {
+    "siap": 22,
+    "sebagian": 2,
+    "rencana": 2,
+    "total": 26
+  },
+  "branches": [
+    {
+      "id": "akun",
+      "label": "Akun, Peran & Tata Kelola",
+      "summary": "Autentikasi mandiri, hirarki peran kepengurusan, dan jejak aktivitas.",
+      "children": [
+        {
+          "label": "Login & registrasi anggota mandiri",
+          "status": "siap",
+          "note": "Berbasis local-first aman. Password ter-hash bcrypt."
+        },
+        {
+          "label": "8 Peran kepengurusan + SK Mandat",
+          "status": "siap",
+          "note": "Struktur peran lengkap dengan generator SK Mandat resmi."
+        },
+        {
+          "label": "Penerbitan SK Pengurus & mutasi peran",
+          "status": "siap",
+          "note": "Riwayat serah terima jabatan tercatat di audit log."
+        },
+        {
+          "label": "Log aktivitas & audit trail operasional",
+          "status": "siap",
+          "note": "Pencatatan real-time seluruh mutasi pengurus."
+        },
+        {
+          "label": "Proteksi route guard & session sync",
+          "status": "siap",
+          "note": "Verifikasi hak akses instan di sisi antarmuka."
+        }
+      ]
+    },
+    {
+      "id": "jalur",
+      "label": "Operasional Jalan & Satgas",
+      "summary": "SOS tanggap darurat, radar pangkalan, pantau jalur, dan piket satgas.",
+      "children": [
+        {
+          "label": "Tombol SOS & web audio chime",
+          "status": "siap",
+          "note": "Banner darurat sticky, alarm audio 880Hz/440Hz, dan tautan WhatsApp."
+        },
+        {
+          "label": "Radar Dulur & shelter pangkalan",
+          "status": "siap",
+          "note": "Tampilan radar pangkalan posko se-Malang Raya."
+        },
+        {
+          "label": "Jadwal piket basecamp & tukar shift",
+          "status": "siap",
+          "note": "Jadwal piket mingguan dan persetujuan tukar giliran aktif."
+        },
+        {
+          "label": "Tracking insiden & koordinasi satgas",
+          "status": "siap",
+          "note": "Penugasan satgas lapangan dan pembaruan status korban."
+        },
+        {
+          "label": "GPS live tracking pengemudi On-Bit",
+          "status": "rencana",
+          "note": "Memerlukan sinkronisasi server WebSocket aktif."
+        }
+      ]
+    },
+    {
+      "id": "kas",
+      "label": "Kas Gotong Royong & Finansial",
+      "summary": "Transparansi iuran, SK Kas santunan, QRIS, dan koperasi simpan pinjam.",
+      "children": [
+        {
+          "label": "Buku kas masuk & keluar gotong royong",
+          "status": "siap",
+          "note": "Saldo realtime, grafik transparansi, dan ekspor CSV."
+        },
+        {
+          "label": "SK Kas Pencairan Santunan & Musibah",
+          "status": "siap",
+          "note": "Dokumen SK digital resmi lengkap dengan tanda tangan pengurus."
+        },
+        {
+          "label": "Pembayaran iuran otomatis via QRIS dinamis",
+          "status": "siap",
+          "note": "QRIS Nasional NMID DRG dengan verifikasi instan."
+        },
+        {
+          "label": "Koperasi Simpan Pinjam Guyub 0% bunga",
+          "status": "siap",
+          "note": "Buku besar simpanan dan pinjaman darurat servis mesin."
+        },
+        {
+          "label": "Kuitansi digital berbasis QR & cetak struk",
+          "status": "sebagian"
+        }
+      ]
+    },
+    {
+      "id": "organisasi",
+      "label": "Organisasi & Kearsipan",
+      "summary": "Direktori anggota, notulen rembug, inventaris posko, dan dewan etik.",
+      "children": [
+        {
+          "label": "Direktori sedulur & KTA digital",
+          "status": "siap",
+          "note": "Kartu Tanda Anggota barcode digital & data kendaraan."
+        },
+        {
+          "label": "Notulen rembug & bagi ringkasan WA",
+          "status": "siap",
+          "note": "Arsip berita acara musyawarah & salin ke grup WA."
+        },
+        {
+          "label": "Inventaris posko & pendaftaran alat",
+          "status": "siap",
+          "note": "Pelacakan HT posko, rompi, dan kotak P3K medis."
+        },
+        {
+          "label": "Dewan Etik & sidang mediasi jalur",
+          "status": "siap",
+          "note": "Penanganan senggolan dan penerbitan SK Disiplin."
+        },
+        {
+          "label": "Verifikasi pendaftaran calon dulur",
+          "status": "siap",
+          "note": "Persetujuan berkas pendaftaran dan validasi plat nomor."
+        },
+        {
+          "label": "Kaderisasi & jenjang loyalitas",
+          "status": "siap",
+          "note": "Tingkat aspal: Pratama, Madya, Utama."
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "label": "Data & Infrastruktur Local-First",
+      "summary": "Ketahanan offline, outbox worker, migrasi skema, dan backup.",
+      "children": [
+        {
+          "label": "Penyimpanan local-first berdaya tahan",
+          "status": "siap",
+          "note": "Validasi skema Zod dengan auto-recovery data corrupt."
+        },
+        {
+          "label": "Outbox pattern sync engine",
+          "status": "sebagian"
+        },
+        {
+          "label": "Cadangkan & pulihkan arsip data (JSON)",
+          "status": "siap",
+          "note": "Ekspor seluruh database lokal dengan verifikasi checksum."
+        },
+        {
+          "label": "PWA installable & offline service worker",
+          "status": "siap",
+          "note": "Dapat dipasang di Home Screen Android & iOS Safari."
+        },
+        {
+          "label": "Realtime multi-device database sync",
+          "status": "rencana",
+          "note": "Terjadwal pada integrasi backend tersentralisasi."
+        }
+      ]
+    }
+  ]
+}

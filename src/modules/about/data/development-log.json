@@ -1,7 +1,15 @@
 {
-  "generatedAt": "2026-10-09T08:39:15.827Z",
+  "generatedAt": "2026-10-09T08:45:52.214Z",
   "source": "git log",
   "entries": [
+    {
+      "hash": "c686759",
+      "date": "09 Oct 2026",
+      "type": "feat",
+      "scope": "org",
+      "subject": "implement Organization module in App.tsx with members, roles, and SK Kas state",
+      "body": []
+    },
     {
       "hash": "4de1564",
       "date": "09 Oct 2026",
