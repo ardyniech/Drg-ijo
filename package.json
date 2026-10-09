@@ -4,9 +4,9 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "predev": "node scripts/gen-development-log.mjs && node scripts/gen-roadmap-progress.mjs && node scripts/gen-feature-tree.mjs",
+    "predev": "node scripts/gen-development-log.mjs && node scripts/gen-roadmap-progress.mjs && node scripts/gen-feature-tree.mjs && node scripts/gen-live-feature-status.mjs",
     "dev": "vite dev --port 3000 --host 0.0.0.0",
-    "prebuild": "node scripts/gen-development-log.mjs && node scripts/gen-roadmap-progress.mjs && node scripts/gen-feature-tree.mjs",
+    "prebuild": "node scripts/gen-development-log.mjs && node scripts/gen-roadmap-progress.mjs && node scripts/gen-feature-tree.mjs && node scripts/gen-live-feature-status.mjs",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "build:vaio": "NODE_OPTIONS='--max-old-space-size=1024' NITRO_PRESET=node-server vite build",
@@ -17,6 +17,7 @@
     "test:watch": "vitest",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "audit": "node scripts/code-health-audit.mjs",
     "git:commit": "bash scripts/auto-commit-push.sh"
   },
   "dependencies": {

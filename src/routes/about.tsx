@@ -8,6 +8,8 @@ import {
   AboutHonestyNote,
   AboutRoadmap,
   AboutDevelopmentLog,
+  CodeTelemetryView,
+  ArchitectureCanvasModal,
 } from "@/modules/about";
 
 export const Route = createFileRoute("/about")({
@@ -39,8 +41,12 @@ function AboutPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background font-sans text-foreground">
       <LandingHeader isLoggedIn={userState.isLoggedIn} userName={userState.name} />
-      <main className="flex-1">
+      <main className="flex-1 space-y-6">
         <AboutHero />
+        <div className="mx-auto w-full max-w-5xl px-4 sm:px-6 flex justify-end">
+          <ArchitectureCanvasModal />
+        </div>
+        <CodeTelemetryView />
         <FeatureTreeView />
         <AboutRoadmap />
         <AboutDevelopmentLog />
