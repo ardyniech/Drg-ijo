@@ -1,39 +1,8 @@
 import { Search, LayoutGrid, List } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { MemberSortOption, MemberViewMode } from "../types";
-import { OJOL_JENJANG_FILTER_OPTIONS } from "@/lib/ojol-jenjang";
-
-const STATUS_OPTS = [
-  { val: "all", label: "Semua Dulur" },
-  { val: "aktif", label: "Sah Satu Aspal" },
-  { val: "pending_review", label: "Menunggu PIC" },
-  { val: "nonaktif", label: "Rehat Jalur" },
-];
-const JENJANG_OPTS = OJOL_JENJANG_FILTER_OPTIONS;
-const ROLE_OPTS = [
-  { val: "all", label: "Semua Amanah" },
-  { val: "driver", label: "Rider Jalur" },
-  { val: "satgas", label: "Satgas Lapangan" },
-  { val: "korlap", label: "Korlap Wilayah" },
-  { val: "sekretaris", label: "Juru Tulis Rembug" },
-  { val: "bendahara", label: "Bendahara Kas" },
-  { val: "ketua", label: "Ketua Paguyuban" },
-  { val: "admin", label: "Pengurus Basecamp" },
-];
-const SORT_OPTS: Array<{ val: MemberSortOption; label: string }> = [
-  { val: "terbaru", label: "Terbaru" },
-  { val: "nama_asc", label: "Nama (A-Z)" },
-  { val: "nama_desc", label: "Nama (Z-A)" },
-  { val: "kta", label: "No KTA" },
-];
+import { MemberFiltersDropdowns } from "./member-filters-dropdowns";
 
 interface MemberFiltersProps {
   search: string;
@@ -84,73 +53,19 @@ export function MemberFilters({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Select value={selectedStatus} onValueChange={setSelectedStatus}>
-            <SelectTrigger className="w-[125px] h-9 text-xs">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              {STATUS_OPTS.map((o) => (
-                <SelectItem key={o.val} value={o.val}>
-                  {o.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={selectedPangkalan} onValueChange={setSelectedPangkalan}>
-            <SelectTrigger className="w-[130px] h-9 text-xs">
-              <SelectValue placeholder="Pangkalan" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Semua Pangkalan</SelectItem>
-              {pangkalanOptions.map((p) => (
-                <SelectItem key={p} value={p}>
-                  {p.replace("Pangkalan ", "")}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {setSelectedJenjang && (
-            <Select value={selectedJenjang} onValueChange={setSelectedJenjang}>
-              <SelectTrigger className="w-[120px] h-9 text-xs">
-                <SelectValue placeholder="Jenjang" />
-              </SelectTrigger>
-              <SelectContent>
-                {JENJANG_OPTS.map((o) => (
-                  <SelectItem key={o.val} value={o.val}>
-                    {o.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-
-          <Select value={selectedRole} onValueChange={setSelectedRole}>
-            <SelectTrigger className="w-[115px] h-9 text-xs">
-              <SelectValue placeholder="Peran" />
-            </SelectTrigger>
-            <SelectContent>
-              {ROLE_OPTS.map((o) => (
-                <SelectItem key={o.val} value={o.val}>
-                  {o.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select value={sortBy} onValueChange={(v) => setSortBy(v as MemberSortOption)}>
-            <SelectTrigger className="w-[115px] h-9 text-xs">
-              <SelectValue placeholder="Urutkan" />
-            </SelectTrigger>
-            <SelectContent>
-              {SORT_OPTS.map((o) => (
-                <SelectItem key={o.val} value={o.val}>
-                  {o.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <MemberFiltersDropdowns
+            selectedStatus={selectedStatus}
+            setSelectedStatus={setSelectedStatus}
+            selectedPangkalan={selectedPangkalan}
+            setSelectedPangkalan={setSelectedPangkalan}
+            selectedRole={selectedRole}
+            setSelectedRole={setSelectedRole}
+            selectedJenjang={selectedJenjang}
+            setSelectedJenjang={setSelectedJenjang}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            pangkalanOptions={pangkalanOptions}
+          />
 
           {setViewMode && (
             <div className="flex items-center border border-border/80 rounded-lg p-0.5 bg-muted/30">

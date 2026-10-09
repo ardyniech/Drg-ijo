@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Copy, Check, Phone, ShieldCheck, Edit2, Trash2 } from "lucide-react";
+import { Copy, Check, ShieldCheck } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { MemberRecord } from "../types";
 import { MemberStatusBadge } from "./member-status-badge";
 import { MemberJenjangBadge } from "./member-jenjang-badge";
-import { DigitalKtaModal } from "./digital-kta-modal";
+import { MemberRowActions } from "./member-row-actions";
 import { toast } from "sonner";
 
 interface Props {
@@ -105,38 +105,12 @@ export function MemberTableRow({
         </div>
       </td>
       <td className="py-2.5 px-3.5 text-right" onClick={(e) => e.stopPropagation()}>
-        <div className="inline-flex items-center gap-1">
-          <a
-            href={`https://wa.me/${m.no_hp}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-1.5 rounded-md hover:bg-muted text-primary"
-            title="WhatsApp"
-          >
-            <Phone className="h-3.5 w-3.5" />
-          </a>
-          <DigitalKtaModal member={m} />
-          {canManage && onEditMember && (
-            <button
-              type="button"
-              onClick={() => onEditMember(m)}
-              className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
-              title="Edit Anggota"
-            >
-              <Edit2 className="h-3.5 w-3.5" />
-            </button>
-          )}
-          {canManage && onDeleteMember && (
-            <button
-              type="button"
-              onClick={() => onDeleteMember(m)}
-              className="p-1.5 rounded-md hover:bg-rose-500/10 text-rose-500"
-              title="Hapus Anggota"
-            >
-              <Trash2 className="h-3.5 w-3.5" />
-            </button>
-          )}
-        </div>
+        <MemberRowActions
+          member={m}
+          canManage={canManage}
+          onEditMember={onEditMember}
+          onDeleteMember={onDeleteMember}
+        />
       </td>
     </tr>
   );

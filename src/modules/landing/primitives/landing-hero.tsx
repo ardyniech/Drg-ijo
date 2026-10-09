@@ -1,13 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  ShieldCheck,
-  HeartHandshake,
-  CheckCircle,
-  Users,
-  ListChecks,
-} from "lucide-react";
+import { ArrowRight, CheckCircle, ListChecks } from "lucide-react";
+import { LandingHeroTrust } from "./landing-hero-trust";
 
 interface LandingHeroProps {
   isLoggedIn?: boolean;
@@ -86,20 +80,7 @@ export function LandingHero({ isLoggedIn, userName }: LandingHeroProps) {
               </Button>
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-5 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1.5 font-medium">
-                <Users className="h-4 w-4 text-primary" />
-                Udah dipercaya bareng-bareng buat jaga saudara di Malang Raya
-              </span>
-              <span className="flex items-center gap-1.5 font-medium">
-                <ShieldCheck className="h-4 w-4 text-primary" />
-                Verifikasi singkat • Gratiss
-              </span>
-              <span className="flex items-center gap-1.5 font-medium">
-                <HeartHandshake className="h-4 w-4 text-primary" />
-                Dana Santunan Terbuka
-              </span>
-            </div>
+            <LandingHeroTrust />
           </div>
 
           <div className="lg:col-span-5">

@@ -1,15 +1,8 @@
-import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
-import {
-  MemberFilters,
-  MemberDirectoryGrid,
-  MemberTableView,
-  MemberHeaderBar,
-  MemberDialogManager,
-  useAnggota,
-  MemberRecord,
-} from "@/modules/anggota";
+import { MemberFilters, MemberHeaderBar, MemberDialogManager, useAnggota } from "@/modules/anggota";
+import { MemberContentView } from "@/modules/anggota/primitives/member-content-view";
+import { useMemberModals } from "@/modules/anggota/primitives/use-member-modals";
 
 export const Route = createFileRoute("/_authenticated/anggota")({
   head: () => ({
@@ -25,123 +18,76 @@ export const Route = createFileRoute("/_authenticated/anggota")({
 });
 
 function AnggotaPage() {
-  const [isAddOpen, setIsAddOpen] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<MemberRecord | null>(null);
-  const [editingMember, setEditingMember] = useState<MemberRecord | null>(null);
-  const [deletingMember, setDeletingMember] = useState<MemberRecord | null>(null);
-
-  const {
-    members,
-    stats,
-    search,
-    setSearch,
-    selectedStatus,
-    setSelectedStatus,
-    selectedPangkalan,
-    setSelectedPangkalan,
-    selectedRole,
-    setSelectedRole,
-    selectedJenjang,
-    setSelectedJenjang,
-    viewMode,
-    setViewMode,
-    sortBy,
-    setSortBy,
-    pangkalanOptions,
-    resetFilters,
-    exportCsv,
-    isLoading,
-    canManage,
-    canVerify,
-    addMember,
-    updateMember,
-    verifyMember,
-    deleteMember,
-    isAdding,
-    isUpdating,
-    isDeleting,
-  } = useAnggota();
+  const modals = useMemberModals();
+  const anggota = useAnggota();
 
   return (
     <PageShell
       title="Direktori Sedulur Satu Aspal"
-      description={`Keluarga besar driver DRG (${stats.total} sedulur terdaftar se-Malang Raya), tingkat aspal santui, dan guyub pangkalan.`}
+      description={`Keluarga besar driver DRG (${anggota.stats.total} sedulur terdaftar se-Malang Raya), tingkat aspal santui, dan guyub pangkalan.`}
     >
       <div className="space-y-4">
         <MemberHeaderBar
-          total={stats.total}
-          verified={stats.verified}
-          pending={stats.pending}
-          pangkalan={stats.pangkalan}
-          canManage={canManage}
-          onAddClick={() => setIsAddOpen(true)}
-          onExportCsv={exportCsv}
-          selectedStatus={selectedStatus}
-          onSelectStatus={setSelectedStatus}
+          total={anggota.stats.total}
+          verified={anggota.stats.verified}
+          pending={anggota.stats.pending}
+          pangkalan={anggota.stats.pangkalan}
+          canManage={anggota.canManage}
+          onAddClick={() => modals.setIsAddOpen(true)}
+          onExportCsv={anggota.exportCsv}
+          selectedStatus={anggota.selectedStatus}
+          onSelectStatus={anggota.setSelectedStatus}
         />
 
         <MemberFilters
-          search={search}
-          setSearch={setSearch}
-          selectedStatus={selectedStatus}
-          setSelectedStatus={setSelectedStatus}
-          selectedPangkalan={selectedPangkalan}
-          setSelectedPangkalan={setSelectedPangkalan}
-          selectedRole={selectedRole}
-          setSelectedRole={setSelectedRole}
-          selectedJenjang={selectedJenjang}
-          setSelectedJenjang={setSelectedJenjang}
-          viewMode={viewMode}
-          setViewMode={setViewMode}
-          sortBy={sortBy}
-          setSortBy={setSortBy}
-          pangkalanOptions={pangkalanOptions}
+          search={anggota.search}
+          setSearch={anggota.setSearch}
+          selectedStatus={anggota.selectedStatus}
+          setSelectedStatus={anggota.setSelectedStatus}
+          selectedPangkalan={anggota.selectedPangkalan}
+          setSelectedPangkalan={anggota.setSelectedPangkalan}
+          selectedRole={anggota.selectedRole}
+          setSelectedRole={anggota.setSelectedRole}
+          selectedJenjang={anggota.selectedJenjang}
+          setSelectedJenjang={anggota.setSelectedJenjang}
+          viewMode={anggota.viewMode}
+          setViewMode={anggota.setViewMode}
+          sortBy={anggota.sortBy}
+          setSortBy={anggota.setSortBy}
+          pangkalanOptions={anggota.pangkalanOptions}
         />
 
-        {viewMode === "grid" ? (
-          <MemberDirectoryGrid
-            members={members}
-            isLoading={isLoading}
-            onResetFilters={resetFilters}
-            onSelectMember={(m) => setSelectedMember(m)}
-            onVerifyMember={verifyMember}
-            canVerify={canVerify}
-            canManage={canManage}
-            onEditMember={(m) => setEditingMember(m)}
-            onDeleteMember={(m) => setDeletingMember(m)}
-          />
-        ) : (
-          <MemberTableView
-            members={members}
-            isLoading={isLoading}
-            onResetFilters={resetFilters}
-            onSelectMember={(m) => setSelectedMember(m)}
-            onVerifyMember={verifyMember}
-            canVerify={canVerify}
-            canManage={canManage}
-            onEditMember={(m) => setEditingMember(m)}
-            onDeleteMember={(m) => setDeletingMember(m)}
-          />
-        )}
+        <MemberContentView
+          viewMode={anggota.viewMode}
+          members={anggota.members}
+          isLoading={anggota.isLoading}
+          onResetFilters={anggota.resetFilters}
+          onSelectMember={(m) => modals.setSelectedMember(m)}
+          onVerifyMember={anggota.verifyMember}
+          canVerify={anggota.canVerify}
+          canManage={anggota.canManage}
+          onEditMember={(m) => modals.setEditingMember(m)}
+          onDeleteMember={(m) => modals.setDeletingMember(m)}
+        />
 
         <MemberDialogManager
-          isAddOpen={isAddOpen}
-          setIsAddOpen={setIsAddOpen}
-          selectedMember={selectedMember}
-          setSelectedMember={setSelectedMember}
-          editingMember={editingMember}
-          setEditingMember={setEditingMember}
-          deletingMember={deletingMember}
-          setDeletingMember={setDeletingMember}
-          addMember={addMember}
-          updateMember={updateMember}
-          verifyMember={verifyMember}
-          deleteMember={deleteMember}
-          isAdding={isAdding}
-          isUpdating={isUpdating}
-          isDeleting={isDeleting}
-          canManage={canManage}
-          canVerify={canVerify}
+          isAddOpen={modals.isAddOpen}
+          setIsAddOpen={modals.setIsAddOpen}
+          selectedMember={modals.selectedMember}
+          setSelectedMember={modals.setSelectedMember}
+          editingMember={modals.editingMember}
+          setEditingMember={modals.setEditingMember}
+          deletingMember={modals.deletingMember}
+          setDeletingMember={modals.setDeletingMember}
+          addMember={anggota.addMember}
+          updateMember={anggota.updateMember}
+          verifyMember={anggota.verifyMember}
+          deleteMember={anggota.deleteMember}
+          isAdding={anggota.isAdding}
+          isUpdating={anggota.isUpdating}
+          isDeleting={anggota.isDeleting}
+          canManage={anggota.canManage}
+          canVerify={anggota.canVerify}
         />
       </div>
     </PageShell>
