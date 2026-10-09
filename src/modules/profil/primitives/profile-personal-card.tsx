@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Calendar, Droplets, MapPin, AlignLeft, Award } from "lucide-react";
+import { getOjolJenjangTitle } from "@/lib/ojol-jenjang";
 import { ProfileRow } from "../types";
 
 interface Props {
@@ -52,9 +53,9 @@ export function ProfilePersonalCard({ profile }: Props) {
           </div>
           <div className="space-y-0.5">
             <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-              <Award className="h-3 w-3 text-primary" /> Jenjang Karir
+              <Award className="h-3 w-3 text-primary" /> Tingkat Aspal
             </span>
-            <p className="font-medium capitalize text-foreground">{profile.jenjang}</p>
+            <p className="font-medium text-foreground">{getOjolJenjangTitle(profile.jenjang)}</p>
           </div>
           <div className="space-y-0.5">
             <span className="text-[11px] text-muted-foreground">ID Anggota</span>
@@ -78,7 +79,7 @@ export function ProfilePersonalCard({ profile }: Props) {
               <AlignLeft className="h-3 w-3 text-muted-foreground" /> Catatan / Bio
             </span>
             <p className="text-xs text-muted-foreground italic leading-relaxed">
-              "{profile.bio || "Driver Komunitas Riang Gembira."}"
+              {profile.bio ? `"${profile.bio}"` : "Belum ada catatan lain."}
             </p>
           </div>
         </div>

@@ -49,7 +49,7 @@ function PersetujuanAkunPage() {
           <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/80 bg-muted/20 p-12 text-center">
             <UserCheck className="h-10 w-10 text-muted-foreground/60" />
             <h3 className="mt-3 text-sm font-semibold text-foreground">
-              {isFiltered ? "Tidak Ada Permohonan yang Cocok" : "Semua Berkas Sudah Klir"}
+              {isFiltered ? "Belum Ada Antrean Dulur di Sini" : "Semua Berkas Sudah Klir"}
             </h3>
             <p className="mt-1 text-xs text-muted-foreground">
               {isFiltered

@@ -42,7 +42,7 @@ export const organizationBranches: FeatureBranch[] = [
         note: "Alur berjalan, sebagian angka penilaian masih data contoh.",
       },
       {
-        label: "Screening calon anggota",
+        label: "Kenalan dulur anyar",
         status: "sebagian",
         note: "Bank soal penilaian masih kosong.",
       },

@@ -11,7 +11,7 @@ export function exportMembersToCsv(members: MemberRecord[], filenamePrefix = "an
     "No KTA",
     "Nama Lengkap",
     "Status",
-    "Peran Komunitas",
+    "Amanah",
     "Jenjang Kader",
     "Pangkalan",
     "No Handphone",
@@ -23,11 +23,7 @@ export function exportMembersToCsv(members: MemberRecord[], filenamePrefix = "an
   const rows = members.map((m) => [
     m.no_kta,
     m.nama,
-    m.status === "aktif"
-      ? "Verified (Aktif)"
-      : m.status === "pending_review"
-        ? "Pending Review"
-        : "Nonaktif",
+    m.status === "aktif" ? "Aktif" : m.status === "pending_review" ? "Menunggu PIC" : "Nonaktif",
     m.role.replace("_", " "),
     m.jenjang,
     m.pangkalan,

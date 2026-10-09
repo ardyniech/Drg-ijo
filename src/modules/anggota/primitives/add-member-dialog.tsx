@@ -26,7 +26,7 @@ const INITIAL_FORM: MemberFormData = {
   role: "anggota",
   jenjang: "calon",
   status: "aktif",
-  pangkalan: "Pangkalan Utama",
+  pangkalan: "",
   plat_nomor: "",
   jenis_kendaraan: "Sepeda Motor",
 };

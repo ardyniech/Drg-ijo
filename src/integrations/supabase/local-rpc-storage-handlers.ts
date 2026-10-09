@@ -13,7 +13,7 @@ export async function handleLocalRpc(fn: string, args?: Record<string, unknown>)
         id: u.id,
         nama: u.nama,
         no_hp: u.no_hp || "-",
-        alamat: "Malang, Jawa Timur",
+        alamat: u.alamat || "",
         email: u.email,
       })),
       error: null,
@@ -21,11 +21,12 @@ export async function handleLocalRpc(fn: string, args?: Record<string, unknown>)
   }
   if (fn === "submit_screening_application") {
     const token = generatePrefixedId("token");
+    const cleanName = String(args?._nama ?? "").trim() || "-";
     if (args) {
       const appId = generatePrefixedId("scr");
       saveScreeningApplication({
         id: appId,
-        nama: String(args._nama || "Calon Driver"),
+        nama: cleanName,
         no_hp: String(args._no_hp || "-"),
         email: String(args._email || ""),
         alamat: String(args._alamat || ""),
@@ -39,7 +40,7 @@ export async function handleLocalRpc(fn: string, args?: Record<string, unknown>)
         );
       }
       addApplicantApproval({
-        nama: String(args._nama || "Calon Driver"),
+        nama: cleanName,
         no_hp: String(args._no_hp || "-"),
         email: String(args._email || ""),
         alamat: String(args._alamat || ""),
@@ -60,11 +61,10 @@ export function createLocalStorageAdapter() {
           return { data: { path: url }, error: null };
         },
         async createSignedUrl(path: string) {
-          const signedUrl =
-            path.startsWith("blob:") || path.startsWith("http")
-              ? path
-              : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150";
-          return { data: { signedUrl }, error: null };
+          if (path.startsWith("blob:") || path.startsWith("http")) {
+            return { data: { signedUrl: path }, error: null };
+          }
+          return { data: null, error: { message: "preview tidak tersedia untuk berkas lokal" } };
         },
       };
     },

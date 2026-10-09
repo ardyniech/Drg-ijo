@@ -49,8 +49,8 @@ export function addApplicantApproval(applicant: {
     applicantPhone: applicant.no_hp,
     applicantEmail: applicant.email,
     plateNumber: "N/A (Verifikasi)",
-    appliedBase: applicant.kota ? `Pangkalan ${applicant.kota}` : "Pangkalan Utama",
-    appliedRole: "Calon Anggota",
+    appliedBase: applicant.kota ? `Pangkalan ${applicant.kota}` : "",
+    appliedRole: "Driver Anyar",
     status: "pending",
     appliedAt: new Date().toISOString(),
   };

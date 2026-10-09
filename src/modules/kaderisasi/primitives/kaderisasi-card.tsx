@@ -101,7 +101,7 @@ export function KaderisasiCard({ item, onEvaluate }: KaderisasiCardProps) {
 
           <div className="mt-3.5">
             <div className="mb-1.5 flex justify-between text-xs text-muted-foreground">
-              <span>Kelayakan Promosi</span>
+              <span>Progres Naik Kelas</span>
               <span className="font-semibold text-foreground">{item.points}%</span>
             </div>
             <Progress value={item.points} className="h-2 rounded-full" />

@@ -47,7 +47,7 @@ export function KasReceiptModal({ tx, open, onOpenChange }: KasReceiptModalProps
 
         <div className="space-y-4 rounded-xl border border-border/80 bg-muted/20 p-4">
           <div className="flex items-center justify-between border-b border-border/60 pb-3">
-            <span className="text-xs text-muted-foreground">Status Verifikasi</span>
+            <span className="text-xs text-muted-foreground">Status Verif</span>
             <Badge
               className={
                 tx.status === "disetujui" ? "bg-emerald-600 text-white" : "bg-amber-500 text-white"

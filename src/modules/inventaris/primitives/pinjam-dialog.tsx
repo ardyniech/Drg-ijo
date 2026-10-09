@@ -23,7 +23,7 @@ export function PinjamDialog({ item }: { item: InventarisItem }) {
   const { pinjamItem } = useInventaris();
 
   const [nama, setNama] = useState(me?.nama || "");
-  const [phone, setPhone] = useState((me as { no_hp?: string } | null)?.no_hp || "081234567890");
+  const [phone, setPhone] = useState((me as { no_hp?: string } | null)?.no_hp || "");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

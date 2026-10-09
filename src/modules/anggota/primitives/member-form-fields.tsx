@@ -68,7 +68,7 @@ export function MemberFormFields({ form, onChange, isEdit = false }: Props) {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="aktif">Aktif Terverifikasi</SelectItem>
-                <SelectItem value="pending_review">Pending Review</SelectItem>
+                <SelectItem value="pending_review">Menunggu PIC</SelectItem>
                 <SelectItem value="cuti">Cuti / Nonaktif</SelectItem>
               </SelectContent>
             </Select>

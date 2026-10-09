@@ -43,8 +43,7 @@ export function ReportIncidentDialog() {
     createIncident.mutate({
       driver_id: me.id,
       driver_name: me.nama,
-      driver_phone:
-        ((me as unknown as Record<string, unknown>)?.no_hp as string) || me.email || "081234567890",
+      driver_phone: ((me as unknown as Record<string, unknown>)?.no_hp as string) || me.email || "",
       kategori,
       tingkat,
       lokasi_teks: lokasi.trim() || "Lokasi GPS saat ini",

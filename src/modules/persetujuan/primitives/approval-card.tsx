@@ -37,7 +37,7 @@ export function ApprovalCard({ item, onReview }: ApprovalCardProps) {
                 </h3>
                 <Badge variant="outline" className={`px-2 py-0.5 text-[10px] ${statusBadge}`}>
                   {item.status === "pending"
-                    ? "Menunggu Verifikasi"
+                    ? "Nunggu Verif"
                     : item.status === "approved"
                       ? "Disetujui"
                       : "Ditolak"}

@@ -10,7 +10,7 @@ export function ProfileVehicleCard({ profile }: Props) {
   const plat = profile.plat_nomor || "N ---- XX";
   const jenis = profile.jenis_kendaraan || "Sepeda Motor";
   const merk = profile.merk_kendaraan || "Belum diisi";
-  const pangkalan = profile.pangkalan || "Pangkalan Utama DRG";
+  const pangkalan = profile.pangkalan || "Belum diatur";
 
   return (
     <Card className="border-border/80 shadow-xs">

@@ -49,7 +49,7 @@ export function KasFilters({
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">Semua Status</SelectItem>
-          <SelectItem value="menunggu">Menunggu Verif</SelectItem>
+          <SelectItem value="menunggu">Nunggu Verif</SelectItem>
           <SelectItem value="disetujui">Sah Masuk Kas</SelectItem>
           <SelectItem value="ditolak">Ditolak Rembug</SelectItem>
         </SelectContent>

@@ -31,7 +31,7 @@ export function useAnggota() {
         nama: u.nama,
         no_kta: u.nomor_anggota || `DRG-2026-${String(idx + 1).padStart(3, "0")}`,
         no_hp: u.no_hp || "-",
-        pangkalan: u.pangkalan || "Pangkalan Utama",
+        pangkalan: u.pangkalan || "",
         role: (u.role || "driver") as MemberRecord["role"],
         jenjang: u.jenjang || "calon",
         status: (u.status === "aktif"
@@ -44,7 +44,7 @@ export function useAnggota() {
           month: "long",
           year: "numeric",
         }),
-        plat_nomor: u.plat_nomor || "N 2026 DRG",
+        plat_nomor: u.plat_nomor || "",
         jenis_kendaraan: u.jenis_kendaraan || "Sepeda Motor",
         email: u.email,
         alamat: u.alamat || "",

@@ -39,7 +39,7 @@ export function getMemberRoleRecords(): MemberRoleRecord[] {
     nama: u.nama,
     email: u.email,
     no_hp: u.no_hp || "-",
-    pangkalan: u.pangkalan || "Pangkalan Utama",
+    pangkalan: u.pangkalan || "",
     role: u.role as UserRole,
     jenjang: u.jenjang || "calon",
     status: (u.status === "aktif" ? "aktif" : "pending_review") as MemberRoleRecord["status"],

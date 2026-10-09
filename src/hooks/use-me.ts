@@ -86,7 +86,7 @@ export function useMe() {
         status,
         isPendingReview: status === "pending_review",
         isAdmin,
-        pangkalan: profile?.pangkalan || "Pangkalan Utama DRG",
+        pangkalan: profile?.pangkalan || "",
         foto_url: profile?.foto_url || null,
       };
     },

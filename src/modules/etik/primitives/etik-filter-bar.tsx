@@ -43,7 +43,7 @@ export function EtikFilterBar({
             <SelectItem value="all">Semua Status</SelectItem>
             <SelectItem value="investigating">Penyelidikan</SelectItem>
             <SelectItem value="mediation_scheduled">Jadwal Mediasi</SelectItem>
-            <SelectItem value="sanctioned">Dikenakan Sanksi</SelectItem>
+            <SelectItem value="sanctioned">Kena Sanksi Jalur</SelectItem>
             <SelectItem value="resolved">Selesai / Damai</SelectItem>
           </SelectContent>
         </Select>

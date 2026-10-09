@@ -60,7 +60,7 @@ export class MemberManagementService {
       status: payload.status || "aktif",
       passwordHash,
       created_at: new Date().toISOString(),
-      pangkalan: payload.pangkalan || "Pangkalan Utama",
+      pangkalan: (payload.pangkalan || "").trim(),
       plat_nomor: payload.plat_nomor || "",
       jenis_kendaraan: payload.jenis_kendaraan || "Sepeda Motor",
       merk_kendaraan: payload.merk_kendaraan || "",

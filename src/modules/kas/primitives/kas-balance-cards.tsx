@@ -33,7 +33,7 @@ export function KasBalanceCards({ totals }: Props) {
 
       <div className="rounded-2xl border border-warn/40 bg-warn/10 p-5 shadow-card">
         <div className="text-xs font-semibold uppercase tracking-wider text-amber-700/90 dark:text-amber-200/90">
-          Menunggu Verifikasi
+          Nunggu Verif
         </div>
         <div className="mt-2 text-3xl font-bold text-amber-700 dark:text-amber-200">
           {totals.menunggu}

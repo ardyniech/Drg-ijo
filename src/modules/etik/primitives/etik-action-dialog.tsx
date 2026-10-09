@@ -64,7 +64,7 @@ export function EtikActionDialog({
               <SelectContent className="text-xs">
                 <SelectItem value="investigating">Penyelidikan / Verifikasi Bukti</SelectItem>
                 <SelectItem value="mediation_scheduled">Jadwal Mediasi Korlap</SelectItem>
-                <SelectItem value="sanctioned">Dikenakan Sanksi Disiplin</SelectItem>
+                <SelectItem value="sanctioned">Kena Sanksi Jalur</SelectItem>
                 <SelectItem value="resolved">Selesai / Rekonsiliasi Damai</SelectItem>
               </SelectContent>
             </Select>

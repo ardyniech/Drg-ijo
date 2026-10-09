@@ -45,7 +45,7 @@ export function MemberDetailModal({
             <MemberStatusBadge status={member.status} />
           </div>
           <DialogDescription className="text-xs text-muted-foreground">
-            Informasi registrasi dan verifikasi keanggotaan resmi DRG.
+            Informasi santui sedulur: profil, status keanggotaan, dan amanah di satu aspal.
           </DialogDescription>
         </DialogHeader>
 
@@ -60,7 +60,7 @@ export function MemberDetailModal({
               <span className="font-mono font-medium text-primary">{member.no_kta}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-muted-foreground">Peran Komunitas</span>
+              <span className="text-muted-foreground">Amanah</span>
               <span className="font-medium capitalize">{member.role.replace("_", " ")}</span>
             </div>
             <div className="flex justify-between items-center">
@@ -77,13 +77,17 @@ export function MemberDetailModal({
               <div className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
                 <MapPin className="h-3.5 w-3.5 text-primary" /> Pangkalan
               </div>
-              <p className="font-medium text-foreground truncate">{member.pangkalan}</p>
+              <p className="font-medium text-foreground truncate">
+                {member.pangkalan || "Belum diatur"}
+              </p>
             </div>
             <div className="rounded-lg border border-border/70 p-2.5 space-y-1">
               <div className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
                 <Bike className="h-3.5 w-3.5 text-primary" /> Kendaraan & Plat
               </div>
-              <p className="font-medium text-foreground truncate font-mono">{member.plat_nomor}</p>
+              <p className="font-medium text-foreground truncate font-mono">
+                {member.plat_nomor || "N ---- XX"}
+              </p>
               <p className="text-[10px] text-muted-foreground truncate">{member.jenis_kendaraan}</p>
             </div>
           </div>

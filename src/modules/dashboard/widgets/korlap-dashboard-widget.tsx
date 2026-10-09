@@ -72,13 +72,13 @@ export function KorlapDashboardWidget() {
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <RefreshCw className="h-3.5 w-3.5 text-primary" /> Permohonan Tukar Shift
+            <RefreshCw className="h-3.5 w-3.5 text-primary" /> Tukar Shift Masuk
           </div>
           <div className="mt-1.5 text-xl font-bold text-primary">
-            {swapCount > 0 ? `${swapCount} Permohonan` : "Tidak Ada"}
+            {swapCount > 0 ? `${swapCount} Pengajuan` : "Kosong"}
           </div>
           <div className="text-[10px] text-muted-foreground">
-            {swapCount > 0 ? "Butuh persetujuan korlap" : "Belum ada swap shift menunggu"}
+            {swapCount > 0 ? "Butuh ok dari korlap dulu" : "Belum ada tukar shift nunggu"}
           </div>
         </div>
 

@@ -27,7 +27,7 @@ const statusClasses: Record<EtikCase["status"], string> = {
 const statusLabels: Record<EtikCase["status"], string> = {
   investigating: "Penyelidikan",
   mediation_scheduled: "Jadwal Mediasi",
-  sanctioned: "Dikenakan Sanksi",
+  sanctioned: "Kena Sanksi Jalur",
   resolved: "Selesai / Damai",
 };
 

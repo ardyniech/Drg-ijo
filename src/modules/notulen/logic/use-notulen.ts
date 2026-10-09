@@ -28,7 +28,7 @@ export function useNotulen() {
       queryClient.invalidateQueries({ queryKey: ["notulen"] });
       enqueueOperation({
         idempotencyKey: data.id,
-        action: "Penerbitan Notulen Musyawarah",
+        action: "Terbitin Catatan Rembug",
         module: "persetujuan",
         payload: { id: data.id, judul: data.judul },
       });
@@ -36,7 +36,7 @@ export function useNotulen() {
         actorId: "sekretaris-01",
         actorName: "Siti Rahmawati",
         actorRole: "sekretaris",
-        action: "Penerbitan Notulen Musyawarah",
+        action: "Terbitin Catatan Rembug",
         module: "notulen",
         description: `Mengesahkan berita acara musyawarah rapat "${data.judul}".`,
       });

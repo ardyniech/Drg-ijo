@@ -6,14 +6,7 @@ import { usePiket } from "@/modules/piket/logic/use-piket";
 import { supabase } from "@/integrations/supabase/client";
 import { formatRupiah } from "@/shared/utils/formatters";
 import { User, Wallet, Siren, Calendar } from "lucide-react";
-
-const JENJANG_LABEL: Record<string, string> = {
-  calon: "Calon Anggota",
-  muda: "Muda",
-  madya: "Madya",
-  utama: "Utama",
-  purna: "Purna",
-};
+import { getOjolJenjang } from "@/lib/ojol-jenjang";
 
 export function DriverDashboardWidget() {
   const { data: me } = useMe();
@@ -42,8 +35,7 @@ export function DriverDashboardWidget() {
   });
 
   const myShift = shifts.find((s) => s.user_id === me?.id);
-  const jenjangRaw = (profile?.jenjang || "calon").toLowerCase();
-  const jenjangLabel = JENJANG_LABEL[jenjangRaw] ?? "Calon Anggota";
+  const jenjangMeta = getOjolJenjang(profile?.jenjang);
 
   return (
     <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/10 via-primary/5 to-card p-5 shadow-xs">
@@ -108,12 +100,18 @@ export function DriverDashboardWidget() {
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
             <User className="h-3.5 w-3.5 text-amber-600" /> Tingkat Aspal
           </div>
-          <div className="mt-1.5 text-xl font-bold text-amber-600">{jenjangLabel}</div>
+          <div className="mt-1.5 text-lg leading-tight font-bold text-amber-600">
+            {jenjangMeta.title}
+            <span className="ml-1.5 text-[10px] font-medium text-muted-foreground">
+              ({jenjangMeta.nickname})
+            </span>
+          </div>
           <div className="text-[10px] text-muted-foreground">
             {profile?.pangkalan
               ? `Berpangkalan ${profile.pangkalan}`
               : "Pangkalan belum ditetapkan"}
           </div>
+          <div className="mt-1.5 text-[10px] italic text-primary/70">"{jenjangMeta.roadQuote}"</div>
         </div>
       </div>
     </div>

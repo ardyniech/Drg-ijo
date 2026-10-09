@@ -19,7 +19,7 @@ export function SosQuickTrigger() {
         createIncident.mutate({
           driver_id: me.id,
           driver_name: me.nama,
-          driver_phone: "081234567890",
+          driver_phone: (me as unknown as { no_hp?: string }).no_hp || "",
           kategori: "begal_kriminal",
           tingkat: "darurat_tinggi",
           deskripsi:

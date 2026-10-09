@@ -60,7 +60,7 @@ export function RoleAssignFormFields({
       </div>
 
       <div>
-        <label className="font-medium text-foreground">Catatan Musyawarah / Alasan Penetapan</label>
+        <label className="font-medium text-foreground">Catatan Rembug / Alasan</label>
         <Textarea
           value={notes}
           onChange={(e) => onNotesChange(e.target.value)}

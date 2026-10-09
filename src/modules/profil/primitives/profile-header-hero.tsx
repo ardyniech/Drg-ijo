@@ -91,7 +91,7 @@ export function ProfileHeaderHero({ profile, roles, onUploadAvatar, onOpenEdit }
           <div className="hidden lg:flex flex-col gap-1 text-right text-xs text-muted-foreground pr-4 border-r border-border/60">
             <span className="flex items-center gap-1.5 justify-end">
               <MapPin className="h-3.5 w-3.5 text-primary" />
-              {profile.pangkalan || "Pangkalan Utama"}
+              {profile.pangkalan || "Belum diatur"}
             </span>
             <span className="flex items-center gap-1.5 justify-end">
               <Car className="h-3.5 w-3.5 text-primary" />

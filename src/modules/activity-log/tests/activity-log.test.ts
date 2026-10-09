@@ -2,11 +2,9 @@ import { describe, it, expect } from "vitest";
 import { getActivityLogs, recordActivityLog } from "../storage/activity-log-storage";
 
 describe("Activity Log Module", () => {
-  it("should fetch initial seed activity logs", () => {
+  it("should start with an empty log until a real action is recorded", () => {
     const logs = getActivityLogs();
-    expect(logs.length).toBeGreaterThan(0);
-    expect(logs[0].actorRole).toBeDefined();
-    expect(logs[0].action).toBeDefined();
+    expect(logs.length).toBe(0);
   });
 
   it("should append a new activity log entry", () => {
@@ -22,5 +20,6 @@ describe("Activity Log Module", () => {
 
     expect(updated.length).toBe(initialCount + 1);
     expect(updated[0].action).toBe("Uji Coba Audit Log");
+    expect(updated[0].actorRole).toBeDefined();
   });
 });

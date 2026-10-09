@@ -55,7 +55,7 @@ export function SwapButton({ shiftId, currentUserId }: Props) {
         actorId: currentUserId,
         actorName: "Anggota Piket",
         actorRole: "anggota",
-        action: "Permohonan Tukar Shift",
+        action: "Tukar Shift Masuk",
         module: "piket",
         description: `Mengajukan permohonan tukar shift: ${cleanAlasan || "Terbuka untuk siapa saja"}.`,
       });
