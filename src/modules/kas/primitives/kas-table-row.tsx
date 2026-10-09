@@ -65,7 +65,7 @@ export function KasTableRow({ row: r, canApprove, canApproveTier, onSelectTx, on
             ? "Sah Masuk Kas"
             : r.status === "ditolak"
               ? "Ditolak Rembug"
-              : "Nunggu Verif"}
+              : "Nunggu Sahin"}
         </Badge>
       </td>
       <td className="px-4 py-3 text-right">

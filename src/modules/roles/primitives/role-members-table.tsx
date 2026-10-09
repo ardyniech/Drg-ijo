@@ -2,6 +2,7 @@ import { MemberRoleRecord } from "../types";
 import { AVAILABLE_ROLES } from "../constants";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { getOjolJenjang } from "@/lib/ojol-jenjang";
 import { ShieldAlert, UserCog } from "lucide-react";
 
 interface Props {
@@ -32,7 +33,7 @@ export function RoleMembersTable({ members, onSelectMember, canEdit }: Props) {
               <th className="px-4 py-3">Nama & Kontak</th>
               <th className="px-4 py-3">Pangkalan</th>
               <th className="px-4 py-3">Peran Organisasi</th>
-              <th className="px-4 py-3">Jenjang Kader</th>
+              <th className="px-4 py-3">Tingkat Aspal</th>
               <th className="px-4 py-3 text-right">Aksi Mandat</th>
             </tr>
           </thead>
@@ -45,7 +46,9 @@ export function RoleMembersTable({ members, onSelectMember, canEdit }: Props) {
                     <div className="font-semibold text-foreground">{m.nama}</div>
                     <div className="text-[11px] text-muted-foreground font-mono">{m.email}</div>
                   </td>
-                  <td className="px-4 py-3.5 text-muted-foreground">{m.pangkalan}</td>
+                  <td className="px-4 py-3.5 text-muted-foreground">
+                    {m.pangkalan || "Belum diatur"}
+                  </td>
                   <td className="px-4 py-3.5">
                     <Badge
                       variant="outline"
@@ -55,8 +58,11 @@ export function RoleMembersTable({ members, onSelectMember, canEdit }: Props) {
                     </Badge>
                   </td>
                   <td className="px-4 py-3.5">
-                    <span className="capitalize font-medium text-muted-foreground">
-                      {m.jenjang}
+                    <span className="font-medium text-muted-foreground">
+                      {getOjolJenjang(m.jenjang).title}
+                      <span className="ml-1 text-[11px]">
+                        ({getOjolJenjang(m.jenjang).nickname})
+                      </span>
                     </span>
                   </td>
                   <td className="px-4 py-3.5 text-right">
