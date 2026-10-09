@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { KasSkStorage } from "@/modules/kas/storage/kas-sk-storage";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { getMemberRoleRecords } from "@/modules/roles/storage/roles-storage";
+import { getActivityLogs } from "@/modules/activity-log";
+import { MemberManagementService } from "@/modules/anggota/storage/member-management-service";
 
 describe("Organization Module Storage & Data Flow", () => {
   beforeEach(async () => {
@@ -33,7 +35,7 @@ describe("Organization Module Storage & Data Flow", () => {
     expect(records[0].no_sk).toContain("SK-KAS");
   });
 
-  it("should disburse SK Kas through storage mutation", () => {
+  it("should disburse SK Kas and record transparent audit log", () => {
     const records = KasSkStorage.getAll();
     const target = records[0];
 
@@ -41,7 +43,21 @@ describe("Organization Module Storage & Data Flow", () => {
     expect(updated).not.toBeNull();
     expect(updated?.status).toBe("dicairkan");
 
-    const refreshed = KasSkStorage.getAll().find((r) => r.id === target.id);
-    expect(refreshed?.status).toBe("dicairkan");
+    const logs = getActivityLogs();
+    const auditMatch = logs.find((l) => l.action.includes("SK Kas") && l.module === "kas");
+    expect(auditMatch).toBeDefined();
+    expect(auditMatch?.description).toContain(target.no_sk);
+  });
+
+  it("should log activity when member status is modified or verified", () => {
+    const users = LocalAuthClient.getUsers();
+    const targetUser = users[0];
+
+    MemberManagementService.verifyMember(targetUser.id, "admin");
+
+    const logs = getActivityLogs();
+    const verifyLog = logs.find((l) => l.action.includes("Verifikasi") && l.module === "anggota");
+    expect(verifyLog).toBeDefined();
+    expect(verifyLog?.targetId).toBe(targetUser.id);
   });
 });

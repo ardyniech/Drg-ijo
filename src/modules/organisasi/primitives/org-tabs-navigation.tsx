@@ -1,4 +1,4 @@
-import { Users, ShieldCheck, HeartHandshake } from "lucide-react";
+import { Users, ShieldCheck, HeartHandshake, History } from "lucide-react";
 import { OrgTab } from "../types";
 
 interface OrgTabsNavigationProps {
@@ -7,6 +7,7 @@ interface OrgTabsNavigationProps {
   memberCount: number;
   roleCount: number;
   skCount: number;
+  auditCount?: number;
 }
 
 export function OrgTabsNavigation({
@@ -15,11 +16,13 @@ export function OrgTabsNavigation({
   memberCount,
   roleCount,
   skCount,
+  auditCount = 0,
 }: OrgTabsNavigationProps) {
   const tabs = [
     { id: "members" as OrgTab, label: "Anggota Komunitas", count: memberCount, icon: Users },
     { id: "roles" as OrgTab, label: "Amanah Peran", count: roleCount, icon: ShieldCheck },
     { id: "sk_kas" as OrgTab, label: "SK Kas Gotong Royong", count: skCount, icon: HeartHandshake },
+    { id: "audit_log" as OrgTab, label: "Jejak Transparansi", count: auditCount, icon: History },
   ];
 
   return (

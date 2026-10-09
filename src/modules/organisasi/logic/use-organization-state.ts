@@ -1,9 +1,12 @@
 import { useState, useMemo } from "react";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { KasSkStorage } from "@/modules/kas/storage/kas-sk-storage";
-import { getMemberRoleRecords, getRoleAuditLogs } from "@/modules/roles/storage/roles-storage";
+import { getRoleAuditLogs } from "@/modules/roles/storage/roles-storage";
+import { getActivityLogs } from "@/modules/activity-log";
+import { MemberManagementService } from "@/modules/anggota/storage/member-management-service";
 import { MemberRecord } from "@/modules/anggota/types";
 import { KasSkRecord } from "@/modules/kas/types";
+import { ActivityLogEntry } from "@/modules/activity-log/types";
 import { OrgTab, OrgRoleSummary } from "../types";
 import { toast } from "sonner";
 
@@ -12,20 +15,13 @@ export function useOrganizationState() {
   const [search, setSearch] = useState("");
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const rawUsers = useMemo(() => {
-    if (refreshKey < 0) return [];
-    return LocalAuthClient.getUsers();
-  }, [refreshKey]);
-
-  const skKas = useMemo(() => {
-    if (refreshKey < 0) return [];
-    return KasSkStorage.getAll();
-  }, [refreshKey]);
-
-  const roleAuditLogs = useMemo(() => {
-    if (refreshKey < 0) return [];
-    return getRoleAuditLogs();
-  }, [refreshKey]);
+  const rawUsers = useMemo(() => (refreshKey < 0 ? [] : LocalAuthClient.getUsers()), [refreshKey]);
+  const skKas = useMemo(() => (refreshKey < 0 ? [] : KasSkStorage.getAll()), [refreshKey]);
+  const roleAuditLogs = useMemo(() => (refreshKey < 0 ? [] : getRoleAuditLogs()), [refreshKey]);
+  const allLogs: ActivityLogEntry[] = useMemo(
+    () => (refreshKey < 0 ? [] : getActivityLogs()),
+    [refreshKey],
+  );
 
   const members: MemberRecord[] = useMemo(() => {
     return rawUsers.map((u) => ({
@@ -44,7 +40,7 @@ export function useOrganizationState() {
   }, [rawUsers]);
 
   const roles: OrgRoleSummary[] = useMemo(() => {
-    const roleDefs: Array<{ role: string; label: string }> = [
+    const roleDefs = [
       { role: "ketua", label: "Ketua Umum" },
       { role: "sekretaris", label: "Sekretaris Jenderal" },
       { role: "bendahara", label: "Bendahara Umum" },
@@ -53,35 +49,49 @@ export function useOrganizationState() {
       { role: "korlap", label: "Koordinator Lapangan" },
       { role: "anggota", label: "Driver Anggota" },
     ];
-
     return roleDefs.map((def) => {
-      const matchMembers = members.filter((m) => m.role === def.role);
-      const assignment = roleAuditLogs.find((a) => a.toRole === def.role);
+      const match = members.filter((m) => m.role === def.role);
+      const assign = roleAuditLogs.find((a) => a.toRole === def.role);
       return {
         role: def.role,
         label: def.label,
-        count: matchMembers.length,
-        sk_mandat: assignment?.skNumber || "SK-MDT/DRG/2026/001",
-        pejabat: matchMembers.map((m) => m.nama).join(", ") || "Belum Ditugaskan",
+        count: match.length,
+        sk_mandat: assign?.skNumber || "SK-MDT/DRG/2026/001",
+        pejabat: match.map((m) => m.nama).join(", ") || "Belum Ditugaskan",
       };
     });
   }, [members, roleAuditLogs]);
 
-  const filteredMembers = useMemo(() => {
-    if (!search) return members;
-    const q = search.toLowerCase();
-    return members.filter(
-      (m) => m.nama.toLowerCase().includes(q) || m.pangkalan.toLowerCase().includes(q),
-    );
-  }, [members, search]);
+  const q = search.toLowerCase();
+  const filteredMembers = useMemo(
+    () =>
+      !q
+        ? members
+        : members.filter(
+            (m) => m.nama.toLowerCase().includes(q) || m.pangkalan.toLowerCase().includes(q),
+          ),
+    [members, q],
+  );
 
-  const filteredSkKas = useMemo(() => {
-    if (!search) return skKas;
-    const q = search.toLowerCase();
-    return skKas.filter(
-      (s) => s.judul.toLowerCase().includes(q) || s.penerima_nama.toLowerCase().includes(q),
-    );
-  }, [skKas, search]);
+  const filteredSkKas = useMemo(
+    () =>
+      !q
+        ? skKas
+        : skKas.filter(
+            (s) => s.judul.toLowerCase().includes(q) || s.penerima_nama.toLowerCase().includes(q),
+          ),
+    [skKas, q],
+  );
+
+  const filteredLogs = useMemo(
+    () =>
+      !q
+        ? allLogs
+        : allLogs.filter(
+            (l) => l.action.toLowerCase().includes(q) || l.description.toLowerCase().includes(q),
+          ),
+    [allLogs, q],
+  );
 
   const cairkanSk = (id: string) => {
     const updated = KasSkStorage.updateStatus(id, "dicairkan");
@@ -91,15 +101,23 @@ export function useOrganizationState() {
     }
   };
 
+  const updateMemberStatus = (memberId: string, newStatus: MemberRecord["status"]) => {
+    MemberManagementService.updateMember(memberId, { status: newStatus }, "admin");
+    toast.success(`Status anggota berhasil diperbarui menjadi ${newStatus}`);
+    setRefreshKey((k) => k + 1);
+  };
+
   return {
     members: filteredMembers,
     roles,
     skKas: filteredSkKas,
+    auditLogs: filteredLogs,
     totalMembers: members.length,
     activeTab,
     setActiveTab,
     search,
     setSearch,
     cairkanSk,
+    updateMemberStatus,
   };
 }

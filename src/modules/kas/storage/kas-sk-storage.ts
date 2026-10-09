@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { KasSkRecord } from "../types";
 import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
+import { recordActivityLog } from "@/modules/activity-log";
 
 const STORAGE_KEY = "drg_kas_sk_records_v1";
 
@@ -92,8 +93,22 @@ export const KasSkStorage = {
     const list = this.getAll();
     const idx = list.findIndex((r) => r.id === id);
     if (idx === -1) return null;
-    list[idx] = { ...list[idx], status };
+    const target = list[idx];
+    list[idx] = { ...target, status };
     this.saveAll(list);
+
+    if (status === "dicairkan") {
+      recordActivityLog({
+        actorId: "usr-bendahara",
+        actorName: "Bendahara Kas DRG",
+        actorRole: "bendahara",
+        action: "Pencairan SK Kas Gotong Royong",
+        module: "kas",
+        description: `Pencairan ${target.no_sk} (${target.judul}) sebesar Rp ${target.nominal.toLocaleString("id-ID")} kepada ${target.penerima_nama} (${target.penerima_pangkalan})`,
+        targetId: id,
+      });
+    }
+
     return list[idx];
   },
 };

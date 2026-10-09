@@ -5,6 +5,7 @@ import { generatePrefixedId } from "@/shared/utils/id-generator";
 import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
 import { z } from "zod";
 import { canManageAnggota, canDeleteAnggota } from "../logic/member-permissions";
+import { logMemberActivity } from "./member-activity-logger";
 
 const USERS_KEY = "drg_local_users_v1";
 
@@ -75,6 +76,12 @@ export class MemberManagementService {
 
     users.push(newUser);
     safeWriteStorage(USERS_KEY, users);
+    logMemberActivity(
+      "Pendaftaran Anggota Baru",
+      `Penerbitan KTA ${newUser.nomor_anggota} (${newUser.nama}) di ${newUser.pangkalan || "Basecamp Umum"}`,
+      newUser.id,
+      actorRole,
+    );
     return newUser;
   }
 
@@ -85,6 +92,14 @@ export class MemberManagementService {
       );
     }
     LocalAuthClient.updateUser(id, patch);
+    if (patch.status || patch.role) {
+      logMemberActivity(
+        patch.status ? "Perubahan Status Anggota" : "Mutasi Peran Anggota",
+        `Perubahan akun (${id}): ${patch.status ? `status -> ${patch.status}` : ""} ${patch.role ? `peran -> ${patch.role}` : ""}`.trim(),
+        id,
+        actorRole,
+      );
+    }
   }
 
   static verifyMember(id: string, actorRole?: string) {
@@ -92,6 +107,12 @@ export class MemberManagementService {
       throw new Error("Akses ditolak: Hanya Pengurus yang dapat memverifikasi status anggota.");
     }
     LocalAuthClient.updateUser(id, { status: "aktif" });
+    logMemberActivity(
+      "Verifikasi Anggota",
+      `Verifikasi sah keanggotaan (${id}) menjadi status Aktif`,
+      id,
+      actorRole,
+    );
   }
 
   static deleteMember(targetId: string, currentUserId: string, actorRole?: string) {
@@ -103,5 +124,11 @@ export class MemberManagementService {
     const users = safeReadStorage(USERS_KEY, z.array(LocalUserSchema), []);
     const filtered = users.filter((u) => u.id !== targetId);
     safeWriteStorage(USERS_KEY, filtered);
+    logMemberActivity(
+      "Penghapusan Anggota",
+      `Penghapusan data akun anggota (${targetId})`,
+      targetId,
+      actorRole,
+    );
   }
 }

@@ -8,7 +8,9 @@ export type ActivityModule =
   | "notulen"
   | "etik"
   | "persetujuan"
-  | "auth";
+  | "auth"
+  | "anggota"
+  | "organisasi";
 
 export interface ActivityLogEntry {
   id: string;

@@ -1,7 +1,7 @@
 import { MemberRecord } from "@/modules/anggota/types";
 import { KasSkRecord } from "@/modules/kas/types";
 
-export type OrgTab = "members" | "roles" | "sk_kas";
+export type OrgTab = "members" | "roles" | "sk_kas" | "audit_log";
 
 export interface OrgRoleSummary {
   role: string;

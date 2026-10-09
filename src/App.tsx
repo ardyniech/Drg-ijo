@@ -1,12 +1,13 @@
 import { useOrganizationState, OrgTabsNavigation, OrgRecordsView } from "./modules/organisasi";
 import { Input } from "./components/ui/input";
-import { Search, Building2, Users, ShieldCheck, HeartHandshake } from "lucide-react";
+import { Search, Building2, Users, ShieldCheck, HeartHandshake, History } from "lucide-react";
 
 export function OrganizationApp() {
   const {
     members,
     roles,
     skKas,
+    auditLogs,
     totalMembers,
     activeTab,
     setActiveTab,
@@ -28,12 +29,12 @@ export function OrganizationApp() {
                 Tata Kelola & Organisasi DRG
               </h1>
               <p className="text-xs text-muted-foreground">
-                Integrasi terpadu Anggota, Amanah Peran Kepengurusan, dan SK Kas Gotong Royong.
+                Transparansi Anggota, Amanah Peran, SK Kas Gotong Royong, dan Jejak Audit Aktivitas.
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 text-xs">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card border border-border/70">
               <Users className="h-3.5 w-3.5 text-primary" />
               <span>
@@ -52,6 +53,12 @@ export function OrganizationApp() {
                 <strong>{skKas.length}</strong> SK Kas
               </span>
             </div>
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-card border border-border/70">
+              <History className="h-3.5 w-3.5 text-blue-600" />
+              <span>
+                <strong>{auditLogs.length}</strong> Jejak Audit
+              </span>
+            </div>
           </div>
         </div>
 
@@ -62,6 +69,7 @@ export function OrganizationApp() {
             memberCount={members.length}
             roleCount={roles.length}
             skCount={skKas.length}
+            auditCount={auditLogs.length}
           />
 
           <div className="relative w-full sm:w-64">
@@ -69,7 +77,7 @@ export function OrganizationApp() {
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Cari data organisasi..."
+              placeholder="Cari data & log organisasi..."
               className="h-8 pl-8 text-xs rounded-xl"
             />
           </div>
@@ -80,6 +88,7 @@ export function OrganizationApp() {
           members={members}
           roles={roles}
           skKas={skKas}
+          auditLogs={auditLogs}
           onCairkanSk={cairkanSk}
         />
       </div>

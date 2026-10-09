@@ -14,6 +14,7 @@ const ActivityLogSchema = z.object({
   action: z.string(),
   module: z.string(),
   description: z.string(),
+  targetId: z.string().optional(),
   timestamp: z.string(),
 });
 
