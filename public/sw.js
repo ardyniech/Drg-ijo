@@ -1,11 +1,13 @@
 // DRG App Service Worker — Web Push + PWA Offline Cache Shell
-const CACHE_NAME = "drg-app-v1";
+const CACHE_NAME = "drg-app-v2";
 const STATIC_ASSETS = [
   "/",
   "/index.html",
   "/manifest.webmanifest",
   "/favicon.ico",
+  "/icon-192.png",
   "/icon-512.png",
+  "/apple-touch-icon.png",
 ];
 
 self.addEventListener("install", (event) => {
