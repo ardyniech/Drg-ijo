@@ -15,12 +15,13 @@ ENV VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY
 ENV VITE_APP_URL=$VITE_APP_URL
 ENV NODE_OPTIONS="--max-old-space-size=1024"
 ENV NITRO_PRESET="node-server"
+ENV NODE_ENV="production"
 
 COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build:vaio
+RUN npm run build
 
 # ==============================================================================
 # Lightweight Runner Container (< 120MB)
@@ -30,7 +31,6 @@ FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=3000
 ENV HOST=0.0.0.0
 ENV NODE_OPTIONS="--max-old-space-size=384"
 
@@ -40,10 +40,6 @@ USER node
 COPY --chown=node:node --from=builder /app/.output ./.output
 COPY --chown=node:node --from=builder /app/package.json ./package.json
 
-EXPOSE 3000
-
-# Built-in health check for Coolify / Traefik
-HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/api/health || exit 1
+EXPOSE 3000 8080
 
 CMD ["node", ".output/server/index.mjs"]

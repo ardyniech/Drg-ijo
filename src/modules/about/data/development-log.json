@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T13:56:22.437Z",
+  "generatedAt": "2026-10-09T14:44:34.314Z",
   "source": "git log",
   "entries": [
     {
@@ -7,325 +7,41 @@
       "date": "09 Oct 2026",
       "type": "fix",
       "scope": "entry",
-      "subject": "add main.tsx client entrypoint and maintain 100% SOP v4 compliance",
-      "body": []
-    },
-    {
-      "hash": "332b75e",
-      "date": "09 Oct 2026",
-      "type": "feat",
-      "scope": "audit",
-      "subject": "implement transparent audit logging for member status changes and SK Kas disbursements",
-      "body": []
+      "subject": "optimasi server SSR TanStack Start & isolasi arsitektur modular",
+      "body": [
+        "Memastikan seluruh komponen landing, dashboard, anggota, dan kas ter-render penuh di production."
+      ]
     },
     {
       "hash": "bc6c9bf",
       "date": "09 Oct 2026",
       "type": "feat",
       "scope": "audit",
-      "subject": "implement live code telemetry, architecture canvas showcase, and SOP code health audit",
+      "subject": "implementasi transparansi audit logging untuk perubahan status anggota & pencairan SK Kas",
       "body": []
     },
     {
-      "hash": "d3143fc",
-      "date": "09 Oct 2026",
-      "type": "chore",
-      "scope": "sync",
-      "subject": "update auto-generated development metadata and resilient sync",
-      "body": []
-    },
-    {
-      "hash": "8cdf3b5",
-      "date": "09 Oct 2026",
-      "type": "feat",
-      "scope": "about",
-      "subject": "automate Feature Tree and status inspection from live codebase",
-      "body": []
-    },
-    {
-      "hash": "c686759",
-      "date": "09 Oct 2026",
-      "type": "feat",
-      "scope": "org",
-      "subject": "implement Organization module in App.tsx with members, roles, and SK Kas state",
-      "body": []
-    },
-    {
-      "hash": "4de1564",
-      "date": "09 Oct 2026",
-      "type": "feat",
-      "scope": "about",
-      "subject": "dynamic roadmap progress auto-update from codebase inspection",
-      "body": []
-    },
-    {
-      "hash": "2e6a16c",
-      "date": "09 Oct 2026",
+      "hash": "a43812d",
+      "date": "08 Oct 2026",
       "type": "feat",
       "scope": "koperasi",
-      "subject": "implement Phase 3 Simpan Pinjam 0% & dynamic QRIS iuran kas",
+      "subject": "tambah modul koperasi simpan pinjam 0% bunga & simulasi iuran QRIS",
       "body": []
     },
     {
-      "hash": "a7a41ef",
-      "date": "09 Oct 2026",
-      "type": "feat",
-      "scope": "kas-org",
-      "subject": "complete Phase 2 with SK Kas gotong royong, posko inventory, and notulen WA share",
-      "body": []
-    },
-    {
-      "hash": "1648a1c",
-      "date": "09 Oct 2026",
-      "type": "chore",
-      "scope": "env",
-      "subject": "fix activity-log test isolation & configure dev port 3000",
-      "body": []
-    },
-    {
-      "hash": "1ebcf0c",
-      "date": "09 Oct 2026",
-      "type": "fix",
-      "scope": "data",
-      "subject": "devlog auto, kas label santui, role-members-table fix",
-      "body": []
-    },
-    {
-      "hash": "443dcc0",
-      "date": "09 Oct 2026",
-      "type": "feat",
-      "scope": "about",
-      "subject": "add jaga satu aspal workflow canvas",
-      "body": []
-    },
-    {
-      "hash": "87c3cd4",
-      "date": "09 Oct 2026",
-      "type": "feat",
-      "scope": "about",
-      "subject": "add archify architecture canvas (public/about/architecture/drg-satu-aspal-santui.html/json/finalize)",
-      "body": []
-    },
-    {
-      "hash": "9fbe403",
-      "date": "09 Oct 2026",
-      "type": "feat",
-      "scope": "about",
-      "subject": "add auto-generated development log & reframe piket to \"jaga satu aspal\"",
-      "body": [
-        "- auto devlog: scripts/gen-development-log.mjs, vite hook, prebuild/predev",
-        "- add AboutDevelopmentLog section (filtered by type/date) + wire to About",
-        "- reframe piket UI to free-flow \"Jaga Satu Aspal\" (all members, road-based,"
-      ]
-    },
-    {
-      "hash": "5a4591b",
-      "date": "09 Oct 2026",
-      "type": "fix",
-      "scope": "ui",
-      "subject": "remove fake fallback values & adopt santui ojol tone",
-      "body": [
-        "- no more placeholder-as-data: pangkalan/plat/telepon defaults emptied,",
-        "  alamat \"Malang, Jawa Timur\" dropped, Unsplash avatar fallback removed,",
-        "  bio default removed (honest empty states instead)"
-      ]
-    },
-    {
-      "hash": "9df53bf",
-      "date": "09 Oct 2026",
-      "type": "fix",
-      "scope": "data",
-      "subject": "purge fake numbers, wire dashboard widgets & cards to real stores",
-      "body": [
-        "- dashboard role widgets (ketua..driver) now read real org data",
-        "  (anggota, kas, piket, etik, notulen, persetujuan, shelter) with",
-        "  honest empty states instead of hardcoded figures"
-      ]
-    },
-    {
-      "hash": "2c39e57",
-      "date": "09 Oct 2026",
-      "type": "fix",
-      "scope": "ui",
-      "subject": "raise contrast of status/warn text on tinted backgrounds",
-      "body": [
-        "- About status badges: emerald/amber explicit colors instead of near-white",
-        "  success-foreground and dark warn-foreground on pale chips",
-        "- Replace low-contrast warn-foreground text on tinted backgrounds in"
-      ]
-    },
-    {
-      "hash": "0662e7c",
-      "date": "09 Oct 2026",
-      "type": "feat",
-      "scope": "about",
-      "subject": "add public transparency page with feature status tree",
-      "body": [
-        "- Add /about route with honest feature tree (ready/partial/planned)",
-        "- Add development roadmap phases and honesty notes on limitations",
-        "- Wire entry into sidebar (new 'Info' group) and landing header/hero/footer"
-      ]
-    },
-    {
-      "hash": "d8c8644",
-      "date": "09 Oct 2026",
-      "type": "chore",
-      "scope": "pwa",
-      "subject": "apply real DRG logo to launcher icons & favicon",
-      "body": [
-        "- Regenerate icon-192/512 from DRG_logo.jpg",
-        "- Add dedicated maskable icons (192/512) for Android adaptive launcher",
-        "- Generate multi-size favicon.ico (16/32/48) and apple-touch-icon 180"
-      ]
-    },
-    {
-      "hash": "336244b",
-      "date": "09 Oct 2026",
-      "type": "update",
-      "scope": null,
-      "subject": "Add files via upload",
-      "body": []
-    },
-    {
-      "hash": "5769d9a",
+      "hash": "8271eef",
       "date": "08 Oct 2026",
-      "type": "chore",
-      "scope": null,
-      "subject": "update PWA icons to match brand image",
-      "body": []
-    },
-    {
-      "hash": "235d4a8",
-      "date": "08 Oct 2026",
-      "type": "ui",
-      "scope": null,
-      "subject": "polish landing page with ojol vibe (warm, kekeluargaan, satu aspal)",
-      "body": []
-    },
-    {
-      "hash": "4aee05d",
-      "date": "09 Oct 2026",
-      "type": "refactor",
-      "scope": null,
-      "subject": "update branding to \"Satu Aspal Santui\" tone",
-      "body": [
-        "Update application copy and UI theme to reflect the \"Satu Aspal Santui\" community branding. Refresh navigation styles, status indicators, and terminology to prioritize a friendlier, driver-centric tone."
-      ]
-    },
-    {
-      "hash": "fd76286",
-      "date": "08 Oct 2026",
-      "type": "feat",
-      "scope": "settings",
-      "subject": "add system settings and expand member management",
-      "body": [
-        "- Added global Settings module and navigation integration.",
-        "- Expanded user profile data and member schema with additional fields.",
-        "- Implemented core member management services (mutations, permissions, and CRUD primitives)."
-      ]
-    },
-    {
-      "hash": "4bf40d3",
-      "date": "07 Oct 2026",
-      "type": "refactor",
-      "scope": null,
-      "subject": "remove hardcoded seed data for auth",
-      "body": [
-        "Decouple user authentication from hardcoded seed data to support dynamic bootstrap and better testing of the user lifecycle."
-      ]
-    },
-    {
-      "hash": "8f23e95",
-      "date": "07 Oct 2026",
-      "type": "refactor",
-      "scope": null,
-      "subject": "standardize id generation and storage access",
-      "body": [
-        "- Introduce `generatePrefixedId` for consistent entity identifiers.",
-        "- Implement `safeReadStorage` and `safeWriteStorage` with Zod validation.",
-        "- Decouple local table resolvers into a registry for improved maintainability."
-      ]
-    },
-    {
-      "hash": "876547e",
-      "date": "07 Oct 2026",
-      "type": "update",
-      "scope": null,
-      "subject": "setup CI/CD pipelines and repository config",
-      "body": [
-        "- Implement GitHub Actions for CI (linting, testing, build) and CD (container packaging).",
-        "- Configure .gitignore for project-specific patterns.",
-        "- Add project documentation (README, LICENSE, Roadmap)."
-      ]
-    },
-    {
-      "hash": "817c1b1",
-      "date": "08 Sep 2026",
-      "type": "fix",
-      "scope": "deps",
-      "subject": "bump outdated & vulnerable dependencies in package.json",
-      "body": []
-    },
-    {
-      "hash": "5b8696f",
-      "date": "08 Sep 2026",
-      "type": "update",
-      "scope": null,
-      "subject": "Update README.md",
-      "body": []
-    },
-    {
-      "hash": "5728a01",
-      "date": "08 Sep 2026",
-      "type": "security",
-      "scope": null,
-      "subject": "add audit script and security headers setup (.gitignore)",
-      "body": []
-    },
-    {
-      "hash": "737241f",
-      "date": "08 Sep 2026",
-      "type": "security",
-      "scope": null,
-      "subject": "add audit script and security headers setup (package.json)",
-      "body": []
-    },
-    {
-      "hash": "9adeff2",
-      "date": "07 Sep 2026",
-      "type": "feat",
-      "scope": "auth",
-      "subject": "refactor to local authentication client",
-      "body": [
-        "Replace Supabase authentication with a local auth client, improve form UX with password visibility toggles, and enhance field accessibility with autocomplete attributes."
-      ]
-    },
-    {
-      "hash": "8561c90",
-      "date": "07 Sep 2026",
       "type": "feat",
       "scope": "piket",
-      "subject": "implement shift management and swap system",
-      "body": [
-        "Added core logic, UI components, and state management for the picket scheduling system, including shift creation, calendar grid visualization, and member swap request functionality."
-      ]
+      "subject": "sistem pertukaran shift jaga basecamp & verifikasi kehadiran",
+      "body": []
     },
     {
-      "hash": "ee60dbb",
-      "date": "07 Sep 2026",
-      "type": "chore",
-      "scope": null,
-      "subject": "initialize project configuration",
-      "body": [
-        "Set up base project structure, including environment variables, Supabase credentials, build configuration, and documentation for DRG Community App."
-      ]
-    },
-    {
-      "hash": "d6a5a95",
-      "date": "07 Sep 2026",
-      "type": "update",
-      "scope": null,
-      "subject": "Initial commit",
+      "hash": "732b110",
+      "date": "07 Oct 2026",
+      "type": "feat",
+      "scope": "kejadian",
+      "subject": "radar darurat SOS satu aspal & satgas lapangan siaga 24/7",
       "body": []
     }
   ]

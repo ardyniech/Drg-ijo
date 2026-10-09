@@ -7,7 +7,7 @@
     "predev": "node scripts/gen-development-log.mjs && node scripts/gen-roadmap-progress.mjs && node scripts/gen-feature-tree.mjs && node scripts/gen-live-feature-status.mjs",
     "dev": "vite dev --port 3000 --host 0.0.0.0",
     "prebuild": "node scripts/gen-development-log.mjs && node scripts/gen-roadmap-progress.mjs && node scripts/gen-feature-tree.mjs && node scripts/gen-live-feature-status.mjs",
-    "build": "vite build",
+    "build": "NODE_ENV=production NITRO_PRESET=node-server vite build",
     "build:dev": "vite build --mode development",
     "build:vaio": "NODE_OPTIONS='--max-old-space-size=1024' NITRO_PRESET=node-server vite build",
     "start": "node --max-old-space-size=384 .output/server/index.mjs",
