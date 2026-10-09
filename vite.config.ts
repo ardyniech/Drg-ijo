@@ -9,9 +9,13 @@ const SECURITY_HEADERS = {
 
 export default defineConfig({
   server: {
+    port: 3000,
+    host: "0.0.0.0",
     headers: SECURITY_HEADERS,
   },
   preview: {
+    port: 3000,
+    host: "0.0.0.0",
     headers: SECURITY_HEADERS,
   },
   tanstackStart: {
@@ -23,5 +27,6 @@ export default defineConfig({
         headers: SECURITY_HEADERS,
       },
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } as any,
 });

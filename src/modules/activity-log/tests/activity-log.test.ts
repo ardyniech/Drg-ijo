@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { getActivityLogs, recordActivityLog } from "../storage/activity-log-storage";
+import { getActivityLogs, recordActivityLog, resetActivityLogs } from "../storage/activity-log-storage";
 
 describe("Activity Log Module", () => {
   beforeEach(() => {
     if (typeof window !== "undefined") {
-      window.localStorage.removeItem("drg_system_activity_logs_v1");
+      resetActivityLogs();
     }
   });
 

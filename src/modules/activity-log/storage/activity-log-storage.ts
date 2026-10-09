@@ -21,6 +21,13 @@ const INITIAL_ACTIVITY_LOGS: ActivityLogEntry[] = [];
 
 let inMemoryLogs: ActivityLogEntry[] = [...INITIAL_ACTIVITY_LOGS];
 
+export function resetActivityLogs(): void {
+  inMemoryLogs = [];
+  if (typeof window !== "undefined" && window.localStorage) {
+    window.localStorage.removeItem(STORAGE_KEY);
+  }
+}
+
 export function getActivityLogs(): ActivityLogEntry[] {
   const logs = safeReadStorage(STORAGE_KEY, z.array(ActivityLogSchema), inMemoryLogs);
   inMemoryLogs = logs;
