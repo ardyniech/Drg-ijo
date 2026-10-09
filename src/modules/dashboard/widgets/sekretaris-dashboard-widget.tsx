@@ -1,8 +1,17 @@
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { useDashboardOrg } from "@/modules/dashboard/logic/use-dashboard-org";
+import { useNotulen } from "@/modules/notulen/logic/use-notulen";
+import { usePersetujuan } from "@/modules/persetujuan/logic/use-persetujuan";
 import { FileText, ClipboardCheck, FolderArchive, UserCheck } from "lucide-react";
 
 export function SekretarisDashboardWidget() {
+  const org = useDashboardOrg();
+  const { notulenList = [] } = useNotulen();
+  const { rawList = [] } = usePersetujuan();
+
+  const verifikasi = rawList.filter((a) => a.status === "pending").length;
+
   return (
     <div className="rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-500/10 via-blue-500/5 to-card p-5 shadow-xs">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4 pb-3 border-b border-blue-500/20">
@@ -42,24 +51,32 @@ export function SekretarisDashboardWidget() {
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
             <FileText className="h-3.5 w-3.5 text-blue-600" /> Notulen Rapat
           </div>
-          <div className="mt-1.5 text-xl font-bold text-blue-600">12 Berita Acara</div>
-          <div className="text-[10px] text-muted-foreground">Tersimpan di Arsip</div>
+          <div className="mt-1.5 text-xl font-bold text-blue-600">
+            {notulenList.length > 0 ? `${notulenList.length} Berita Acara` : "Belum Ada"}
+          </div>
+          <div className="text-[10px] text-muted-foreground">Tersimpan di arsip ringkasan</div>
         </div>
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
             <FolderArchive className="h-3.5 w-3.5 text-primary" /> Surat Keputusan (SK)
           </div>
-          <div className="mt-1.5 text-xl font-bold text-primary">3 Terbit Bulan Ini</div>
-          <div className="text-[10px] text-muted-foreground">Mandat Pengurus Valid</div>
+          <div className="mt-1.5 text-xl font-bold text-primary">
+            {org.pengurusCount > 0 ? `${org.pengurusCount} Mandat` : "Belum Terbit"}
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            Pengurus aktif terdaftar di sistem
+          </div>
         </div>
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs col-span-2 sm:col-span-1">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
             <UserCheck className="h-3.5 w-3.5 text-emerald-600" /> Verifikasi Berkas
           </div>
-          <div className="mt-1.5 text-xl font-bold text-emerald-600">Antrean Siap</div>
-          <div className="text-[10px] text-muted-foreground">Calon Anggota & Mutasi</div>
+          <div className="mt-1.5 text-xl font-bold text-emerald-600">
+            {verifikasi > 0 ? `${verifikasi} Menunggu` : "Antrean Kosong"}
+          </div>
+          <div className="text-[10px] text-muted-foreground">Calon anggota & pengajuan masuk</div>
         </div>
       </div>
     </div>

@@ -1,8 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { useDashboardOrg } from "@/modules/dashboard/logic/use-dashboard-org";
+import { formatRupiah } from "@/shared/utils/formatters";
 import { Wallet, TrendingUp, PiggyBank, ArrowUpRight } from "lucide-react";
 
 export function BendaharaDashboardWidget() {
+  const org = useDashboardOrg();
+
   return (
     <div className="rounded-2xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-card p-5 shadow-xs">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4 pb-3 border-b border-emerald-500/20">
@@ -34,24 +38,40 @@ export function BendaharaDashboardWidget() {
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
             <TrendingUp className="h-3.5 w-3.5 text-emerald-600" /> Kas Utama Satu Aspal
           </div>
-          <div className="mt-1.5 text-xl font-bold text-emerald-600">Rp 14.850.000</div>
-          <div className="text-[10px] text-muted-foreground">+Rp 2.450.000 guyub bulan ini</div>
+          <div className="mt-1.5 text-xl font-bold text-emerald-600">
+            {org.txCount > 0 ? formatRupiah(org.saldo) : "Belum Tercatat"}
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            {org.masukBulanIni > 0
+              ? `+${formatRupiah(org.masukBulanIni)} guyub bulan ini`
+              : `${org.txCount} transaksi di buku kas`}
+          </div>
         </div>
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <PiggyBank className="h-3.5 w-3.5 text-amber-600" /> Dana Guyub Koperasi
+            <PiggyBank className="h-3.5 w-3.5 text-amber-600" /> Dana Sosial / Guyub
           </div>
-          <div className="mt-1.5 text-xl font-bold text-amber-600">Rp 8.200.000</div>
-          <div className="text-[10px] text-muted-foreground">Gotong Royong 128 Sedulur</div>
+          <div className="mt-1.5 text-xl font-bold text-amber-600">
+            {org.txCount > 0 ? formatRupiah(org.saldoSosial) : "Belum Tercatat"}
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            Gotong royong {org.activeCount} sedulur terdata
+          </div>
         </div>
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs col-span-2 sm:col-span-1">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <Wallet className="h-3.5 w-3.5 text-primary" /> Kepatuhan Urunan
+            <Wallet className="h-3.5 w-3.5 text-primary" /> Transaksi Disetujui
           </div>
-          <div className="mt-1.5 text-xl font-bold text-primary">88% Tertib Lunas</div>
-          <div className="text-[10px] text-muted-foreground">Kwitansi Digital Siap</div>
+          <div className="mt-1.5 text-xl font-bold text-primary">
+            {org.approvedPct === null ? "Belum Ada" : `${org.approvedPct}%`}
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            {org.txCount > 0
+              ? `${org.txApproved} dari ${org.txCount} transaksi berstatus disetujui`
+              : "Belum ada transaksi di buku kas"}
+          </div>
         </div>
       </div>
     </div>

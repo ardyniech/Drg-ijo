@@ -46,6 +46,11 @@ export function BackupRestoreCard() {
             Mengekspor berkas JSON cadangan yang aman disimpan ke Google Drive atau komputer. Saat
             berpindah gawai HP, cukup unggah berkas ini untuk memulihkan seluruh aktivitas.
           </p>
+          <p className="pt-1 text-[11px] text-muted-foreground">
+            Data tersimpan lokal &amp; terikat ke URL aplikasi. Sebelum deploy ulang / ganti URL
+            preview, unduh cadangan ini dulu — data di URL lama tidak terbawa otomatis ke origin
+            baru.
+          </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">

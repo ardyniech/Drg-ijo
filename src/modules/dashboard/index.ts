@@ -5,6 +5,7 @@ export * from "./primitives/dashboard-piket-grid";
 export * from "./primitives/dashboard-activity-feed";
 export * from "./primitives/dashboard-role-switcher";
 export * from "./primitives/dashboard-role-widget-renderer";
+export * from "./primitives/dashboard-empty-data-banner";
 export * from "./widgets/ketua-dashboard-widget";
 export * from "./widgets/sekretaris-dashboard-widget";
 export * from "./widgets/bendahara-dashboard-widget";

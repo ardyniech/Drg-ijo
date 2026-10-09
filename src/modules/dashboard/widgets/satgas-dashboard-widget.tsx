@@ -1,8 +1,17 @@
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { useDashboardOrg } from "@/modules/dashboard/logic/use-dashboard-org";
+import { useKejadian } from "@/modules/kejadian/logic/use-kejadian";
 import { Siren, Shield, Map, Activity } from "lucide-react";
 
 export function SatgasDashboardWidget() {
+  const org = useDashboardOrg();
+  const { incidents = [] } = useKejadian();
+
+  const aktif = incidents.filter((i) => i.status === "aktif").length;
+  const ditangani = incidents.filter((i) => i.status === "dalam_penanganan").length;
+  const tuntas = incidents.filter((i) => i.status === "selesai").length;
+
   return (
     <div className="rounded-2xl border border-rose-500/30 bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-card p-5 shadow-xs">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4 pb-3 border-b border-rose-500/20">
@@ -44,24 +53,40 @@ export function SatgasDashboardWidget() {
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
             <Siren className="h-3.5 w-3.5 text-rose-600" /> Sinyal Panggilan
           </div>
-          <div className="mt-1.5 text-xl font-bold text-rose-600">Siaga Patroli</div>
-          <div className="text-[10px] text-muted-foreground">Respon Cepat &lt; 10 Menit</div>
+          <div className="mt-1.5 text-xl font-bold text-rose-600">
+            {aktif > 0 ? `${aktif} Aktif` : "Siaga Tenang"}
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            {ditangani > 0
+              ? `${ditangani} sedang dalam penanganan`
+              : "Tidak ada sinyal darurat aktif"}
+          </div>
         </div>
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-            <Shield className="h-3.5 w-3.5 text-primary" /> Dulur Satgas Siaga
+            <Shield className="h-3.5 w-3.5 text-primary" /> Dulur Satgas Terdaftar
           </div>
-          <div className="mt-1.5 text-xl font-bold text-primary">8 Satgas Siaga</div>
-          <div className="text-[10px] text-muted-foreground">Tersebar di 4 Sektor Pangkalan</div>
+          <div className="mt-1.5 text-xl font-bold text-primary">
+            {org.satgasCount > 0 ? `${org.satgasCount} Satgas` : "Belum Ada"}
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            {org.pangkalanCount > 0
+              ? `Tersebar di ${org.pangkalanCount} pangkalan`
+              : "Belum ada pangkalan tercatat"}
+          </div>
         </div>
 
         <div className="rounded-xl border border-border/80 bg-card p-3 shadow-2xs col-span-2 sm:col-span-1">
           <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
             <Activity className="h-3.5 w-3.5 text-emerald-600" /> Bantuan Tuntas
           </div>
-          <div className="mt-1.5 text-xl font-bold text-emerald-600">14 Bantuan Tuntas</div>
-          <div className="text-[10px] text-muted-foreground">Solidaritas Mogok & Ban Bocor</div>
+          <div className="mt-1.5 text-xl font-bold text-emerald-600">
+            {tuntas > 0 ? `${tuntas} Tuntas` : "Belum Ada"}
+          </div>
+          <div className="text-[10px] text-muted-foreground">
+            Solidaritas mogok & ban bocor teratasi
+          </div>
         </div>
       </div>
     </div>

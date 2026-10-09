@@ -9,6 +9,11 @@ export function ShelterListCard({ shelters }: { shelters: OfficialShelter[] }) {
       <h3 className="text-sm font-semibold flex items-center gap-2">
         <MapPin className="h-4 w-4 text-primary" /> Daftar Basecamp & Pos Pantau Resmi DRG
       </h3>
+      {shelters.length === 0 && (
+        <div className="rounded-xl border border-dashed border-border/70 bg-muted/30 p-6 text-center text-sm text-muted-foreground">
+          Belum ada posko/shelter tercatat. Data ditambahkan oleh pengurus saat resmi ditetapkan.
+        </div>
+      )}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {shelters.map((sh) => (
           <Card key={sh.id} className="border-border/60 shadow-none">

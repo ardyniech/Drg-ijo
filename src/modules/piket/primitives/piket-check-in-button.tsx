@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, MapPin, Loader2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
-import { SEED_SHELTERS } from "@/modules/peta/storage/peta-storage";
+import { getShelters } from "@/modules/peta/storage/peta-storage";
 import { findNearestShelter, formatDistanceDisplay } from "@/shared/utils/geo-distance";
 
 interface PiketCheckInButtonProps {
@@ -36,7 +36,7 @@ export function PiketCheckInButton({ isToday }: PiketCheckInButtonProps) {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const userPos = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        const match = findNearestShelter(userPos, SEED_SHELTERS, 300);
+        const match = findNearestShelter(userPos, getShelters(), 300);
 
         setLoading(false);
         setCheckedIn(true);

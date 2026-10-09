@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { SEED_DRIVERS, SEED_SHELTERS } from "../storage/peta-storage";
+import { supabase } from "@/integrations/supabase/client";
+import { getActiveDrivers, getShelters } from "../storage/peta-storage";
 import { ActiveDriverMarker, OfficialShelter } from "../types";
 
 export function usePetaRadar() {
@@ -10,7 +11,7 @@ export function usePetaRadar() {
   const driversQuery = useQuery({
     queryKey: ["peta", "drivers"],
     queryFn: async (): Promise<ActiveDriverMarker[]> => {
-      return SEED_DRIVERS;
+      return getActiveDrivers();
     },
     refetchInterval: 10000,
   });
@@ -18,7 +19,16 @@ export function usePetaRadar() {
   const sheltersQuery = useQuery({
     queryKey: ["peta", "shelters"],
     queryFn: async (): Promise<OfficialShelter[]> => {
-      return SEED_SHELTERS;
+      return getShelters();
+    },
+  });
+
+  const pangkalanQuery = useQuery({
+    queryKey: ["peta", "pangkalan"],
+    queryFn: async (): Promise<string[]> => {
+      const { data } = await supabase.from("profiles").select("pangkalan");
+      const rows = (data ?? []) as Array<{ pangkalan?: string | null }>;
+      return [...new Set(rows.map((p) => p.pangkalan).filter((p): p is string => Boolean(p)))];
     },
   });
 
@@ -33,6 +43,7 @@ export function usePetaRadar() {
     drivers: filteredDrivers,
     allDriversCount: allDrivers.length,
     shelters: sheltersQuery.data ?? [],
+    pangkalanOptions: pangkalanQuery.data ?? [],
     maxRadius,
     setMaxRadius,
     selectedPangkalan,

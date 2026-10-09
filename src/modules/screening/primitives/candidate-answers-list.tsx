@@ -18,9 +18,11 @@ export function CandidateAnswersList({ answers }: Props) {
             <div className="text-xs text-muted-foreground">{a.screening_questions?.pertanyaan}</div>
             <div className="mt-0.5 flex items-center justify-between">
               <span>{a.jawaban}</span>
-              <span className="font-mono text-xs text-primary">
-                {a.bobot_didapat}/{a.screening_questions?.bobot_max ?? 0}
-              </span>
+              {a.screening_questions?.bobot_max ? (
+                <span className="font-mono text-xs text-primary">
+                  {a.bobot_didapat}/{a.screening_questions.bobot_max}
+                </span>
+              ) : null}
             </div>
           </div>
         ))}

@@ -2,8 +2,8 @@ import {
   ScreeningApplication,
   ScreeningAnswerItem,
   ScreeningAuditItem,
-  ScreeningStatus,
 } from "@/modules/screening/types";
+import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 
 const APPS_KEY = "drg_screening_apps_v2";
 const ANSWERS_KEY = "drg_screening_answers_v2";
@@ -19,14 +19,20 @@ export function getStoredScreeningApplications(): ScreeningApplication[] {
   }
 }
 
-export function saveScreeningApplication(app: Omit<ScreeningApplication, "status" | "created_at">) {
+export function saveScreeningApplication(
+  app: Omit<
+    ScreeningApplication,
+    "status" | "created_at" | "skor_total" | "catatan_pic" | "email_verified"
+  >,
+) {
   const current = getStoredScreeningApplications();
   const newApp: ScreeningApplication = {
     ...app,
     status: "menunggu",
-    skor_total: Math.floor(Math.random() * 30) + 70, // Generate a nice score
+    skor_total: null,
+    catatan_pic: null,
     created_at: new Date().toISOString(),
-    email_verified: true,
+    email_verified: false,
   };
   const updated = [newApp, ...current];
   if (typeof window !== "undefined") {
@@ -78,30 +84,14 @@ export function saveScreeningAnswers(
     const raw = localStorage.getItem(ANSWERS_KEY);
     const all = raw ? JSON.parse(raw) : {};
 
-    // Simulate scoring and question mapping
-    const simulatedAnswers: ScreeningAnswerItem[] = answers.map((ans) => {
-      let qText = "Kuesioner Screening";
-      let maxScore = 50;
-      if (ans.question_id === "q1") {
-        qText = "Berapa lama pengalaman mengemudi Anda?";
-        maxScore = 50;
-      } else if (ans.question_id === "q2") {
-        qText = "Apakah bersedia ikut piket malam darurat?";
-        maxScore = 50;
-      }
+    const storedAnswers: ScreeningAnswerItem[] = answers.map((ans) => ({
+      jawaban: ans.jawaban,
+      bobot_didapat: 0,
+      question_id: ans.question_id,
+      screening_questions: null,
+    }));
 
-      return {
-        jawaban: ans.jawaban,
-        bobot_didapat: Math.floor(Math.random() * 15) + 35,
-        question_id: ans.question_id,
-        screening_questions: {
-          pertanyaan: qText,
-          bobot_max: maxScore,
-        },
-      };
-    });
-
-    all[appId] = simulatedAnswers;
+    all[appId] = storedAnswers;
     localStorage.setItem(ANSWERS_KEY, JSON.stringify(all));
   } catch {
     // ignore
@@ -131,15 +121,19 @@ export function addScreeningAuditLog(
     const all = raw ? JSON.parse(raw) : {};
     const current = all[appId] ?? [];
 
+    const session = LocalAuthClient.getSession();
+    const actorId = session?.user.id ?? "usr-anon";
+    const actorName = session?.user.user_metadata?.nama || "Anggota DRG";
+
     const newAudit: ScreeningAuditItem = {
       id: `audit-${Date.now()}`,
       old_status: oldStatus,
       new_status: newStatus,
       note,
       created_at: new Date().toISOString(),
-      actor_id: "usr-superadmin",
+      actor_id: actorId,
       profiles: {
-        nama: "Ardy Syafii",
+        nama: actorName,
       },
     };
 

@@ -20,6 +20,7 @@ function PetaRadarPage() {
     drivers,
     allDriversCount,
     shelters,
+    pangkalanOptions,
     maxRadius,
     setMaxRadius,
     selectedPangkalan,
@@ -30,7 +31,7 @@ function PetaRadarPage() {
     <PageShell
       title="Radar Dulur & Peta Basecamp"
       description="Pantau sebaran dulur on-bit yang sedang narik santui di sekitar jalur dan shelter/pos pantau resmi DRG."
-      action={
+      actions={
         <div className="flex items-center gap-2">
           <Select value={selectedPangkalan} onValueChange={setSelectedPangkalan}>
             <SelectTrigger className="w-40 h-8 text-xs">
@@ -38,9 +39,11 @@ function PetaRadarPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Semua Pangkalan</SelectItem>
-              <SelectItem value="Pangkalan Suhat">Pangkalan Suhat</SelectItem>
-              <SelectItem value="Pangkalan Dinoyo">Pangkalan Dinoyo</SelectItem>
-              <SelectItem value="Pangkalan Sawojajar">Pangkalan Sawojajar</SelectItem>
+              {pangkalanOptions.map((p) => (
+                <SelectItem key={p} value={p}>
+                  {p}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

@@ -12,6 +12,7 @@ import {
   DashboardPiketGrid,
   DashboardRoleSwitcher,
   DashboardRoleWidgetRenderer,
+  DashboardEmptyDataBanner,
 } from "@/modules/dashboard";
 import { useDashboardGreeting } from "@/modules/dashboard/primitives/dashboard-header-greeting";
 import { ActivityLogView } from "@/modules/activity-log";
@@ -92,6 +93,7 @@ function Dashboard() {
         </div>
       }
     >
+      <DashboardEmptyDataBanner />
       <DashboardRoleSwitcher activeRole={activeRole} onRoleChange={setActiveRole} />
       <DashboardRoleWidgetRenderer role={activeRole} />
       <ProgressiveOnboardingCard
