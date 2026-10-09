@@ -62,7 +62,7 @@ export function GpsCard({ userId }: { userId?: string }) {
           </ol>
         )}
         {error && !denied && (
-          <div className="rounded-md bg-warn/15 px-2 py-1.5 text-xs text-warn-foreground">
+          <div className="rounded-md bg-warn/15 px-2 py-1.5 text-xs text-amber-800 dark:text-amber-100">
             {error}
           </div>
         )}

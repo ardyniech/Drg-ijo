@@ -38,7 +38,7 @@ export type ScreeningAuditItem = {
 };
 
 export const statusStyle: Record<ScreeningStatus, string> = {
-  menunggu: "border-warn/50 text-warn-foreground",
+  menunggu: "border-warn/50 text-amber-800 dark:text-amber-200",
   wawancara: "border-primary/40 text-primary",
   direkomendasikan: "border-success/40 text-success",
   ditolak: "border-destructive/40 text-destructive",

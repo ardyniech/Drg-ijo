@@ -28,7 +28,7 @@ export function UserScreeningView({ myApp, email, nama }: Props) {
               ? "border-success/40 bg-success/10 text-success"
               : isRej
                 ? "border-destructive/40 bg-destructive/10 text-destructive"
-                : "border-warn/40 bg-warn/10 text-warn-foreground"
+                : "border-warn/40 bg-warn/10 text-amber-800 dark:text-amber-200"
           }`}
         >
           {isAppr ? (

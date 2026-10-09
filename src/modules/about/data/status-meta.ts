@@ -6,13 +6,13 @@ export const featureStatusMeta: Record<
 > = {
   siap: {
     label: "Siap dipakai",
-    dot: "bg-success",
-    chip: "border-success/30 bg-success/10 text-success-foreground",
+    dot: "bg-emerald-600 dark:bg-emerald-400",
+    chip: "border-emerald-600/30 bg-emerald-500/10 text-emerald-800 dark:border-emerald-400/30 dark:bg-emerald-400/15 dark:text-emerald-200",
   },
   sebagian: {
     label: "Sebagian / terbatas",
-    dot: "bg-warn",
-    chip: "border-warn/40 bg-warn/15 text-warn-foreground",
+    dot: "bg-amber-500 dark:bg-amber-400",
+    chip: "border-amber-600/40 bg-amber-500/15 text-amber-800 dark:border-amber-400/30 dark:bg-amber-400/15 dark:text-amber-200",
   },
   rencana: {
     label: "Belum ada / rencana",

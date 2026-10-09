@@ -23,7 +23,7 @@ export function AboutHonestyNote() {
     <section className="mx-auto w-full max-w-5xl px-4 pb-12 sm:px-6 md:pb-16">
       <div className="rounded-2xl border border-warn/40 bg-warn/10 p-5 sm:p-6">
         <div className="flex items-start gap-3">
-          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-warn/40 bg-warn/20 text-warn-foreground">
+          <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-amber-600/40 bg-amber-500/15 text-amber-700 dark:border-amber-400/30 dark:text-amber-200">
             <Info className="h-4 w-4" />
           </div>
           <div>
@@ -39,7 +39,7 @@ export function AboutHonestyNote() {
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           {notes.map((item) => (
             <div key={item.title} className="rounded-xl border border-border/70 bg-card p-4">
-              <item.icon className="h-4 w-4 text-warn-foreground" />
+              <item.icon className="h-4 w-4 text-amber-700 dark:text-amber-200" />
               <h4 className="mt-2 text-sm font-semibold text-foreground">{item.title}</h4>
               <p className="mt-1 text-xs leading-relaxed text-muted-foreground text-pretty">
                 {item.body}

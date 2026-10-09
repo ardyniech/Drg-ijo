@@ -3,7 +3,7 @@ import { roadmapPhases, type RoadmapPhase } from "../data/roadmap";
 
 const statusMeta: Record<RoadmapPhase["status"], { icon: typeof Circle; className: string }> = {
   selesai: { icon: CheckCircle2, className: "text-success" },
-  jalan: { icon: Loader2, className: "text-warn-foreground" },
+  jalan: { icon: Loader2, className: "text-amber-600 dark:text-amber-300" },
   rencana: { icon: Circle, className: "text-muted-foreground" },
 };
 

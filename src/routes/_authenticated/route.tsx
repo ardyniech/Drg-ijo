@@ -68,13 +68,13 @@ function AuthedLayout() {
           <AuthedHeader onBit={onBit} setOnBit={setOnBit} hydrated={hydrated} today={today} />
           <EmergencySosBanner />
           {me?.isPendingReview && (
-            <div className="border-b border-warn/40 bg-warn/15 px-3 py-2 text-center text-xs text-warn-foreground md:px-6">
+            <div className="border-b border-warn/40 bg-warn/15 px-3 py-2 text-center text-xs text-amber-800 dark:text-amber-100 md:px-6">
               Akun dulur <b>menunggu verifikasi pangkalan</b>. Sabar ya dulur, modul organisasi
               terbuka setelah disahkan PIC pangkalan.
             </div>
           )}
           {onBit && error && (
-            <div className="border-b border-warn/40 bg-warn/15 px-3 py-1.5 text-center text-[11px] text-warn-foreground md:px-6">
+            <div className="border-b border-warn/40 bg-warn/15 px-3 py-1.5 text-center text-[11px] text-amber-800 dark:text-amber-100 md:px-6">
               GPS jalur belum terbaca: {error}. Silakan aktifkan izin lokasi di browser.
             </div>
           )}

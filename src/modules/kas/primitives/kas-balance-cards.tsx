@@ -32,10 +32,12 @@ export function KasBalanceCards({ totals }: Props) {
       </div>
 
       <div className="rounded-2xl border border-warn/40 bg-warn/10 p-5 shadow-card">
-        <div className="text-xs font-semibold uppercase tracking-wider text-warn-foreground/80">
+        <div className="text-xs font-semibold uppercase tracking-wider text-amber-700/90 dark:text-amber-200/90">
           Menunggu Verifikasi
         </div>
-        <div className="mt-2 text-3xl font-bold text-warn-foreground">{totals.menunggu}</div>
+        <div className="mt-2 text-3xl font-bold text-amber-700 dark:text-amber-200">
+          {totals.menunggu}
+        </div>
         <div className="mt-1 text-xs text-muted-foreground">
           Transaksi kas butuh konfirmasi bendahara.
         </div>
