@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { LandingHeader, LandingFooter } from "@/modules/landing";
-import { AboutHero, FeatureTreeView, AboutHonestyNote, AboutRoadmap } from "@/modules/about";
+import { AboutHero, FeatureTreeView, AboutHonestyNote, AboutRoadmap, AboutDevelopmentLog } from "@/modules/about";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -36,8 +36,9 @@ function AboutPage() {
       <main className="flex-1">
         <AboutHero />
         <FeatureTreeView />
-        <AboutHonestyNote />
         <AboutRoadmap />
+        <AboutDevelopmentLog />
+        <AboutHonestyNote />
       </main>
       <LandingFooter />
     </div>

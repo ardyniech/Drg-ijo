@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
-import { useIs } from "@/hooks/use-my-role";
 import {
   addDays,
   startOfWeek,
@@ -12,13 +11,13 @@ import {
 } from "@/modules/piket";
 
 export const Route = createFileRoute("/_authenticated/piket")({
-  head: () => ({ meta: [{ title: "Piket Satgas — DRG App" }] }),
+  head: () => ({ meta: [{ title: "Jaga Satu Aspal — DRG App" }] }),
   component: PiketPage,
 });
 
 function PiketPage() {
   const { user } = Route.useRouteContext();
-  const canManage = useIs(["ketua", "admin", "super_admin", "korlap", "satgas"]);
+  const canManage = Boolean(user?.id);
 
   const {
     weekStart,
@@ -35,9 +34,9 @@ function PiketPage() {
 
   return (
     <PageShell
-      eyebrow="Piket Satgas & Basecamp"
-      title="Jadwal Piket Jaga Jalur"
-      description="Gotong royong jaga basecamp & pantau jalur. Atur shift piket, tukar shift santui antar sedulur, dan catat kehadiran dulur bertugas."
+      eyebrow="Jaga Satu Aspal"
+      title="Jadwal Jaga Sedulur di Jalan"
+      description="Semua sedulur gantian jaga satu aspal: pantau rekan narik dari mana pun orderan bawa. Atur slot jaga, tukar shift santui, dan absen siaga di posisimu."
       actions={
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" size="sm" onClick={() => setWeekStart(addDays(weekStart, -7))}>

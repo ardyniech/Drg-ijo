@@ -31,9 +31,9 @@ export function DashboardStats({ overview }: Props) {
       to: "/kejadian" as const,
     },
     {
-      label: "Piket Satgas Hari Ini",
+      label: "Jaga Satu Aspal Hari Ini",
       value: overview ? String(overview.shiftHariIni) : "—",
-      delta: overview ? `${overview.wilayahHariIni} zona pangkalan` : "",
+      delta: overview ? `${overview.wilayahHariIni} area aktif` : "",
       icon: CalendarClock,
       to: "/piket" as const,
     },

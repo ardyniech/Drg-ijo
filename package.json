@@ -4,7 +4,9 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "predev": "node scripts/gen-development-log.mjs",
     "dev": "vite dev",
+    "prebuild": "node scripts/gen-development-log.mjs",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "build:vaio": "NODE_OPTIONS='--max-old-space-size=1024' NITRO_PRESET=node-server vite build",

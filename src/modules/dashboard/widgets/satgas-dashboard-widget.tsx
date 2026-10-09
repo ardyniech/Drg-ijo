@@ -24,7 +24,7 @@ export function SatgasDashboardWidget() {
               Dashboard Satgas Gercep Satu Aspal
             </h3>
             <p className="text-xs text-muted-foreground">
-              Basecamp siaga 24 jam, gercep tolong mogok, laka lantas, & saling kawal di jalan
+              Siaga jalur 24 jam, gercep tolong mogok, laka lantas, & saling kawal sedulur di jalan
             </p>
           </div>
         </div>

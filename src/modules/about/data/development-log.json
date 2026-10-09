@@ -1,0 +1,216 @@
+{
+  "generatedAt": "2026-10-09T02:53:47.502Z",
+  "source": "git log",
+  "entries": [
+    {
+      "hash": "5a4591b",
+      "date": "09 Oct 2026",
+      "type": "fix",
+      "scope": "ui",
+      "subject": "remove fake fallback values & adopt santui ojol tone",
+      "body": [
+        "- no more placeholder-as-data: pangkalan/plat/telepon defaults emptied,",
+        "  alamat \"Malang, Jawa Timur\" dropped, Unsplash avatar fallback removed,",
+        "  bio default removed (honest empty states instead)"
+      ]
+    },
+    {
+      "hash": "9df53bf",
+      "date": "09 Oct 2026",
+      "type": "fix",
+      "scope": "data",
+      "subject": "purge fake numbers, wire dashboard widgets & cards to real stores",
+      "body": [
+        "- dashboard role widgets (ketua..driver) now read real org data",
+        "  (anggota, kas, piket, etik, notulen, persetujuan, shelter) with",
+        "  honest empty states instead of hardcoded figures"
+      ]
+    },
+    {
+      "hash": "2c39e57",
+      "date": "09 Oct 2026",
+      "type": "fix",
+      "scope": "ui",
+      "subject": "raise contrast of status/warn text on tinted backgrounds",
+      "body": [
+        "- About status badges: emerald/amber explicit colors instead of near-white",
+        "  success-foreground and dark warn-foreground on pale chips",
+        "- Replace low-contrast warn-foreground text on tinted backgrounds in"
+      ]
+    },
+    {
+      "hash": "0662e7c",
+      "date": "09 Oct 2026",
+      "type": "feat",
+      "scope": "about",
+      "subject": "add public transparency page with feature status tree",
+      "body": [
+        "- Add /about route with honest feature tree (ready/partial/planned)",
+        "- Add development roadmap phases and honesty notes on limitations",
+        "- Wire entry into sidebar (new 'Info' group) and landing header/hero/footer"
+      ]
+    },
+    {
+      "hash": "d8c8644",
+      "date": "09 Oct 2026",
+      "type": "chore",
+      "scope": "pwa",
+      "subject": "apply real DRG logo to launcher icons & favicon",
+      "body": [
+        "- Regenerate icon-192/512 from DRG_logo.jpg",
+        "- Add dedicated maskable icons (192/512) for Android adaptive launcher",
+        "- Generate multi-size favicon.ico (16/32/48) and apple-touch-icon 180"
+      ]
+    },
+    {
+      "hash": "336244b",
+      "date": "09 Oct 2026",
+      "type": "update",
+      "scope": null,
+      "subject": "Add files via upload",
+      "body": []
+    },
+    {
+      "hash": "5769d9a",
+      "date": "08 Oct 2026",
+      "type": "chore",
+      "scope": null,
+      "subject": "update PWA icons to match brand image",
+      "body": []
+    },
+    {
+      "hash": "235d4a8",
+      "date": "08 Oct 2026",
+      "type": "ui",
+      "scope": null,
+      "subject": "polish landing page with ojol vibe (warm, kekeluargaan, satu aspal)",
+      "body": []
+    },
+    {
+      "hash": "4aee05d",
+      "date": "09 Oct 2026",
+      "type": "refactor",
+      "scope": null,
+      "subject": "update branding to \"Satu Aspal Santui\" tone",
+      "body": [
+        "Update application copy and UI theme to reflect the \"Satu Aspal Santui\" community branding. Refresh navigation styles, status indicators, and terminology to prioritize a friendlier, driver-centric tone."
+      ]
+    },
+    {
+      "hash": "fd76286",
+      "date": "08 Oct 2026",
+      "type": "feat",
+      "scope": "settings",
+      "subject": "add system settings and expand member management",
+      "body": [
+        "- Added global Settings module and navigation integration.",
+        "- Expanded user profile data and member schema with additional fields.",
+        "- Implemented core member management services (mutations, permissions, and CRUD primitives)."
+      ]
+    },
+    {
+      "hash": "4bf40d3",
+      "date": "07 Oct 2026",
+      "type": "refactor",
+      "scope": null,
+      "subject": "remove hardcoded seed data for auth",
+      "body": [
+        "Decouple user authentication from hardcoded seed data to support dynamic bootstrap and better testing of the user lifecycle."
+      ]
+    },
+    {
+      "hash": "8f23e95",
+      "date": "07 Oct 2026",
+      "type": "refactor",
+      "scope": null,
+      "subject": "standardize id generation and storage access",
+      "body": [
+        "- Introduce `generatePrefixedId` for consistent entity identifiers.",
+        "- Implement `safeReadStorage` and `safeWriteStorage` with Zod validation.",
+        "- Decouple local table resolvers into a registry for improved maintainability."
+      ]
+    },
+    {
+      "hash": "876547e",
+      "date": "07 Oct 2026",
+      "type": "update",
+      "scope": null,
+      "subject": "setup CI/CD pipelines and repository config",
+      "body": [
+        "- Implement GitHub Actions for CI (linting, testing, build) and CD (container packaging).",
+        "- Configure .gitignore for project-specific patterns.",
+        "- Add project documentation (README, LICENSE, Roadmap)."
+      ]
+    },
+    {
+      "hash": "817c1b1",
+      "date": "08 Sep 2026",
+      "type": "fix",
+      "scope": "deps",
+      "subject": "bump outdated & vulnerable dependencies in package.json",
+      "body": []
+    },
+    {
+      "hash": "5b8696f",
+      "date": "08 Sep 2026",
+      "type": "update",
+      "scope": null,
+      "subject": "Update README.md",
+      "body": []
+    },
+    {
+      "hash": "5728a01",
+      "date": "08 Sep 2026",
+      "type": "security",
+      "scope": null,
+      "subject": "add audit script and security headers setup (.gitignore)",
+      "body": []
+    },
+    {
+      "hash": "737241f",
+      "date": "08 Sep 2026",
+      "type": "security",
+      "scope": null,
+      "subject": "add audit script and security headers setup (package.json)",
+      "body": []
+    },
+    {
+      "hash": "9adeff2",
+      "date": "07 Sep 2026",
+      "type": "feat",
+      "scope": "auth",
+      "subject": "refactor to local authentication client",
+      "body": [
+        "Replace Supabase authentication with a local auth client, improve form UX with password visibility toggles, and enhance field accessibility with autocomplete attributes."
+      ]
+    },
+    {
+      "hash": "8561c90",
+      "date": "07 Sep 2026",
+      "type": "feat",
+      "scope": "piket",
+      "subject": "implement shift management and swap system",
+      "body": [
+        "Added core logic, UI components, and state management for the picket scheduling system, including shift creation, calendar grid visualization, and member swap request functionality."
+      ]
+    },
+    {
+      "hash": "ee60dbb",
+      "date": "07 Sep 2026",
+      "type": "chore",
+      "scope": null,
+      "subject": "initialize project configuration",
+      "body": [
+        "Set up base project structure, including environment variables, Supabase credentials, build configuration, and documentation for DRG Community App."
+      ]
+    },
+    {
+      "hash": "d6a5a95",
+      "date": "07 Sep 2026",
+      "type": "update",
+      "scope": null,
+      "subject": "Initial commit",
+      "body": []
+    }
+  ]
+}

@@ -12,7 +12,7 @@ export function KaderisasiStatsGrid({ item }: Props) {
         <p className="font-display text-sm font-bold text-foreground">{item.points} / 100</p>
       </div>
       <div>
-        <span className="text-[11px] text-muted-foreground">Piket Basecamp</span>
+        <span className="text-[11px] text-muted-foreground">Jaga Satu Aspal</span>
         <p className="font-display text-sm font-bold text-foreground">
           {item.piketAttendanceCount} Shift
         </p>

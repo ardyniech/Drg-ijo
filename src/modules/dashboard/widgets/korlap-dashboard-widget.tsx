@@ -41,7 +41,7 @@ export function KorlapDashboardWidget() {
               Dashboard Koordinator Lapangan (Korlap)
             </h3>
             <p className="text-xs text-muted-foreground">
-              Pengawasan posko pangkalan, pembagian piket, & persetujuan tukar shift
+              Koordinasi jaga satu aspal: atur slot siaga, pantau jalur, & ok tukar shift
             </p>
           </div>
         </div>

@@ -77,7 +77,7 @@ function Dashboard() {
     <PageShell
       eyebrow="Pangkalan Terpadu Satu Aspal"
       title={greetingTitle}
-      description="Denyut kabar pangkalan: pantau jalur aspal, piket satgas basecamp, saldo gotong royong, dan kabar terkini sedulur DRG."
+      description="Denyut kabar pangkalan: pantau jalur aspal, jaga satu aspal sambil narik, saldo gotong royong, dan kabar terkini sedulur DRG."
       actions={
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" asChild>

@@ -14,16 +14,18 @@ export function DashboardHero({ overview }: Props) {
       <div className="relative grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-center">
         <div>
           <Badge className="mb-3 bg-primary-foreground/15 text-primary-foreground hover:bg-primary-foreground/20">
-            <Radio className="mr-1.5 h-3 w-3" /> Piket Basecamp ·{" "}
+            <Radio className="mr-1.5 h-3 w-3" /> Jaga Satu Aspal ·{" "}
             {overview && overview.shiftHariIni > 0 ? "aktif jaga jalur" : "belum ada jadwal"}
           </Badge>
           <h2 className="font-display text-2xl font-bold leading-tight text-primary-foreground md:text-4xl">
-            {overview ? `${overview.shiftHariIni} Dulur Satgas Siaga.` : "Menghubungkan pangkalan…"}
-            <br /> Pangkalan terhubung sejak subuh santui.
+            {overview
+              ? `${overview.shiftHariIni} Dulur Siaga di Jalan.`
+              : "Menghubungkan pangkalan…"}
+            <br /> Satu aspal guyub sejak subuh santui.
           </h2>
           <p className="mt-3 max-w-lg text-sm text-primary-foreground/80 md:text-base">
-            Semua dulur piket terlihat di radar pangkalan masing-masing. Tekan tombol SOS di header
-            kapan pun dulur butuh bantuan darurat di jalan.
+            Dulur yang lagi jaga terlihat di radar aspal dari mana pun posisinya. Tekan tombol SOS
+            di header kapan pun dulur butuh bantuan darurat di jalan.
           </p>
         </div>
         <div className="rounded-2xl bg-primary-foreground/10 p-5 backdrop-blur">

@@ -33,7 +33,7 @@ export const operasionalNav: NavItem[] = [
   { title: "Beranda Pangkalan", url: "/dashboard", icon: LayoutDashboard },
   { title: "SOS & Pantau Jalur", url: "/kejadian", icon: Siren },
   { title: "Radar Dulur & Shelter", url: "/peta", icon: Map },
-  { title: "Piket Satgas Basecamp", url: "/piket", icon: CalendarClock },
+  { title: "Jaga Satu Aspal", url: "/piket", icon: CalendarClock },
 ];
 
 export const administrasiBaseNav: NavItem[] = [

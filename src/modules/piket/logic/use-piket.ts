@@ -97,12 +97,12 @@ export function usePiket(userId?: string) {
     onSuccess: () => {
       toast.success("Permintaan diperbarui");
       recordActivityLog({
-        actorId: userId || "korlap",
-        actorName: "Korlap Satgas",
-        actorRole: "korlap",
-        action: "Persetujuan Tukar Shift",
+        actorId: userId || "anggota",
+        actorName: "Sedulur Jaga",
+        actorRole: "anggota",
+        action: "OK Tukar Shift",
         module: "piket",
-        description: "Memproses permohonan penukaran shift piket posko wilayah.",
+        description: "Menyepakati tukar shift jaga satu aspal dengan dulur.",
       });
     },
     onError: (e: Error) => toast.error(e.message),

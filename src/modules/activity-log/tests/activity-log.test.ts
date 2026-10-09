@@ -1,7 +1,13 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { getActivityLogs, recordActivityLog } from "../storage/activity-log-storage";
 
 describe("Activity Log Module", () => {
+  beforeEach(() => {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("drg_system_activity_logs_v1");
+    }
+  });
+
   it("should start with an empty log until a real action is recorded", () => {
     const logs = getActivityLogs();
     expect(logs.length).toBe(0);

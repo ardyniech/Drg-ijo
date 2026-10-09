@@ -44,14 +44,14 @@ export function NewShiftDialog({ defaultDate, onDone }: Props) {
       return { cleanWilayah, u: u.user };
     },
     onSuccess: ({ cleanWilayah, u }) => {
-      toast.success("Jadwal shift piket berhasil ditambahkan");
+      toast.success("Slot jaga tercatat, siap jaga sedulur di jalan");
       recordActivityLog({
-        actorId: u?.id || "korlap-piket",
-        actorName: u?.user_metadata?.nama || "Korlap Satgas",
-        actorRole: "korlap",
-        action: "Penjadwalan Shift Piket",
+        actorId: u?.id || "anggota-piket",
+        actorName: u?.user_metadata?.nama || "Sedulur Jaga",
+        actorRole: "anggota",
+        action: "Ambil Slot Jaga Jalur",
         module: "piket",
-        description: `Menambahkan jadwal piket tanggal ${tanggal} slot ${slot} (${cleanWilayah || "Pangkalan Umum"}).`,
+        description: `Menambahkan slot jaga tanggal ${tanggal} slot ${slot} (${cleanWilayah || "Area Aktif Terbuka"}).`,
       });
       qc.invalidateQueries({ queryKey: ["piket"] });
       qc.invalidateQueries({ queryKey: ["dashboard-overview"] });
@@ -70,7 +70,7 @@ export function NewShiftDialog({ defaultDate, onDone }: Props) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Tambah shift piket</DialogTitle>
+          <DialogTitle>Ambil Slot Jaga Satu Aspal</DialogTitle>
         </DialogHeader>
         <NewShiftFormFields
           tanggal={tanggal}

@@ -58,15 +58,15 @@ export function NewShiftFormFields({
         </div>
       </div>
       <div>
-        <Label>Wilayah</Label>
+        <Label>Area Aktif / Posisi</Label>
         <Input
           value={wilayah}
           onChange={(e) => setWilayah(e.target.value)}
-          placeholder="Malang Kota / Barat / dsb"
+          placeholder="Di mana pun orderan bawa — ketik area posisimu"
         />
       </div>
       <div>
-        <Label>Petugas</Label>
+        <Label>Siapa Pegang Jaga</Label>
         <Select value={userId || "none"} onValueChange={setUserId}>
           <SelectTrigger>
             <SelectValue placeholder={membersLoading ? "Memuat anggota…" : "Belum ditentukan"} />
@@ -82,7 +82,8 @@ export function NewShiftFormFields({
         </Select>
       </div>
       <div className="rounded-lg bg-muted/60 px-3 py-2 text-[11px] text-muted-foreground">
-        Pilih anggota aktif dari daftar. Shift tanpa petugas akan tampil sebagai slot terbuka.
+        Semua sedulur boleh ambil jaga — gantian jaga satu aspal sambil narik santui. Slot kosong
+        bisa diisi dulur lain dari daftar aktif.
       </div>
     </div>
   );
