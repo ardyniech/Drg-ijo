@@ -36,8 +36,12 @@ TOKEN="${GITHUB_TOKEN:-${GH_TOKEN}}"
 
 if [ -n "$TOKEN" ]; then
   echo "🚀 Melakukan push otomatis ke GitHub (menggunakan kredensial aman)..."
-  git push "https://${TOKEN}@github.com/ardyniech/Drg-ijo.git" "$REMOTE_BRANCH"
-  echo "✅ Berhasil push ke GitHub main!"
+  if git push "https://${TOKEN}@github.com/ardyniech/Drg-ijo.git" "$REMOTE_BRANCH"; then
+    echo "✅ Berhasil push ke GitHub main!"
+  else
+    echo "⚠️ Push ke remote gagal (kredensial token GitHub tidak memiliki izin tulis atau kadaluarsa 403)."
+    echo "   Commit lokal tersimpan aman."
+  fi
 else
   echo "ℹ️ Catatan Push: GitHub memerlukan Personal Access Token (PAT) untuk push."
   echo "   Untuk auto-push, sediakan GITHUB_TOKEN atau jalankan:"
