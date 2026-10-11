@@ -39,9 +39,9 @@ export function SchemaMigrationCard() {
   return (
     <Card className="rounded-2xl border border-border/80 shadow-sm">
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <GitBranch className="h-4 w-4" />
             </div>
             <div>
@@ -49,7 +49,7 @@ export function SchemaMigrationCard() {
                 Integritas Skema & Versi Database
               </CardTitle>
               <CardDescription className="text-xs">
-                Pelacakan migrasi berurutan (Version-Controlled Table) dan status deployment.
+                Pelacakan migrasi berurutan dan verifikasi integritas data lokal.
               </CardDescription>
             </div>
           </div>
@@ -58,10 +58,10 @@ export function SchemaMigrationCard() {
             variant="outline"
             size="sm"
             onClick={handleVerify}
-            className="gap-1.5 rounded-xl text-xs"
+            className="w-full sm:w-auto shrink-0 gap-1.5 rounded-xl text-xs font-semibold justify-center"
           >
             <RefreshCw className="h-3.5 w-3.5 text-muted-foreground" />
-            Pindai Integritas
+            <span>Pindai Integritas</span>
           </Button>
         </div>
       </CardHeader>

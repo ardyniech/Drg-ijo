@@ -58,21 +58,27 @@ function ProfilPage() {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl border border-border/80 bg-muted/30 p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 rounded-2xl border border-border/75 bg-card/90 shadow-xs p-4 sm:p-5">
             <div className="flex items-center gap-3 text-sm">
-              <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary/10 text-primary">
+              <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
                 <Settings className="h-5 w-5" />
               </div>
               <div>
-                <p className="font-semibold text-foreground">Pengaturan & Preferensi Sistem</p>
+                <p className="font-bold text-foreground">Pengaturan & Preferensi Sistem</p>
                 <p className="text-xs text-muted-foreground">
                   Kelola notifikasi push, kata sandi akun, izin GPS, dan cadangan data.
                 </p>
               </div>
             </div>
-            <Button asChild variant="outline" size="sm" className="shrink-0 gap-1.5">
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="w-full sm:w-auto shrink-0 gap-1.5 rounded-xl font-semibold justify-center"
+            >
               <Link to="/pengaturan">
-                Buka Pengaturan <ArrowRight className="h-4 w-4" />
+                <span>Buka Pengaturan</span>
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
           </div>

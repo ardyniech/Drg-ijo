@@ -5,31 +5,41 @@ export function PageShell({
   title,
   description,
   actions,
+  action,
   children,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   actions?: ReactNode;
+  action?: ReactNode;
   children: ReactNode;
 }) {
+  const effectiveActions = actions ?? action;
+
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-6 md:px-8 md:py-10">
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-        <div>
+    <div className="mx-auto w-full max-w-7xl px-3.5 py-5 sm:px-6 sm:py-8 md:px-8 md:py-10">
+      <div className="mb-6 sm:mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="space-y-1">
           {eyebrow && (
-            <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-primary">
               {eyebrow}
             </div>
           )}
-          <h1 className="text-3xl font-bold md:text-4xl">{title}</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl md:text-4xl">
+            {title}
+          </h1>
           {description && (
-            <p className="mt-2 max-w-2xl text-sm text-muted-foreground md:text-base">
+            <p className="max-w-2xl text-xs sm:text-sm text-muted-foreground leading-relaxed">
               {description}
             </p>
           )}
         </div>
-        {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
+        {effectiveActions && (
+          <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 shrink-0">
+            {effectiveActions}
+          </div>
+        )}
       </div>
       {children}
     </div>

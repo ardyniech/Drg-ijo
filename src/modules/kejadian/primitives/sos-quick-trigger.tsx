@@ -54,14 +54,14 @@ export function SosQuickTrigger() {
           <div className="flex flex-col items-center space-y-3">
             <button
               onClick={handleStartSos}
-              className="group relative flex h-28 w-28 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-lg transition-transform hover:scale-105 active:scale-95 animate-pulse"
+              className="group relative flex h-28 w-28 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 active:shadow-inner animate-pulse cursor-pointer touch-manipulation"
               title="Tekan untuk kirim sinyal darurat ke seluruh dulur satgas"
             >
               <Siren className="h-14 w-14" />
               <span className="sr-only">Kirim SOS</span>
             </button>
             <div className="space-y-1">
-              <h3 className="font-bold text-destructive text-lg">TOMBOL DARURAT DULUR JALUR</h3>
+              <h3 className="font-bold text-destructive text-lg">Tombol Darurat Jalur Sedulur</h3>
               <p className="text-xs text-muted-foreground max-w-sm">
                 Tekan tombol untuk membunyikan alarm satgas & memancarkan koordinat GPS darurat ke
                 dulur se-pangkalan.

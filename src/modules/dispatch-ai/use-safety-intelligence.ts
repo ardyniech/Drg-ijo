@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import { AiDispatchAnalysis, AnalyzeDispatchParams } from "./types";
+import { createDefaultSafetyFallback } from "./safety-engine";
 
 export function useSafetyIntelligence() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -24,20 +25,7 @@ export function useSafetyIntelligence() {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Gagal menghubungi modul analisis";
       setError(msg);
-      // Fallback lokal agar driver tidak ditinggal tanpa petunjuk
-      const fallback: AiDispatchAnalysis = {
-        severity: "sedang",
-        priorityTitle: "Panduan Keselamatan Standar Lapangan",
-        emergencySteps: [
-          "Tepikan motor/mobil ke tempat terang dan nyalakan lampu hazard.",
-          "Laporkan koordinat ke grup pangkalan terdekat via WhatsApp/radio.",
-          "Jangan tinggalkan kendaraan tanpa kunci ganda jika menunggu bantuan.",
-        ],
-        dispatchRecommendation: "Pemberitahuan telah dicatat di log antrean satgas wilayah.",
-        nearestShelterAdvice: "Arahkan dulur ke posko pangkalan DRG terdekat jika masih bisa melaju pelan.",
-        isAiGenerated: false,
-        note: "Mode darurat offline aktif.",
-      };
+      const fallback = createDefaultSafetyFallback(params.category, params.location);
       setAnalysis(fallback);
       return fallback;
     } finally {

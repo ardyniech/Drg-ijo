@@ -15,23 +15,27 @@ export function DriverDashboardWidget() {
   const { data: profile } = useQuery({
     queryKey: ["profile-jenjang", me?.id],
     enabled: !!me?.id,
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("profiles")
-        .select("jenjang, pangkalan, status")
-        .eq("id", me!.id)
-        .maybeSingle();
-      return data as { jenjang?: string | null; pangkalan?: string | null; status?: string | null };
-    },
+    queryFn: async () =>
+      (
+        await supabase
+          .from("profiles")
+          .select("jenjang, pangkalan, status")
+          .eq("id", me!.id)
+          .maybeSingle()
+      ).data as {
+        jenjang?: string | null;
+        pangkalan?: string | null;
+        status?: string | null;
+      },
   });
 
   const { data: saldo = 0 } = useQuery({
     queryKey: ["kas-balance-total"],
-    queryFn: async () => {
-      const { data } = await supabase.rpc("kas_balances");
-      const balances = (data ?? []) as Array<Record<string, unknown>>;
-      return balances.reduce((acc, b) => acc + Number(b.saldo ?? 0), 0);
-    },
+    queryFn: async () =>
+      ((await supabase.rpc("kas_balances")).data ?? []).reduce(
+        (acc: number, b: { saldo?: number }) => acc + Number(b.saldo ?? 0),
+        0,
+      ),
   });
 
   const myShift = shifts.find((s) => s.user_id === me?.id);
@@ -52,20 +56,26 @@ export function DriverDashboardWidget() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <Button
             size="sm"
             variant="outline"
-            className="border-primary/40 text-primary hover:bg-primary/10"
+            className="border-primary/40 text-primary hover:bg-primary/10 flex-1 sm:flex-initial"
             asChild
           >
             <Link to="/profil">
-              <User className="mr-1.5 h-3.5 w-3.5" /> KTA Digital Dulur
+              <User className="mr-1.5 h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">KTA Digital</span>
             </Link>
           </Button>
-          <Button size="sm" className="bg-signal text-signal-foreground hover:bg-signal/90" asChild>
+          <Button
+            size="sm"
+            className="bg-signal text-signal-foreground hover:bg-signal/90 flex-1 sm:flex-initial"
+            asChild
+          >
             <Link to="/kejadian">
-              <Siren className="mr-1.5 h-3.5 w-3.5" /> Bantuan SOS Jalur
+              <Siren className="mr-1.5 h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">SOS Jalur</span>
             </Link>
           </Button>
         </div>

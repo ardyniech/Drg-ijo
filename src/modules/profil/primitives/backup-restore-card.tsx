@@ -53,17 +53,17 @@ export function BackupRestoreCard() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2.5">
           <Button
             type="button"
             variant="outline"
             size="sm"
             onClick={exportBackup}
             disabled={isProcessing}
-            className="gap-2 rounded-xl text-xs font-medium"
+            className="w-full sm:w-auto justify-center gap-2 rounded-xl text-xs font-semibold"
           >
-            <Download className="h-3.5 w-3.5 text-primary" />
-            Unduh Cadangan (Backup JSON)
+            <Download className="h-3.5 w-3.5 text-primary shrink-0" />
+            <span>Unduh Cadangan JSON</span>
           </Button>
 
           <input
@@ -80,16 +80,16 @@ export function BackupRestoreCard() {
             size="sm"
             onClick={() => fileInputRef.current?.click()}
             disabled={isProcessing}
-            className="gap-2 rounded-xl text-xs font-medium"
+            className="w-full sm:w-auto justify-center gap-2 rounded-xl text-xs font-semibold"
           >
             {isProcessing ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              <Loader2 className="h-3.5 w-3.5 animate-spin shrink-0" />
             ) : (
-              <Upload className="h-3.5 w-3.5" />
+              <Upload className="h-3.5 w-3.5 shrink-0" />
             )}
-            {selectedFileName
-              ? `Memproses ${selectedFileName}...`
-              : "Pulihkan dari Berkas (Restore)"}
+            <span>
+              {selectedFileName ? `Memproses ${selectedFileName}...` : "Pulihkan Cadangan"}
+            </span>
           </Button>
         </div>
       </CardContent>

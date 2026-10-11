@@ -27,31 +27,32 @@ export function MemberHeaderBar({
 }: Props) {
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-sm font-semibold text-foreground">Ringkasan Keluarga Besar</h2>
+          <h2 className="text-sm font-bold text-foreground">Ringkasan Keluarga Besar</h2>
           <p className="text-xs text-muted-foreground">
             Klik kartu status di bawah untuk filter cepat sedulur terdaftar di pangkalan.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {onExportCsv && (
             <Button
               variant="outline"
               size="sm"
               onClick={onExportCsv}
-              className="gap-1.5 h-8 text-xs border-border/80"
+              className="gap-1.5 h-8 text-xs border-border/80 rounded-xl font-semibold"
               title="Unduh data sedulur format CSV"
             >
               <Download className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Export CSV</span>
+              <span className="sm:hidden">CSV</span>
             </Button>
           )}
           {canManage && (
             <Button
               size="sm"
               onClick={onAddClick}
-              className="gap-1.5 h-8 text-xs bg-primary text-primary-foreground hover:bg-primary/90 shrink-0 shadow-xs"
+              className="gap-1.5 h-8 text-xs bg-primary text-primary-foreground hover:bg-primary/90 shrink-0 shadow-xs rounded-xl font-semibold"
             >
               <UserPlus className="h-3.5 w-3.5" />
               <span>Tambah Sedulur</span>

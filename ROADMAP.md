@@ -42,12 +42,12 @@ Fokus pada keandalan offline saat driver di jalan, sistem tanggap darurat, tata 
 
 - [x] **M2.1: Centralized Outbox Pattern & Sync Engine (`src/core/sync/`)**:
   - Antrean mutasi terisolasi (`drg_outbox_queue_v1`) dengan idempotency key dan FIFO processing.
-  - Worker otomatis yang memproses antrean saat koneksi online pulih dengan *retry backoff*.
-  - Indikator transparansi sinkronisasi di header (`SyncStatusBadge`): *Tersinkronisasi*, *Tersimpan Lokal: X pending*, dan *Offline*.
+  - Worker otomatis yang memproses antrean saat koneksi online pulih dengan _retry backoff_.
+  - Indikator transparansi sinkronisasi di header (`SyncStatusBadge`): _Tersinkronisasi_, _Tersimpan Lokal: X pending_, dan _Offline_.
   - Terintegrasi penuh pada mutasi Kas, Sinyal SOS, Verifikasi Akun, Inventaris Posko, dan Peran Pengurus.
 - [x] **M2.2: Sticky Emergency SOS Broadcast Alert & Web Audio Chime**:
   - Banner darurat permanen di `_authenticated/route.tsx` saat ada insiden aktif di lapangan.
-  - Sintesis audio darurat berbasis native *Web Audio API* (880Hz/440Hz dual-tone) tanpa dependensi file eksternal.
+  - Sintesis audio darurat berbasis native _Web Audio API_ (880Hz/440Hz dual-tone) tanpa dependensi file eksternal.
   - Aksi tanggap darurat cepat: direct radar view, kontak telepon korban, dan kontrol audio mute/dismiss.
 - [x] **M2.3: Native Progressive Web App (PWA) & Guided Installation**:
   - Intersepsi event `beforeinstallprompt` dan deteksi mode standalone.
@@ -107,13 +107,13 @@ Fokus pada keselamatan preventif di jalan raya melalui telemetri pintar dan otom
 
 ## 📊 Ringkasan Timeline Rilis
 
-| Milestone  | Target Periode |     Status      | Fokus Utama                                                                   |
-| :--------- | :------------- | :-------------: | :---------------------------------------------------------------------------- |
-| **v1.0.0** | Q2 2026        |    ✅ Rilis     | Core Hub-and-Spoke, Auth, SOS, Kas, Piket                                     |
-| **v1.1.0** | Q3 2026        |    ✅ Rilis     | Outbox Sync Pattern, PWA Install, Web Audio SOS Banner, Backup-Restore, RBAC  |
-| **v1.2.0** | Q4 2026        |    ✅ Rilis     | Modul Etik, Kaderisasi, Notulen, Inventaris Posko, Persetujuan Akun           |
-| **v2.0.0** | Q1 2027        |  📋 Terjadwal   | Koperasi Digital, QRIS Iuran, & Otomatisasi LPJ Keuangan                      |
-| **v2.5.0** | Q3 2027+       |    🔮 Riset     | AI Dispatching, Hazard Heatmap Telemetry, & Voice SOS                         |
+| Milestone  | Target Periode |    Status    | Fokus Utama                                                                  |
+| :--------- | :------------- | :----------: | :--------------------------------------------------------------------------- |
+| **v1.0.0** | Q2 2026        |   ✅ Rilis   | Core Hub-and-Spoke, Auth, SOS, Kas, Piket                                    |
+| **v1.1.0** | Q3 2026        |   ✅ Rilis   | Outbox Sync Pattern, PWA Install, Web Audio SOS Banner, Backup-Restore, RBAC |
+| **v1.2.0** | Q4 2026        |   ✅ Rilis   | Modul Etik, Kaderisasi, Notulen, Inventaris Posko, Persetujuan Akun          |
+| **v2.0.0** | Q1 2027        | 📋 Terjadwal | Koperasi Digital, QRIS Iuran, & Otomatisasi LPJ Keuangan                     |
+| **v2.5.0** | Q3 2027+       |   🔮 Riset   | AI Dispatching, Hazard Heatmap Telemetry, & Voice SOS                        |
 
 ---
 

@@ -29,15 +29,16 @@ export function KetuaDashboardWidget() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <Button
             size="sm"
             variant="outline"
-            className="border-amber-500/40 text-amber-600 hover:bg-amber-500/10"
+            className="border-amber-500/40 text-amber-600 hover:bg-amber-500/10 w-full sm:w-auto"
             asChild
           >
             <Link to="/roles">
-              <ShieldCheck className="mr-1.5 h-3.5 w-3.5" /> Kelola Peran Pengurus
+              <ShieldCheck className="mr-1.5 h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">Kelola Pengurus</span>
             </Link>
           </Button>
         </div>

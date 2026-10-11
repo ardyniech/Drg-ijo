@@ -51,9 +51,18 @@ function RoleManagementPage() {
         <Tabs value={tab} onValueChange={(v) => setTab(v as "members" | "matrix" | "audit")}>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <TabsList className="grid grid-cols-3 w-full sm:w-auto text-xs">
-              <TabsTrigger value="members">Daftar Dulur Pengurus</TabsTrigger>
-              <TabsTrigger value="matrix">Kewenangan Fitur</TabsTrigger>
-              <TabsTrigger value="audit">Riwayat Serah Terima</TabsTrigger>
+              <TabsTrigger value="members">
+                <span className="hidden sm:inline">Daftar Pengurus</span>
+                <span className="sm:hidden">Pengurus</span>
+              </TabsTrigger>
+              <TabsTrigger value="matrix">
+                <span className="hidden sm:inline">Kewenangan Fitur</span>
+                <span className="sm:hidden">Kewenangan</span>
+              </TabsTrigger>
+              <TabsTrigger value="audit">
+                <span className="hidden sm:inline">Riwayat Mandat</span>
+                <span className="sm:hidden">Riwayat</span>
+              </TabsTrigger>
             </TabsList>
 
             {tab === "members" && (

@@ -48,8 +48,13 @@ export function NewItemDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="gap-1.5 bg-primary text-primary-foreground text-xs">
-          <PlusCircle className="h-3.5 w-3.5" /> Tambah Perlengkapan Pos
+        <Button
+          size="sm"
+          className="gap-1.5 bg-primary text-primary-foreground text-xs rounded-xl font-semibold"
+        >
+          <PlusCircle className="h-3.5 w-3.5 shrink-0" />
+          <span className="hidden sm:inline">Tambah Perlengkapan Pos</span>
+          <span className="sm:hidden">Tambah Alat</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

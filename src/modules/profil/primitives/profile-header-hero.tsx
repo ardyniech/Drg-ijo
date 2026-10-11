@@ -104,10 +104,10 @@ export function ProfileHeaderHero({ profile, roles, onUploadAvatar, onOpenEdit }
           </div>
           <Button
             onClick={onOpenEdit}
-            className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm"
+            className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm shrink-0"
           >
-            <Edit3 className="mr-2 h-4 w-4" />
-            Edit Lengkap Biodata
+            <Edit3 className="mr-2 h-4 w-4 shrink-0" />
+            <span className="truncate">Edit Biodata</span>
           </Button>
         </div>
       </div>

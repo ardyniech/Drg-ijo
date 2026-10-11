@@ -65,8 +65,13 @@ export function NewNotulenDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-primary text-primary-foreground gap-2">
-          <PlusCircle className="h-4 w-4" /> Catat Notulen Baru
+        <Button
+          size="sm"
+          className="bg-primary text-primary-foreground gap-1.5 rounded-xl font-semibold"
+        >
+          <PlusCircle className="h-3.5 w-3.5 shrink-0" />
+          <span className="hidden sm:inline">Catat Notulen Baru</span>
+          <span className="sm:hidden">Catat Notulen</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">

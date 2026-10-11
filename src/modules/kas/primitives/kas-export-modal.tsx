@@ -101,14 +101,17 @@ export function KasExportModal({ rows }: KasExportModalProps) {
           <Button
             variant="outline"
             onClick={handleCopySummary}
-            className="gap-2 rounded-xl text-xs"
+            className="w-full sm:w-auto gap-2 rounded-xl text-xs font-semibold justify-center"
           >
-            <Share2 className="h-4 w-4" />
-            Salin Teks WhatsApp
+            <Share2 className="h-4 w-4 shrink-0" />
+            <span>Salin Format WA</span>
           </Button>
-          <Button onClick={handleExportCsv} className="gap-2 rounded-xl text-xs bg-primary">
-            <Download className="h-4 w-4" />
-            Unduh CSV (.csv)
+          <Button
+            onClick={handleExportCsv}
+            className="w-full sm:w-auto gap-2 rounded-xl text-xs font-semibold bg-primary justify-center"
+          >
+            <Download className="h-4 w-4 shrink-0" />
+            <span>Unduh Tabel CSV</span>
           </Button>
         </DialogFooter>
       </DialogContent>

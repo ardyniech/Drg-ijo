@@ -35,14 +35,14 @@ function Dashboard() {
   const { data: profile } = useQuery({
     queryKey: ["profile", user?.id],
     enabled: !!user?.id,
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("profiles")
-        .select("nama, role, pangkalan")
-        .eq("id", user!.id)
-        .maybeSingle();
-      return data;
-    },
+    queryFn: async () =>
+      (
+        await supabase
+          .from("profiles")
+          .select("nama, role, pangkalan")
+          .eq("id", user!.id)
+          .maybeSingle()
+      ).data,
   });
 
   const { data: screeningApps = [] } = useQuery({
@@ -79,16 +79,22 @@ function Dashboard() {
       title={greetingTitle}
       description="Denyut kabar pangkalan: pantau jalur aspal, jaga satu aspal sambil narik, saldo gotong royong, dan kabar terkini sedulur DRG."
       actions={
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" asChild>
-            <Link to="/roles">Amanah Pengurus</Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button variant="outline" size="sm" className="rounded-xl font-semibold" asChild>
+            <Link to="/roles">
+              <span className="hidden sm:inline">Amanah Pengurus</span>
+              <span className="sm:hidden">Pengurus</span>
+            </Link>
           </Button>
           <Button
             size="sm"
-            className="bg-primary text-primary-foreground hover:bg-primary/90"
+            className="rounded-xl font-semibold bg-primary text-primary-foreground hover:bg-primary/90"
             asChild
           >
-            <Link to="/kas">Urunan Kas Seduluran</Link>
+            <Link to="/kas">
+              <span className="hidden sm:inline">Urunan Kas Seduluran</span>
+              <span className="sm:hidden">Urunan Kas</span>
+            </Link>
           </Button>
         </div>
       }

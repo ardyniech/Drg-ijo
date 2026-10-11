@@ -162,6 +162,7 @@
 @layer base {
   * {
     border-color: var(--color-border);
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
@@ -169,6 +170,12 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
+  }
+
+  button,
+  [role="button"],
+  a {
+    touch-action: manipulation;
   }
 
   h1,
@@ -180,6 +187,18 @@
   }
 }
 
+@utility active-press {
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 180ms ease, opacity 120ms ease;
+  &:active {
+    transform: scale(0.96) translateY(0.5px);
+  }
+}
+@utility hover-lift {
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms ease;
+  &:hover {
+    transform: translateY(-1.5px);
+  }
+}
 @utility bg-gradient-warm {
   background-image: var(--gradient-warm);
 }

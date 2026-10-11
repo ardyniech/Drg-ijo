@@ -60,10 +60,12 @@ export function AuthedHeader({ onBit, setOnBit, hydrated, today }: AuthedHeaderP
         <Button
           asChild
           size="sm"
-          className="bg-signal text-signal-foreground shadow-warm hover:bg-signal/90"
+          className="bg-signal text-signal-foreground shadow-warm hover:bg-signal/90 shrink-0 h-8 px-2.5 sm:px-3.5"
         >
           <Link to="/kejadian">
-            <Siren className="mr-1.5 h-4 w-4" /> SOS Pantau
+            <Siren className="mr-1.5 h-4 w-4 shrink-0" />
+            <span className="hidden sm:inline">SOS Pantau</span>
+            <span className="sm:hidden">SOS</span>
           </Link>
         </Button>
         <UserMenu />

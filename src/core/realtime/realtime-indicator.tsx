@@ -25,7 +25,9 @@ export function RealtimeIndicator() {
 
   return (
     <div
-      title={lastEventAt ? `Pembaruan realtime terakhir: ${lastEventAt}` : "Tersambung ke kanal satgas"}
+      title={
+        lastEventAt ? `Pembaruan realtime terakhir: ${lastEventAt}` : "Tersambung ke kanal satgas"
+      }
       className="hidden lg:flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700 dark:text-emerald-400"
     >
       <span className="relative flex h-2 w-2">

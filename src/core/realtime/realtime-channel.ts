@@ -31,7 +31,11 @@ class RealtimeChannelManager {
     return { ...this.state };
   }
 
-  public async broadcast(type: RealtimeEventPayload["type"], data: Record<string, unknown>, sender = "Dulur DRG") {
+  public async broadcast(
+    type: RealtimeEventPayload["type"],
+    data: Record<string, unknown>,
+    sender = "Dulur DRG",
+  ) {
     try {
       await fetch("/api/realtime", {
         method: "POST",

@@ -29,20 +29,26 @@ export function SatgasDashboardWidget() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button size="sm" className="bg-rose-600 text-white hover:bg-rose-700" asChild>
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <Button
+            size="sm"
+            className="bg-rose-600 text-white hover:bg-rose-700 flex-1 sm:flex-initial"
+            asChild
+          >
             <Link to="/kejadian">
-              <Siren className="mr-1.5 h-3.5 w-3.5" /> Pantau Darurat Jalur
+              <Siren className="mr-1.5 h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">Pantau Darurat</span>
             </Link>
           </Button>
           <Button
             size="sm"
             variant="outline"
-            className="border-rose-500/40 text-rose-600 hover:bg-rose-500/10"
+            className="border-rose-500/40 text-rose-600 hover:bg-rose-500/10 flex-1 sm:flex-initial"
             asChild
           >
             <Link to="/peta">
-              <Map className="mr-1.5 h-3.5 w-3.5" /> Radar Live Satgas
+              <Map className="mr-1.5 h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">Radar Live</span>
             </Link>
           </Button>
         </div>

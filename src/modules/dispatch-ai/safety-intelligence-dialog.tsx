@@ -31,10 +31,11 @@ export function SafetyIntelligenceDialog() {
         <Button
           variant="outline"
           size="sm"
-          className="gap-2 rounded-xl text-xs font-semibold border-primary/30 text-primary hover:bg-primary/5"
+          className="gap-1.5 rounded-xl text-xs font-semibold border-primary/30 text-primary hover:bg-primary/5"
         >
-          <Sparkles className="h-3.5 w-3.5 text-primary animate-pulse" />
-          <span>AI Dispatching Satgas</span>
+          <Sparkles className="h-3.5 w-3.5 text-primary animate-pulse shrink-0" />
+          <span className="hidden sm:inline">AI Dispatching Satgas</span>
+          <span className="sm:hidden">AI Dispatch</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto rounded-2xl">
@@ -54,7 +55,9 @@ export function SafetyIntelligenceDialog() {
 
         <div className="space-y-3 pt-2">
           <div>
-            <label className="text-[11px] font-semibold text-muted-foreground">Lokasi Kejadian</label>
+            <label className="text-[11px] font-semibold text-muted-foreground">
+              Lokasi Kejadian
+            </label>
             <Input
               value={location}
               onChange={(e) => setLocation(e.target.value)}
@@ -62,7 +65,9 @@ export function SafetyIntelligenceDialog() {
             />
           </div>
           <div>
-            <label className="text-[11px] font-semibold text-muted-foreground">Kategori Masalah</label>
+            <label className="text-[11px] font-semibold text-muted-foreground">
+              Kategori Masalah
+            </label>
             <Input
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -70,7 +75,9 @@ export function SafetyIntelligenceDialog() {
             />
           </div>
           <div>
-            <label className="text-[11px] font-semibold text-muted-foreground">Situasi / Kondisi Lapangan</label>
+            <label className="text-[11px] font-semibold text-muted-foreground">
+              Situasi / Kondisi Lapangan
+            </label>
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}

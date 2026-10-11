@@ -70,19 +70,20 @@ export function KaderisasiCard({ item, onEvaluate }: KaderisasiCardProps) {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 self-end sm:self-auto">
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-start sm:justify-end">
               <Button
                 size="sm"
                 variant="ghost"
                 onClick={() => setShowCert(true)}
-                className="gap-1 rounded-xl text-xs"
+                className="gap-1 rounded-xl text-xs h-8"
                 title="Lihat Piagam Aspal"
               >
-                <Award className="h-3.5 w-3.5 text-amber-600" /> Piagam
+                <Award className="h-3.5 w-3.5 text-amber-600 shrink-0" />
+                <span>Piagam</span>
               </Button>
               <Badge
                 variant="outline"
-                className={`px-2.5 py-1 text-xs font-medium ${getBadgeVariant(item.status)}`}
+                className={`px-2.5 py-1 text-xs font-medium shrink-0 ${getBadgeVariant(item.status)}`}
               >
                 {statusLabel}
               </Badge>
@@ -90,9 +91,10 @@ export function KaderisasiCard({ item, onEvaluate }: KaderisasiCardProps) {
                 size="sm"
                 variant="outline"
                 onClick={() => onEvaluate(item)}
-                className="gap-1.5 rounded-xl text-xs font-semibold"
+                className="gap-1.5 rounded-xl text-xs font-semibold h-8"
               >
-                Evaluasi <ChevronRight className="h-3.5 w-3.5" />
+                <span>Evaluasi</span>
+                <ChevronRight className="h-3.5 w-3.5 shrink-0" />
               </Button>
             </div>
           </div>

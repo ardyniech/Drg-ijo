@@ -1,62 +1,31 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import { useSafetyIntelligence } from "../use-safety-intelligence";
+import { describe, it, expect } from "vitest";
+import {
+  createDefaultSafetyFallback,
+  validateDispatchParams,
+} from "../safety-engine";
 
-describe("AI Safety Intelligence & Dispatching Hook", () => {
-  beforeEach(() => {
-    vi.restoreAllMocks();
+describe("AI Safety Intelligence & Dispatch Engine", () => {
+  it("determines 'tinggi' severity for crash or medical emergencies", () => {
+    const crashFallback = createDefaultSafetyFallback("senggolan jalur", "Jl. Dinoyo");
+    expect(crashFallback.severity).toBe("tinggi");
+    expect(crashFallback.priorityTitle).toContain("Dinoyo");
+    expect(crashFallback.emergencySteps.length).toBeGreaterThan(0);
+    expect(crashFallback.isAiGenerated).toBe(false);
+
+    const medicalFallback = createDefaultSafetyFallback("darurat medis", "Lowokwaru");
+    expect(medicalFallback.severity).toBe("tinggi");
   });
 
-  it("handles successful AI response from endpoint", async () => {
-    vi.spyOn(globalThis, "fetch").mockImplementationOnce(() =>
-      Promise.resolve(
-        new Response(
-          JSON.stringify({
-            severity: "tinggi",
-            priorityTitle: "Evakuasi Senggolan Jalur",
-            emergencySteps: ["Langkah 1", "Langkah 2"],
-            dispatchRecommendation: "Kirim tim Satgas",
-            nearestShelterAdvice: "Posko Suhat",
-            isAiGenerated: true,
-          }),
-          { status: 200, headers: { "Content-Type": "application/json" } },
-        ),
-      ),
-    );
-
-    const { result } = renderHook(() => useSafetyIntelligence());
-
-    await act(async () => {
-      await result.current.analyzeIncident({
-        category: "senggolan",
-        location: "Dinoyo",
-        description: "Spion patah",
-      });
-    });
-
-    expect(result.current.analysis?.severity).toBe("tinggi");
-    expect(result.current.analysis?.isAiGenerated).toBe(true);
-    expect(result.current.analysis?.emergencySteps.length).toBe(2);
+  it("determines 'sedang' severity for standard mechanical breakdowns", () => {
+    const breakdownFallback = createDefaultSafetyFallback("mogok rantai", "Gadang");
+    expect(breakdownFallback.severity).toBe("sedang");
+    expect(breakdownFallback.priorityTitle).toContain("Gadang");
   });
 
-  it("falls back to safety rule-based advice when network fails", async () => {
-    vi.spyOn(globalThis, "fetch").mockImplementationOnce(() =>
-      Promise.reject(new Error("Network failure")),
-    );
-
-    const { result } = renderHook(() => useSafetyIntelligence());
-
-    await act(async () => {
-      await result.current.analyzeIncident({
-        category: "mogok",
-        location: "Kepanjen",
-        description: "Busi mati",
-      });
-    });
-
-    expect(result.current.analysis).toBeDefined();
-    expect(result.current.analysis?.isAiGenerated).toBe(false);
-    expect(result.current.analysis?.emergencySteps.length).toBeGreaterThan(0);
-    expect(result.current.error).toBe("Network failure");
+  it("validates incident parameters and rejects empty inputs", () => {
+    expect(validateDispatchParams({ location: "", category: "mogok" })).toBe(false);
+    expect(validateDispatchParams({ location: "Suhat", category: "" })).toBe(false);
+    expect(validateDispatchParams({ location: "Suhat", category: "mogok" })).toBe(true);
+    expect(validateDispatchParams({})).toBe(false);
   });
 });

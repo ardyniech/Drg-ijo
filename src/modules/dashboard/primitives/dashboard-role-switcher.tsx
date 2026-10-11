@@ -41,11 +41,20 @@ export function DashboardRoleSwitcher({ activeRole, onRoleChange }: Props) {
             <button
               key={r.id}
               type="button"
-              onClick={() => onRoleChange(r.id)}
-              className={`rounded-lg border px-2.5 py-1 text-[11px] font-semibold transition-all select-none ${
+              onClick={() => {
+                if (typeof window !== "undefined" && "vibrate" in navigator) {
+                  try {
+                    navigator.vibrate(6);
+                  } catch {
+                    // ignore
+                  }
+                }
+                onRoleChange(r.id);
+              }}
+              className={`rounded-lg border px-2.5 py-1 text-[11px] font-semibold cursor-pointer transition-all duration-150 select-none active:scale-95 touch-manipulation ${
                 isActive
-                  ? "border-primary bg-primary text-primary-foreground shadow-2xs scale-105"
-                  : `border-border bg-muted/30 text-muted-foreground ${r.bg}`
+                  ? "border-primary bg-primary text-primary-foreground shadow-2xs scale-[1.02]"
+                  : `border-border bg-muted/30 text-muted-foreground hover:border-primary/40 ${r.bg}`
               }`}
             >
               {r.label}

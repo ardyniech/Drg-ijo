@@ -51,12 +51,12 @@ export function ApprovalCard({ item, onReview }: ApprovalCardProps) {
             <Button
               size="sm"
               onClick={() => onReview(item)}
-              className="self-end sm:self-auto gap-1.5 rounded-xl text-xs font-semibold"
+              className="w-full sm:w-auto shrink-0 gap-1.5 rounded-xl text-xs font-semibold justify-center"
             >
-              Verifikasi Dokumen
+              <span>Verifikasi Dokumen</span>
             </Button>
           ) : (
-            <span className="text-xs text-muted-foreground self-end sm:self-auto">
+            <span className="text-xs text-muted-foreground self-start sm:self-auto shrink-0">
               Oleh: {item.reviewedBy || "Admin"}
             </span>
           )}

@@ -50,23 +50,24 @@ function PetaRadarPage() {
       }
     >
       <div className="space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 bg-card p-3 rounded-lg border border-border/70 text-xs">
-          <div className="flex items-center gap-2">
-            <Radio className="h-4 w-4 text-emerald-500 animate-pulse" />
-            <span>
-              Terdeteksi <strong>{drivers.length} sedulur narik di jalan</strong> dalam radius{" "}
-              {maxRadius} km (dari total {allDriversCount} online satu aspal).
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card/90 p-3.5 sm:p-4 rounded-2xl border border-border/75 shadow-xs text-xs">
+          <div className="flex items-center gap-2.5">
+            <Radio className="h-4 w-4 text-emerald-500 animate-pulse shrink-0" />
+            <span className="text-muted-foreground">
+              Terdeteksi{" "}
+              <strong className="text-foreground">{drivers.length} sedulur narik di jalan</strong>{" "}
+              dalam radius {maxRadius} km (dari total {allDriversCount} online satu aspal).
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">Radius:</span>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="text-[11px] font-semibold text-muted-foreground mr-1">Radius:</span>
             {[3, 5, 10].map((r) => (
               <Button
                 key={r}
                 size="sm"
-                variant={maxRadius === r ? "secondary" : "outline"}
+                variant={maxRadius === r ? "default" : "outline"}
                 onClick={() => setMaxRadius(r)}
-                className="h-7 px-2.5 text-xs"
+                className="h-7 min-h-[28px] px-2.5 text-xs rounded-lg font-semibold"
               >
                 {r} km
               </Button>

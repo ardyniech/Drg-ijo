@@ -67,23 +67,23 @@ export function EtikCaseCard({ item, onOpenAction }: EtikCaseCardProps) {
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 self-end sm:self-auto">
+            <div className="flex flex-wrap items-center gap-1.5 w-full sm:w-auto justify-start sm:justify-end">
               <Button
                 size="sm"
                 variant="ghost"
                 onClick={() => setShowSk(true)}
-                className="h-8 gap-1 rounded-xl text-xs"
+                className="h-8 gap-1 rounded-xl text-xs shrink-0"
                 title="Lihat SK"
               >
-                <FileText className="h-3.5 w-3.5" /> SK
+                <FileText className="h-3.5 w-3.5 shrink-0" /> <span>SK</span>
               </Button>
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => onOpenAction(item)}
-                className="h-8 gap-1.5 rounded-xl text-xs font-semibold"
+                className="h-8 gap-1.5 rounded-xl text-xs font-semibold shrink-0"
               >
-                <Scale className="h-3.5 w-3.5" /> Sidang
+                <Scale className="h-3.5 w-3.5 shrink-0" /> <span>Sidang</span>
               </Button>
             </div>
           </div>

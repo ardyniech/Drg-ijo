@@ -103,7 +103,7 @@ export function MemberCard({ member, onSelect, onEdit, onDelete, canManage }: Me
         </div>
 
         <div
-          className="flex items-center justify-between pt-2.5 border-t border-border/60"
+          className="flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-border/60 min-w-0"
           onClick={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
         >
@@ -111,9 +111,9 @@ export function MemberCard({ member, onSelect, onEdit, onDelete, canManage }: Me
             href={`https://wa.me/${member.no_hp}?text=Halo%20rekan%20${encodeURIComponent(member.nama)}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors shrink-0"
           >
-            <Phone className="h-3 w-3" /> WhatsApp
+            <Phone className="h-3 w-3 shrink-0" /> <span>WhatsApp</span>
           </a>
           <DigitalKtaModal member={member} />
         </div>
