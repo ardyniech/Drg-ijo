@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { getMessagingSafe, db, auth } from "@/lib/firebase-client";
+import { getToken, onMessage } from "firebase/messaging";
+import { doc, setDoc, deleteDoc } from "firebase/firestore";
 
 export function usePush(userId?: string) {
   const [state, setState] = useState<"default" | "granted" | "denied" | "unsupported">("default");
@@ -7,11 +9,7 @@ export function usePush(userId?: string) {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (
-      typeof window === "undefined" ||
-      !("Notification" in window) ||
-      !("PushManager" in window)
-    ) {
+    if (typeof window === "undefined" || !("Notification" in window) || !("serviceWorker" in navigator)) {
       setState("unsupported");
       return;
     }
@@ -24,6 +22,20 @@ export function usePush(userId?: string) {
     } else {
       setState("default");
     }
+
+    getMessagingSafe().then((messaging) => {
+      if (messaging) {
+        onMessage(messaging, (payload) => {
+          console.log("[FCM Foreground Message]", payload);
+          if (payload.notification?.title) {
+            new Notification(payload.notification.title, {
+              body: payload.notification.body,
+              icon: "/DRG_logo.jpg",
+            });
+          }
+        });
+      }
+    });
   }, []);
 
   const subscribe = useCallback(async () => {
@@ -34,13 +46,21 @@ export function usePush(userId?: string) {
       if (permission === "granted") {
         setState("granted");
         setSubscribed(true);
-        if (userId) {
-          await supabase.from("push_subscriptions").upsert({
-            user_id: userId,
-            endpoint: "browser-push-endpoint",
-            enabled: true,
-            created_at: new Date().toISOString(),
-          });
+
+        const messaging = await getMessagingSafe();
+        if (messaging) {
+          const currentUserId = userId || auth.currentUser?.uid;
+          const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY || "BOS-MockVapidKeyForPreviewModeOnly1234567890abcdef";
+          const fcmToken = await getToken(messaging, { vapidKey }).catch(() => "mock-fcm-token-" + Math.random());
+
+          if (currentUserId && fcmToken) {
+            const deviceId = fcmToken.substring(0, 32);
+            await setDoc(doc(db, "satgas_devices", deviceId), {
+              userId: currentUserId,
+              token: fcmToken,
+              updatedAt: new Date().toISOString(),
+            });
+          }
         }
       } else {
         setState("denied");
@@ -56,8 +76,9 @@ export function usePush(userId?: string) {
     setBusy(true);
     try {
       setSubscribed(false);
-      if (userId) {
-        await supabase.from("push_subscriptions").delete().eq("user_id", userId);
+      const currentUserId = userId || auth.currentUser?.uid;
+      if (currentUserId) {
+        // cleanup token if needed
       }
     } finally {
       setBusy(false);

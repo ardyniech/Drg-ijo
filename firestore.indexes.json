@@ -1,0 +1,29 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "incidents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "mode": "ASCENDING" },
+        { "fieldPath": "createdAt", "mode": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "incidents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "mode": "ASCENDING" },
+        { "fieldPath": "createdAt", "mode": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "incident_logs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "incidentId", "mode": "ASCENDING" },
+        { "fieldPath": "timestamp", "mode": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

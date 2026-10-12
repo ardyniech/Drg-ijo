@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function getUserRole() {
+      return request.auth.token.role != null ? request.auth.token.role : 'member';
+    }
+
+    function isSatgasOrKorlapOrAdmin() {
+      let r = getUserRole();
+      return r == 'satgas' || r == 'korlap' || r == 'admin' || r == 'super_admin';
+    }
+
+    // Incidents collection
+    match /incidents/{incidentId} {
+      allow read: isAuthenticated() && (
+        resource.data.userId == request.auth.uid || isSatgasOrKorlapOrAdmin()
+      );
+      
+      // Client cannot create incidents directly; must use /api/incidents
+      allow create: if false;
+      
+      // Owner can cancel their own incident (status -> dibatalkan); 
+      // Satgas/Korlap/Admin can update status and responders
+      allow update: isAuthenticated() && (
+        (resource.data.userId == request.auth.uid && 
+         request.resource.data.status == 'dibatalkan' &&
+         request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])) ||
+        (isSatgasOrKorlapOrAdmin() &&
+         request.resource.data.diff(resource.data).affectedKeys().hasAny(['status', 'responders', 'updatedAt']))
+      );
+      
+      allow delete: if false;
+    }
+
+    // Incident logs: immutable for clients, server-only write
+    match /incident_logs/{logId} {
+      allow read: isAuthenticated() && (
+        resource.data.userId == request.auth.uid || isSatgasOrKorlapOrAdmin()
+      );
+      allow create, update, delete: if false;
+    }
+
+    // Users profile
+    match /users/{userId} {
+      allow read: isAuthenticated();
+      allow create: isAuthenticated() && request.auth.uid == userId;
+      allow update: isAuthenticated() && request.auth.uid == userId &&
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'verified_member']);
+      allow delete: if false;
+    }
+
+    // Rate limits: server-only
+    match /rate_limits/{limitId} {
+      allow read, write: if false;
+    }
+
+    // Satgas devices (FCM tokens): server-only write, user can write own device token
+    match /satgas_devices/{deviceId} {
+      allow read: if isSatgasOrKorlapOrAdmin();
+      allow write: isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+  }
+}

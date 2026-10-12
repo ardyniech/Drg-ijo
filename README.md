@@ -27,9 +27,9 @@ Proyek ini dibangun sebagai solusi tata kelola digital mandiri untuk **Komunitas
 - **Pencatatan Realtime**: Laporan kas masuk dan keluar secara terbuka dengan kuintansi digital berbasis kode QR.
 - **Asas Koperasi**: Alokasi dana modal untuk pemberdayaan ekonomi anggota yang dikelola secara kolektif oleh Bendahara Keuangan.
 
-### 3. Satgas SOS & Penanganan Keadaan Darurat (`/kejadian`)
+### 3. Satgas SOS & Penanganan Keadaan Darurat (`/kejadian`) - **Server-Backed (Firebase & Cloud Run)**
 
-- **Sinyal Darurat Instant**: Tombol SOS untuk melaporkan kecelakaan lalu lintas, kendaraan mogok, atau musibah di jalan raya.
+- **Sinyal Darurat Instant**: Tombol SOS untuk melaporkan kecelakaan lalu lintas, kendaraan mogok, atau musibah di jalan raya. Dilindungi oleh Firebase Auth (Custom Claims Role: member terverifikasi), rate-limiting transaksional Firestore, dan push notification FCM via Firebase Admin SDK.
 - **Sistem Dispatcing**: Penugasan personel Satgas terdekat dan pelacakan status penanganan kejadian dari awal hingga selesai secara transparan.
 
 ### 4. Peta Live & Sebaran Pangkalan (`/peta`)

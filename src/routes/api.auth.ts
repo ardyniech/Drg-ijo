@@ -1,7 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
-import { verifyPassword } from "@/modules/auth/logic/password-hasher";
-import { generatePrefixedId } from "@/shared/utils/id-generator";
+import { adminAuth, adminDb, verifyIdTokenWithCheckRevoked } from "../../server/firebase-admin";
 
 export const Route = createFileRoute("/api/auth")({
   server: {
@@ -9,76 +7,86 @@ export const Route = createFileRoute("/api/auth")({
       POST: async ({ request }) => {
         try {
           const body = await request.json();
-          const { action, email, password, nama } = body;
+          const { action, idToken, email, password, nama, targetUid, newRole, verifiedMember } = body;
 
-          if (action === "signin") {
-            const cleanEmail = (email ?? "").trim().toLowerCase();
-            const users = LocalAuthClient.getUsers();
-            const user = users.find((u) => u.email.toLowerCase() === cleanEmail);
-            if (!user) {
-              return new Response(JSON.stringify({ error: "Email atau kata sandi tidak valid." }), {
-                status: 401,
-                headers: { "Content-Type": "application/json" },
-              });
+          if (action === "verify-session") {
+            if (!idToken) {
+              return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
             }
-
-            const { isValid } = await verifyPassword(password, user.passwordHash);
-            if (!isValid) {
-              return new Response(JSON.stringify({ error: "Email atau kata sandi tidak valid." }), {
-                status: 401,
-                headers: { "Content-Type": "application/json" },
-              });
-            }
+            const decoded = await verifyIdTokenWithCheckRevoked(idToken);
+            const userDoc = await adminDb.collection("users").doc(decoded.uid).get();
+            const userData = userDoc.exists ? userDoc.data() : {};
 
             return new Response(
               JSON.stringify({
                 status: "success",
-                user: { id: user.id, email: user.email, nama: user.nama, role: user.role },
-                token: generatePrefixedId(`srv_tok_${user.id}`),
+                user: {
+                  id: decoded.uid,
+                  email: decoded.email,
+                  nama: userData?.nama || decoded.name || "Driver",
+                  role: decoded.role || "member",
+                  verified_member: decoded.verified_member || false,
+                },
               }),
-              { status: 200, headers: { "Content-Type": "application/json" } },
+              { status: 200, headers: { "Content-Type": "application/json" } }
             );
           }
 
-          if (action === "signup") {
-            const cleanEmail = (email ?? "").trim().toLowerCase();
-            const cleanName = (nama ?? "").trim();
-            if (!cleanName || !cleanEmail || (password ?? "").length < 6) {
-              return new Response(
-                JSON.stringify({
-                  error: "Data pendaftaran tidak lengkap atau password < 6 karakter.",
-                }),
-                { status: 400, headers: { "Content-Type": "application/json" } },
-              );
+          if (action === "set-role" || action === "verify-member") {
+            const authHeader = request.headers.get("Authorization");
+            const token = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : idToken;
+            if (!token) {
+              return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+            }
+            const decoded = await verifyIdTokenWithCheckRevoked(token);
+            if (decoded.role !== "admin" && decoded.role !== "super_admin" && decoded.role !== "korlap") {
+              return new Response(JSON.stringify({ error: "Forbidden: Admin/Korlap required" }), { status: 403 });
             }
 
-            const { session, error } = await LocalAuthClient.signUp({
-              email: cleanEmail,
-              nama: cleanName,
-              password,
+            const targetUser = await adminAuth.getUser(targetUid);
+            const currentClaims = targetUser.customClaims || {};
+            const updatedClaims = { ...currentClaims };
+
+            if (newRole) updatedClaims.role = newRole;
+            if (verifiedMember !== undefined) updatedClaims.verified_member = verifiedMember;
+
+            await adminAuth.setCustomUserClaims(targetUid, updatedClaims);
+            await adminAuth.revokeRefreshTokens(targetUid);
+
+            await adminDb.collection("users").doc(targetUid).set(
+              {
+                role: updatedClaims.role,
+                verified_member: updatedClaims.verified_member,
+                updatedAt: new Date().toISOString(),
+              },
+              { merge: true }
+            );
+
+            return new Response(JSON.stringify({ status: "success", claims: updatedClaims }), {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
             });
-
-            if (error || !session) {
-              return new Response(JSON.stringify({ error: error?.message || "Gagal mendaftar." }), {
-                status: 400,
-                headers: { "Content-Type": "application/json" },
-              });
-            }
-
-            return new Response(
-              JSON.stringify({
-                status: "success",
-                user: session.user,
-                token: session.access_token,
-              }),
-              { status: 201, headers: { "Content-Type": "application/json" } },
-            );
           }
 
-          return new Response(JSON.stringify({ status: "ok" }), {
-            status: 200,
-            headers: { "Content-Type": "application/json" },
-          });
+          if (action === "bootstrap-admin") {
+            // Manual bootstrap script endpoint (secured by a secret or initial setup key)
+            const { secretKey, uid } = body;
+            if (secretKey !== (import.meta.env.VITE_ADMIN_BOOTSTRAP_SECRET || "drg-bootstrap-secret-2026")) {
+              return new Response(JSON.stringify({ error: "Invalid bootstrap secret" }), { status: 403 });
+            }
+            await adminAuth.setCustomUserClaims(uid, { role: "super_admin", verified_member: true });
+            await adminAuth.revokeRefreshTokens(uid);
+            await adminDb.collection("users").doc(uid).set(
+              { role: "super_admin", verified_member: true, updatedAt: new Date().toISOString() },
+              { merge: true }
+            );
+            return new Response(JSON.stringify({ status: "success", message: "Admin bootstrapped successfully" }), {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+
+          return new Response(JSON.stringify({ error: "Invalid action" }), { status: 400 });
         } catch (e: unknown) {
           const message = e instanceof Error ? e.message : "Internal server error";
           return new Response(JSON.stringify({ error: message }), {

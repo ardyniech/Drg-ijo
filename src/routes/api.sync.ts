@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { verifyIdTokenWithCheckRevoked } from "../../server/firebase-admin";
 import { z } from "zod";
 
 const SyncPushBodySchema = z.object({
@@ -18,28 +19,46 @@ export const Route = createFileRoute("/api/sync")({
   server: {
     handlers: {
       GET: async ({ request }) => {
-        const url = new URL(request.url);
-        const since = url.searchParams.get("since") || "0";
-        return new Response(
-          JSON.stringify({
-            status: "ok",
-            since,
-            serverTimestamp: new Date().toISOString(),
-            syncVersion: "v1",
-            changes: [],
-          }),
-          {
-            status: 200,
-            headers: {
-              "Content-Type": "application/json",
-              "Cache-Control": "no-store, no-cache, must-revalidate",
+        try {
+          const authHeader = request.headers.get("Authorization");
+          const token = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
+          if (!token) {
+            return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+          }
+          await verifyIdTokenWithCheckRevoked(token);
+
+          const url = new URL(request.url);
+          const since = url.searchParams.get("since") || "0";
+          return new Response(
+            JSON.stringify({
+              status: "ok",
+              since,
+              serverTimestamp: new Date().toISOString(),
+              syncVersion: "v1",
+              changes: [],
+            }),
+            {
+              status: 200,
+              headers: {
+                "Content-Type": "application/json",
+                "Cache-Control": "no-store, no-cache, must-revalidate",
+              },
             },
-          },
-        );
+          );
+        } catch {
+          return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+        }
       },
 
       POST: async ({ request }) => {
         try {
+          const authHeader = request.headers.get("Authorization");
+          const token = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
+          if (!token) {
+            return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+          }
+          await verifyIdTokenWithCheckRevoked(token);
+
           const json = await request.json();
           const parsed = SyncPushBodySchema.safeParse(json);
 
