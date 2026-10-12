@@ -33,7 +33,7 @@ export function useAuth() {
               uid: firebaseUser.uid,
               email: firebaseUser.email,
               nama: firebaseUser.displayName || "Driver DRG",
-              role: (claims.role as any) || "member",
+              role: (claims.role as string) || "member",
               verified_member: !!claims.verified_member,
             });
           }

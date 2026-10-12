@@ -1,5 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { adminDb, adminMessaging, verifyIdTokenWithCheckRevoked } from "../../server/firebase-admin";
+import {
+  adminDb,
+  adminMessaging,
+  verifyIdTokenWithCheckRevoked,
+} from "../../server/firebase-admin";
 import { z } from "zod";
 
 const createIncidentSchema = z.object({
@@ -29,8 +33,15 @@ export const Route = createFileRoute("/api/incidents")({
           }
 
           const decoded = await verifyIdTokenWithCheckRevoked(token);
-          if (decoded.verified_member !== true && decoded.role !== "admin" && decoded.role !== "super_admin") {
-            return new Response(JSON.stringify({ error: "Forbidden: Verified member required to trigger SOS" }), { status: 403 });
+          if (
+            decoded.verified_member !== true &&
+            decoded.role !== "admin" &&
+            decoded.role !== "super_admin"
+          ) {
+            return new Response(
+              JSON.stringify({ error: "Forbidden: Verified member required to trigger SOS" }),
+              { status: 403 },
+            );
           }
 
           const body = await request.json();
@@ -39,7 +50,8 @@ export const Route = createFileRoute("/api/incidents")({
             return new Response(JSON.stringify({ error: parsed.error.format() }), { status: 400 });
           }
 
-          const { idempotencyKey, kategori, deskripsi, latitude, longitude, lokasiText } = parsed.data;
+          const { idempotencyKey, kategori, deskripsi, latitude, longitude, lokasiText } =
+            parsed.data;
 
           // Fetch user profile for name & phone
           const userDoc = await adminDb.collection("users").doc(decoded.uid).get();
@@ -72,7 +84,11 @@ export const Route = createFileRoute("/api/incidents")({
 
             const existingIncident = await transaction.get(incidentRef);
             if (existingIncident.exists) {
-              return { incidentId: idempotencyKey, status: "already_exists", data: existingIncident.data() };
+              return {
+                incidentId: idempotencyKey,
+                status: "already_exists",
+                data: existingIncident.data(),
+              };
             }
 
             const incidentData = {
@@ -123,7 +139,9 @@ export const Route = createFileRoute("/api/incidents")({
                   await adminMessaging.sendEachForMulticast({
                     tokens: chunk,
                     notification: {
-                      title: result.data.isRepeated ? "⚠️ SOS BERULANG DARURAT" : "🚨 DARURAT SOS BARU",
+                      title: result.data.isRepeated
+                        ? "⚠️ SOS BERULANG DARURAT"
+                        : "🚨 DARURAT SOS BARU",
                       body: `${driverName} membutuhkan bantuan (${kategori})!`,
                     },
                     data: {
@@ -176,18 +194,23 @@ export const Route = createFileRoute("/api/incidents")({
 
           const incidentData = incidentDoc.data()!;
           const isOwner = incidentData.userId === decoded.uid;
-          const isSatgasOrKorlap = ["satgas", "korlap", "admin", "super_admin"].includes(decoded.role);
+          const isSatgasOrKorlap = ["satgas", "korlap", "admin", "super_admin"].includes(
+            decoded.role,
+          );
 
           // Authorization & transition rules
           if (isOwner) {
             if (status !== "dibatalkan") {
-              return new Response(JSON.stringify({ error: "Owner can only cancel their own incident" }), { status: 403 });
+              return new Response(
+                JSON.stringify({ error: "Owner can only cancel their own incident" }),
+                { status: 403 },
+              );
             }
           } else if (!isSatgasOrKorlap) {
             return new Response(JSON.stringify({ error: "Forbidden" }), { status: 403 });
           }
 
-          const updatePayload: Record<string, any> = {
+          const updatePayload: Record<string, unknown> = {
             status,
             updatedAt: new Date().toISOString(),
           };

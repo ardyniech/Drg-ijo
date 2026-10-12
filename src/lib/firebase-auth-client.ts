@@ -25,7 +25,8 @@ export class FirebaseAuthClient {
           user_metadata: {
             nama: userData?.nama || cred.user.displayName || "Driver",
             role: tokenResult.claims.role || userData?.role || "member",
-            verified_member: tokenResult.claims.verified_member || userData?.verified_member || false,
+            verified_member:
+              tokenResult.claims.verified_member || userData?.verified_member || false,
           },
         },
         access_token: await cred.user.getIdToken(),
@@ -45,7 +46,7 @@ export class FirebaseAuthClient {
 
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
-      let userData: any = {};
+      let userData: Record<string, unknown> = {};
       if (!userDoc.exists()) {
         userData = {
           email: user.email,
@@ -67,7 +68,8 @@ export class FirebaseAuthClient {
           user_metadata: {
             nama: userData?.nama || user.displayName || "Driver",
             role: tokenResult.claims.role || userData?.role || "member",
-            verified_member: tokenResult.claims.verified_member || userData?.verified_member || false,
+            verified_member:
+              tokenResult.claims.verified_member || userData?.verified_member || false,
           },
         },
         access_token: await user.getIdToken(),
