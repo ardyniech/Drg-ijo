@@ -10,7 +10,8 @@ const RequestSchema = z.object({
 });
 
 function getRuleBasedFallback(category: string, location: string) {
-  const isMedisOrCrash = category.toLowerCase().includes("medis") || category.toLowerCase().includes("senggol");
+  const isMedisOrCrash =
+    category.toLowerCase().includes("medis") || category.toLowerCase().includes("senggol");
   return {
     severity: isMedisOrCrash ? "tinggi" : "sedang",
     priorityTitle: `Rekomendasi Satgas Jalur — ${location || "Pangkalan"}`,
@@ -20,7 +21,8 @@ function getRuleBasedFallback(category: string, location: string) {
       "Tetap tenang, jangan panik, dan pantau posisi GPS di peta radar.",
     ],
     dispatchRecommendation: `Luncurkan 2 personil Satgas terdekat dengan rompi keselamatan dan perkakas darurat ke arah ${location}.`,
-    nearestShelterAdvice: "Koordinasi dengan Posko DRG Pangkalan terdekat untuk evakuasi atau bantuan teknis.",
+    nearestShelterAdvice:
+      "Koordinasi dengan Posko DRG Pangkalan terdekat untuk evakuasi atau bantuan teknis.",
     isAiGenerated: false,
   };
 }
@@ -33,7 +35,9 @@ export const Route = createFileRoute("/api/ai/dispatch")({
           const body = await request.json();
           const parsed = RequestSchema.safeParse(body);
           if (!parsed.success) {
-            return new Response(JSON.stringify({ error: "Input analisis tidak valid" }), { status: 400 });
+            return new Response(JSON.stringify({ error: "Input analisis tidak valid" }), {
+              status: 400,
+            });
           }
 
           const { category, location, description, driverName } = parsed.data;
@@ -72,10 +76,9 @@ Keluarkan JSON valid dengan skema:
           const rawText = res.text || "{}";
           const data = JSON.parse(rawText);
 
-          return new Response(
-            JSON.stringify({ ...data, isAiGenerated: true }),
-            { headers: { "Content-Type": "application/json" } },
-          );
+          return new Response(JSON.stringify({ ...data, isAiGenerated: true }), {
+            headers: { "Content-Type": "application/json" },
+          });
         } catch {
           const fallback = getRuleBasedFallback("umum", "Jalur");
           return new Response(JSON.stringify({ ...fallback, note: "Penyangga darurat offline" }), {

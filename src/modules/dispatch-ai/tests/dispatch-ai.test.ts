@@ -1,8 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-  createDefaultSafetyFallback,
-  validateDispatchParams,
-} from "../safety-engine";
+import { createDefaultSafetyFallback, validateDispatchParams } from "../safety-engine";
 
 describe("AI Safety Intelligence & Dispatch Engine", () => {
   it("determines 'tinggi' severity for crash or medical emergencies", () => {

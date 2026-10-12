@@ -33,19 +33,27 @@ export const Route = createFileRoute("/api/fcm/register")({
           const role = decoded.role || userData?.role || "member";
 
           // Store token in satgas_devices indexed by userId or token
-          const deviceRef = adminDb.collection("satgas_devices").doc(`${decoded.uid}_${token.substring(0, 16)}`);
-          await deviceRef.set({
-            userId: decoded.uid,
-            token,
-            role,
-            deviceType: deviceType || "web",
-            updatedAt: new Date().toISOString(),
-          }, { merge: true });
+          const deviceRef = adminDb
+            .collection("satgas_devices")
+            .doc(`${decoded.uid}_${token.substring(0, 16)}`);
+          await deviceRef.set(
+            {
+              userId: decoded.uid,
+              token,
+              role,
+              deviceType: deviceType || "web",
+              updatedAt: new Date().toISOString(),
+            },
+            { merge: true },
+          );
 
-          return new Response(JSON.stringify({ status: "success", message: "FCM token registered successfully" }), {
-            status: 200,
-            headers: { "Content-Type": "application/json" },
-          });
+          return new Response(
+            JSON.stringify({ status: "success", message: "FCM token registered successfully" }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
         } catch (e: unknown) {
           const message = e instanceof Error ? e.message : "Internal server error";
           return new Response(JSON.stringify({ error: message }), {

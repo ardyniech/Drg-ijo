@@ -9,7 +9,9 @@ export const Route = createFileRoute("/api/realtime")({
           const authHeader = request.headers.get("Authorization");
           const token = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
           if (!token) {
-            return new Response(JSON.stringify({ error: "Unauthorized SSE stream access" }), { status: 401 });
+            return new Response(JSON.stringify({ error: "Unauthorized SSE stream access" }), {
+              status: 401,
+            });
           }
           await verifyIdTokenWithCheckRevoked(token);
 

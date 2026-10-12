@@ -1,16 +1,41 @@
-import { initializeApp, getApps } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyMockKeyForPreviewModeOnly12345",
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "drg-app.firebaseapp.com",
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "drg-app",
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "drg-app.appspot.com",
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "1234567890",
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:1234567890:web:abcdef",
+const getEnv = (key: string): string => {
+  if (typeof process !== "undefined" && process.env?.[key]) {
+    return process.env[key] as string;
+  }
+  if (typeof import.meta !== "undefined" && import.meta.env?.[key]) {
+    return import.meta.env[key] as string;
+  }
+  return "";
 };
 
-export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+export const firebaseConfig = {
+  apiKey: getEnv("VITE_FIREBASE_API_KEY") || getEnv("FIREBASE_API_KEY"),
+  authDomain: getEnv("VITE_FIREBASE_AUTH_DOMAIN") || getEnv("FIREBASE_AUTH_DOMAIN"),
+  projectId: getEnv("VITE_FIREBASE_PROJECT_ID") || getEnv("FIREBASE_PROJECT_ID"),
+  storageBucket: getEnv("VITE_FIREBASE_STORAGE_BUCKET") || getEnv("FIREBASE_STORAGE_BUCKET"),
+  messagingSenderId:
+    getEnv("VITE_FIREBASE_MESSAGING_SENDER_ID") || getEnv("FIREBASE_MESSAGING_SENDER_ID"),
+  appId: getEnv("VITE_FIREBASE_APP_ID") || getEnv("FIREBASE_APP_ID"),
+};
+
+function getValidApp() {
+  if (getApps().length > 0) {
+    return getApp();
+  }
+  const config =
+    firebaseConfig.apiKey && firebaseConfig.projectId
+      ? firebaseConfig
+      : {
+          apiKey: "local-unconfigured-api-key",
+          projectId: "local-unconfigured-project",
+        };
+  return initializeApp(config);
+}
+
+export const app = getValidApp();
 export const auth = getAuth(app);
 export const db = getFirestore(app);

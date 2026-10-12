@@ -67,7 +67,7 @@ describe("Incident API Endpoints & Business Rules", () => {
       userId: string,
       incidentOwnerId: string,
       currentStatus: string,
-      newStatus: string
+      newStatus: string,
     ) => {
       const isOwner = userId === incidentOwnerId;
       const isSatgasOrKorlap = ["satgas", "korlap", "admin", "super_admin"].includes(userRole);

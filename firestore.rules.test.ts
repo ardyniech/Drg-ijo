@@ -1,8 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import {
-  initializeTestEnvironment,
-  RulesTestEnvironment,
-} from "@firebase/rules-unit-testing";
+import { initializeTestEnvironment, RulesTestEnvironment } from "@firebase/rules-unit-testing";
 import fs from "fs";
 
 let testEnv: RulesTestEnvironment;
@@ -66,7 +63,7 @@ describe("Firestore Security Rules", () => {
       db.collection("incidents").add({
         userId: "user1",
         status: "aktif",
-      })
+      }),
     ).rejects.toThrow();
   });
 
@@ -83,7 +80,7 @@ describe("Firestore Security Rules", () => {
     await expect(
       db.doc("incidents/inc1").update({
         responders: ["satgas1"],
-      })
+      }),
     ).rejects.toThrow();
   });
 
@@ -99,7 +96,7 @@ describe("Firestore Security Rules", () => {
     await expect(
       db.doc("incidents/inc1").update({
         status: "dibatalkan",
-      })
+      }),
     ).resolves.toBeDefined();
   });
 
@@ -129,7 +126,7 @@ describe("Firestore Security Rules", () => {
       db.doc("users/user1").update({
         role: "satgas",
         verified_member: true,
-      })
+      }),
     ).rejects.toThrow();
   });
 });

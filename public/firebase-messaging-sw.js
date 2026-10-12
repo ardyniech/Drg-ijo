@@ -1,22 +1,30 @@
-importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js');
+importScripts("https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js");
 
-firebase.initializeApp({
-  apiKey: "AIzaSyMockKeyForPreviewModeOnly12345",
-  projectId: "drg-app",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abcdef",
-});
+// Read Firebase config from registration search parameters or default runtime scope
+const swParams = new URLSearchParams(self.location.search);
+const apiKey = swParams.get("apiKey");
+const projectId = swParams.get("projectId");
+const messagingSenderId = swParams.get("messagingSenderId");
+const appId = swParams.get("appId");
 
-const messaging = firebase.messaging();
+if (apiKey && projectId) {
+  firebase.initializeApp({
+    apiKey,
+    projectId,
+    messagingSenderId: messagingSenderId || undefined,
+    appId: appId || undefined,
+  });
 
-messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  const notificationTitle = payload.notification?.title || 'Darurat SOS Dulur';
-  const notificationOptions = {
-    body: payload.notification?.body || 'Ada panggilan darurat baru.',
-    icon: '/DRG_logo.jpg',
-  };
+  const messaging = firebase.messaging();
+  messaging.onBackgroundMessage((payload) => {
+    const notificationTitle = payload.notification?.title || "Darurat SOS Dulur";
+    const notificationOptions = {
+      body: payload.notification?.body || "Ada panggilan darurat baru.",
+      icon: "/DRG_logo.jpg",
+      badge: "/DRG_logo.jpg",
+    };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
-});
+    self.registration.showNotification(notificationTitle, notificationOptions);
+  });
+}

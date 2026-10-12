@@ -58,7 +58,11 @@ export function SyncStatusBadge() {
 
   return (
     <div
-      title={lastSyncedAt ? `Terakhir sinkron pukul ${lastSyncedAt}` : "Modul SOS Server-Backed (Cloud Run)"}
+      title={
+        lastSyncedAt
+          ? `Terakhir sinkron pukul ${lastSyncedAt}`
+          : "Modul SOS Server-Backed (Cloud Run)"
+      }
       className="hidden md:flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-400"
     >
       <CheckCircle2 className="h-3 w-3 text-emerald-600" />

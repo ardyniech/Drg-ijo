@@ -10,7 +10,9 @@ interface LocalUserMigrationRecord {
 }
 
 export async function migrateLocalUsersToFirebase(localUsers: LocalUserMigrationRecord[]) {
-  console.log(`[Migration] Starting migration of ${localUsers.length} local users to Firebase Auth & Firestore...`);
+  console.log(
+    `[Migration] Starting migration of ${localUsers.length} local users to Firebase Auth & Firestore...`,
+  );
   const results = { success: 0, failed: 0, errors: [] as string[] };
 
   for (const u of localUsers) {
@@ -34,7 +36,7 @@ export async function migrateLocalUsersToFirebase(localUsers: LocalUserMigration
 
       // Assign Custom Claims for Role
       const role = u.role || "member";
-      const verified_member = u.verified_member ?? (role !== "member");
+      const verified_member = u.verified_member ?? role !== "member";
       await adminAuth.setCustomUserClaims(firebaseUid, { role, verified_member });
 
       // Save/Merge profile to Firestore
@@ -47,7 +49,7 @@ export async function migrateLocalUsersToFirebase(localUsers: LocalUserMigration
           migratedFromLocal: true,
           updatedAt: new Date().toISOString(),
         },
-        { merge: true }
+        { merge: true },
       );
 
       results.success++;

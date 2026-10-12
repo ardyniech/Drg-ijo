@@ -2,7 +2,12 @@ import { describe, it, expect } from "vitest";
 
 describe("API Incidents Server Handlers & Business Logic", () => {
   it("should validate status transition rules for owner and satgas", () => {
-    const ownerCanCancel = (role: string, currentStatus: string, newStatus: string, isOwner: boolean) => {
+    const ownerCanCancel = (
+      role: string,
+      currentStatus: string,
+      newStatus: string,
+      isOwner: boolean,
+    ) => {
       if (isOwner) {
         return newStatus === "dibatalkan";
       }
