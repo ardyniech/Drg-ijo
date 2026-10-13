@@ -10,7 +10,7 @@ export type MemberRoleType =
   | "driver"
   | "super_admin";
 
-export type MemberStatusType = "aktif" | "pending_review" | "nonaktif";
+export type MemberStatusType = "aktif" | "pending_review" | "nonaktif" | "cuti";
 
 export interface MemberRecord {
   id: string;

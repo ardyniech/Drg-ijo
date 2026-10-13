@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { auth } from "@/lib/firebase-client";
 import {
   getOutboxQueue,
   updateOperationStatus,
@@ -33,9 +34,13 @@ export function useOutboxWorker() {
     setQueueVersion((v) => v + 1);
 
     try {
+      const idToken = await auth.currentUser?.getIdToken();
       const res = await fetch("/api/sync", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+        },
         body: JSON.stringify({ operations: toSync }),
       });
 
@@ -70,6 +75,10 @@ export function useOutboxWorker() {
 
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
+    // Auto-flush on startup as well, not just when the network comes back.
+    if (typeof navigator === "undefined" || navigator.onLine) {
+      flushQueue();
+    }
     return () => {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);

@@ -7,7 +7,7 @@ describe("LocalAuthClient - Clean Dynamic Bootstrap", () => {
     LocalAuthClient.setSession(null);
   });
 
-  it("assigns super_admin role to the first user registered (bootstrap)", async () => {
+  it("does not elevate the first user to super_admin (no client-authoritative bootstrap)", async () => {
     expect(LocalAuthClient.getUsers()).toHaveLength(0);
 
     const firstEmail = `owner_${Date.now()}@drg.id`;
@@ -19,17 +19,17 @@ describe("LocalAuthClient - Clean Dynamic Bootstrap", () => {
 
     expect(error).toBeNull();
     expect(session).not.toBeNull();
-    expect(session?.user.user_metadata.role).toBe("super_admin");
+    expect(session?.user.user_metadata.role).toBe("anggota");
 
     const users = LocalAuthClient.getUsers();
     expect(users).toHaveLength(1);
-    expect(users[0].role).toBe("super_admin");
-    expect(users[0].jenjang).toBe("purna");
+    expect(users[0].role).toBe("anggota");
+    expect(users[0].jenjang).toBe("calon");
     expect(users[0].passwordHash.startsWith("$2")).toBe(true);
   });
 
   it("assigns anggota role to subsequent users registered", async () => {
-    // 1st User (super_admin)
+    // 1st User (regular member)
     await LocalAuthClient.signUp({
       email: `founder_${Date.now()}@drg.id`,
       password: "password12345",

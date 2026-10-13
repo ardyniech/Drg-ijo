@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 import { toast } from "sonner";
 import { recordActivityLog } from "@/modules/activity-log";
 import { Tx } from "../types";
@@ -86,10 +86,10 @@ export function useKas() {
       if (error) throw error;
       return { id, status, userId: u.user?.id };
     },
-    onSuccess: (_d, v) => {
+    onSuccess: (res, v) => {
       toast.success(v.status === "disetujui" ? "Transaksi disetujui" : "Transaksi ditolak");
       recordActivityLog({
-        actorId: v.userId || "bendahara",
+        actorId: res.userId || "bendahara",
         actorName: "Bendahara Keuangan",
         actorRole: "bendahara",
         action: v.status === "disetujui" ? "Persetujuan Transaksi Kas" : "Penolakan Transaksi Kas",

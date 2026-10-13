@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { ShieldAlert, Users2, Landmark, Radio } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 import { getShelters } from "@/modules/peta/storage/peta-storage";
 import { formatRupiah } from "@/shared/utils/formatters";
 

@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { useMe } from "@/hooks/use-me";
 import { usePiket } from "@/modules/piket/logic/use-piket";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 import { formatRupiah } from "@/shared/utils/formatters";
 import { User, Wallet, Siren, Calendar } from "lucide-react";
 import { getOjolJenjang } from "@/lib/ojol-jenjang";
@@ -31,11 +31,11 @@ export function DriverDashboardWidget() {
 
   const { data: saldo = 0 } = useQuery({
     queryKey: ["kas-balance-total"],
-    queryFn: async () =>
-      ((await supabase.rpc("kas_balances")).data ?? []).reduce(
-        (acc: number, b: { saldo?: number }) => acc + Number(b.saldo ?? 0),
-        0,
-      ),
+    queryFn: async () => {
+      const { data } = await supabase.rpc("kas_balances");
+      const balances = (data ?? []) as Array<{ saldo?: number }>;
+      return balances.reduce((acc: number, b) => acc + Number(b.saldo ?? 0), 0);
+    },
   });
 
   const myShift = shifts.find((s) => s.user_id === me?.id);

@@ -41,7 +41,7 @@ function ScreeningPage() {
     exportCsv,
   } = useScreening();
 
-  const myApp = data.find((c) => c.email.toLowerCase() === me?.email?.toLowerCase());
+  const myApp = data.find((c) => c.email?.toLowerCase() === me?.email?.toLowerCase());
 
   if (!me?.isAdmin) {
     return (

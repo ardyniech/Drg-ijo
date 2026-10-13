@@ -61,7 +61,7 @@ export function PiketCalendarGrid({ days, shifts, isLoading, profileMap, current
                               {s.wilayah}
                             </div>
                           )}
-                          {isMine && (
+                          {isMine && currentUserId && (
                             <div className="space-y-1">
                               <PiketCheckInButton shiftId={s.id} isToday={isToday} />
                               <SwapButton shiftId={s.id} currentUserId={currentUserId} />

@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
 import { InventarisItem } from "../types";
 
 const STORAGE_KEY = "drg_inventaris_records";
@@ -44,33 +46,23 @@ const SEED_INVENTARIS: InventarisItem[] = [
   },
 ];
 
+const InventarisSchema: z.ZodType<InventarisItem> = z.any();
+const InventarisListSchema = z.array(InventarisSchema);
+
 let inMemoryCache: InventarisItem[] = [...SEED_INVENTARIS];
 
 export const InventarisStorage = {
   getItems(): InventarisItem[] {
-    if (typeof window !== "undefined") {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        try {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-        } catch {
-          // ignore
-        }
-      }
-    }
-    return inMemoryCache;
+    const items = safeReadStorage(STORAGE_KEY, InventarisListSchema, inMemoryCache);
+    inMemoryCache = items;
+    return items;
   },
   saveItems(items: InventarisItem[]) {
     inMemoryCache = items;
-    if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    }
+    safeWriteStorage(STORAGE_KEY, items);
   },
   resetForTest() {
     inMemoryCache = [...SEED_INVENTARIS];
-    if (typeof window !== "undefined") {
-      localStorage.removeItem(STORAGE_KEY);
-    }
+    safeWriteStorage(STORAGE_KEY, inMemoryCache);
   },
 };

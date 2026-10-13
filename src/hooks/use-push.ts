@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { getMessagingSafe, db, auth } from "@/lib/firebase-client";
+import { getMessagingSafe, auth } from "@/lib/firebase-client";
 import { getToken, onMessage } from "firebase/messaging";
-import { doc, setDoc } from "firebase/firestore";
 
 export function usePush(userId?: string) {
   const [state, setState] = useState<"default" | "granted" | "denied" | "unsupported">("default");
@@ -17,7 +16,6 @@ export function usePush(userId?: string) {
       setState("unsupported");
       return;
     }
-
     const current = Notification.permission;
     if (current === "granted") {
       setState("granted");
@@ -31,6 +29,7 @@ export function usePush(userId?: string) {
     getMessagingSafe().then((messaging) => {
       if (messaging) {
         onMessage(messaging, (payload) => {
+          console.log("[FCM Foreground Message]", payload);
           if (payload.notification?.title) {
             new Notification(payload.notification.title, {
               body: payload.notification.body,
@@ -50,23 +49,32 @@ export function usePush(userId?: string) {
       if (permission === "granted") {
         setState("granted");
         setSubscribed(true);
+
         const messaging = await getMessagingSafe();
         if (messaging) {
-          const currentUserId = userId || auth.currentUser?.uid;
-          const vapidKey =
-            (typeof process !== "undefined" ? process.env?.VITE_FIREBASE_VAPID_KEY : undefined) ||
-            import.meta.env.VITE_FIREBASE_VAPID_KEY;
+          const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY;
           if (!vapidKey) {
+            console.warn("VITE_FIREBASE_VAPID_KEY tidak diset; pendaftaran push dilewati.");
+            setSubscribed(false);
             return;
           }
+
           const fcmToken = await getToken(messaging, { vapidKey });
-          if (currentUserId && fcmToken) {
-            const deviceId = fcmToken.substring(0, 32);
-            await setDoc(doc(db, "satgas_devices", deviceId), {
-              userId: currentUserId,
-              token: fcmToken,
-              updatedAt: new Date().toISOString(),
+          const idToken = await auth.currentUser?.getIdToken();
+          if (fcmToken && idToken) {
+            // Register via the server so the role check + doc-ID scheme are enforced centrally.
+            const res = await fetch("/api/fcm/register", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${idToken}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ token: fcmToken, deviceType: "web" }),
             });
+            if (!res.ok) {
+              console.error("Gagal mendaftarkan perangkat push:", await res.text());
+              setSubscribed(false);
+            }
           }
         }
       } else {
@@ -77,16 +85,20 @@ export function usePush(userId?: string) {
     } finally {
       setBusy(false);
     }
-  }, [userId]);
+  }, []);
 
   const unsubscribe = useCallback(async () => {
     setBusy(true);
     try {
       setSubscribed(false);
+      const currentUserId = userId || auth.currentUser?.uid;
+      if (currentUserId) {
+        // cleanup token if needed
+      }
     } finally {
       setBusy(false);
     }
-  }, []);
+  }, [userId]);
 
   return {
     state,

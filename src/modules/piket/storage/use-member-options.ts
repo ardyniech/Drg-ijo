@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 
 export function useMemberOptions() {
   return useQuery({
@@ -12,7 +12,7 @@ export function useMemberOptions() {
         .eq("status", "aktif")
         .order("nama");
       if (error) throw error;
-      return data ?? [];
+      return (data ?? []) as Array<{ id: string; nama: string; status: string }>;
     },
   });
 }

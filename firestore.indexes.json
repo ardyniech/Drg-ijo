@@ -17,6 +17,14 @@
       ]
     },
     {
+      "collectionGroup": "incidents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "mode": "ASCENDING" },
+        { "fieldPath": "idempotencyKey", "mode": "ASCENDING" }
+      ]
+    },
+    {
       "collectionGroup": "incident_logs",
       "queryScope": "COLLECTION",
       "fields": [

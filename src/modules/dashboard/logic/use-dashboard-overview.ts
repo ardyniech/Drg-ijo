@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 import { formatRupiah, toIsoDate, logModuleError } from "@/shared/utils/formatters";
 import type { DashboardOverview, ShiftSummary, ActivityFeedItem } from "@/shared/models/dashboard";
 
@@ -12,7 +12,7 @@ export function useDashboardOverview() {
     staleTime: 30_000,
     queryFn: async (): Promise<DashboardOverview> => {
       try {
-        const [anggota, kas, kejadian, piket] = await Promise.all([
+        const [anggota, kas, kejadian, piket] = (await Promise.all([
           supabase.from("profiles").select("id, status"),
           supabase
             .from("kas_transactions")
@@ -26,7 +26,39 @@ export function useDashboardOverview() {
             .from("piket_shifts")
             .select("id, tanggal, slot, wilayah, user_id")
             .eq("tanggal", today),
-        ]);
+        ])) as [
+          { data: Array<{ id: string; status: string | null }> | null },
+          {
+            data: Array<{
+              jenis: string;
+              jumlah: number;
+              kategori: string | null;
+              deskripsi: string | null;
+              tanggal: string;
+              status: string;
+              created_at: string;
+            }> | null;
+          },
+          {
+            data: Array<{
+              id: string;
+              tipe: string;
+              status: string;
+              deskripsi: string | null;
+              alamat_text: string | null;
+              dibuat_at: string;
+            }> | null;
+          },
+          {
+            data: Array<{
+              id: string;
+              tanggal: string;
+              slot: string;
+              wilayah: string;
+              user_id: string | null;
+            }> | null;
+          },
+        ];
 
         const profiles = anggota.data ?? [];
         const trx = (kas.data ?? []).filter((t) => t.status === "disetujui");

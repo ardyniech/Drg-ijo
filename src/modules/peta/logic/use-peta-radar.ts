@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 import { getActiveDrivers, getShelters } from "../storage/peta-storage";
 import { ActiveDriverMarker, OfficialShelter } from "../types";
 

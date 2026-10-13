@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 import { toast } from "sonner";
 import { recordActivityLog } from "@/modules/activity-log";
 import { Shift, Swap, addDays, startOfWeek, toIso } from "../types";
@@ -37,7 +37,8 @@ export function usePiket(userId?: string) {
       if (!ids.length) return {};
       const { data } = await supabase.from("profiles").select("id, nama").in("id", ids);
       const m: Record<string, string> = {};
-      (data ?? []).forEach((p) => {
+      const profiles = (data ?? []) as Array<{ id: string; nama: string | null }>;
+      profiles.forEach((p) => {
         m[p.id] = p.nama ?? "";
       });
       return m;

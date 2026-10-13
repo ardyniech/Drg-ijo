@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { UserRole } from "@/hooks/use-me";
 import { enqueueOperation } from "@/core/sync";
@@ -5,33 +7,24 @@ import { MemberRoleRecord, RoleAuditLog } from "../types";
 import { INITIAL_AUDIT_LOGS } from "./initial-roles";
 
 const AUDIT_STORAGE_KEY = "drg_role_audit_logs_v1";
+const RoleAuditLogSchema: z.ZodType<RoleAuditLog> = z.any();
+const RoleAuditLogsSchema = z.array(RoleAuditLogSchema);
 
 let inMemoryLogs: RoleAuditLog[] = [...INITIAL_AUDIT_LOGS];
 
 export function getRoleAuditLogs(): RoleAuditLog[] {
-  if (typeof window === "undefined") return inMemoryLogs;
-  try {
-    const raw = localStorage.getItem(AUDIT_STORAGE_KEY);
-    if (!raw) {
-      localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(inMemoryLogs));
-      return inMemoryLogs;
-    }
-    return JSON.parse(raw);
-  } catch {
-    return inMemoryLogs;
-  }
+  const data = safeReadStorage(AUDIT_STORAGE_KEY, RoleAuditLogsSchema, inMemoryLogs);
+  inMemoryLogs = data;
+  return data;
 }
 
 export function appendRoleAuditLog(entry: RoleAuditLog) {
   const current = getRoleAuditLogs();
   const updated = [entry, ...current];
   inMemoryLogs = updated;
-  if (typeof window !== "undefined") {
-    localStorage.setItem(AUDIT_STORAGE_KEY, JSON.stringify(updated));
-  }
+  safeWriteStorage(AUDIT_STORAGE_KEY, updated);
   return updated;
 }
-
 export function getMemberRoleRecords(): MemberRoleRecord[] {
   const users = LocalAuthClient.getUsers();
   return users.map((u) => ({
@@ -82,5 +75,4 @@ export function assignMemberRole(
     payload: { targetUserId, fromRole, toRole: newRole, skNumber: auditEntry.skNumber },
   });
 
-  return getMemberRoleRecords();
-}
+  return 

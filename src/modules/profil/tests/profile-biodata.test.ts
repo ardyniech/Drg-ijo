@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
-import { resolveLocalTableData } from "@/integrations/supabase/local-table-resolvers";
+import { resolveLocalTableData } from "@/integrations/local-store/local-table-resolvers";
 
 describe("Profile Biodata Persistence & Formatting", () => {
   beforeEach(() => {

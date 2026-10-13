@@ -8,15 +8,17 @@ const SECURITY_HEADERS = {
 };
 
 export default defineConfig({
-  server: {
-    port: 3000,
-    host: "0.0.0.0",
-    headers: SECURITY_HEADERS,
-  },
-  preview: {
-    port: 3000,
-    host: "0.0.0.0",
-    headers: SECURITY_HEADERS,
+  vite: {
+    server: {
+      port: 3000,
+      host: "0.0.0.0",
+      headers: SECURITY_HEADERS,
+    },
+    preview: {
+      port: 3000,
+      host: "0.0.0.0",
+      headers: SECURITY_HEADERS,
+    },
   },
   tanstackStart: {
     server: { entry: "server" },

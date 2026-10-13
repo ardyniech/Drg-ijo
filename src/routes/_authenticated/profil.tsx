@@ -89,7 +89,7 @@ function ProfilPage() {
             form={form}
             onChange={setForm}
             onSave={async () => {
-              await saveBio.mutateAsync();
+              await saveBio.mutateAsync({});
               setIsEditDialogOpen(false);
             }}
             isSaving={saveBio.isPending}

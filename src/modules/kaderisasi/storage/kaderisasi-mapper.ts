@@ -3,7 +3,7 @@ import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import {
   getStoredKasTransactions,
   getStoredPiketShifts,
-} from "@/integrations/supabase/local-tx-store";
+} from "@/integrations/local-store/local-tx-store";
 import { getEtikCases } from "@/modules/etik/storage/etik-storage";
 
 export const PIKET_TARGET = 4;

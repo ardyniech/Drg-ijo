@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 import { PageShell } from "@/components/page-shell";
 import { Button } from "@/components/ui/button";
 import { UserRole } from "@/hooks/use-me";
@@ -48,7 +48,10 @@ function Dashboard() {
   const { data: screeningApps = [] } = useQuery({
     queryKey: ["screening-apps"],
     queryFn: async () =>
-      (await supabase.from("screening_applications").select("id, email")).data ?? [],
+      ((await supabase.from("screening_applications").select("id, email")).data ?? []) as Array<{
+        id: string;
+        email: string | null;
+      }>,
   });
 
   const hasSubmittedScreening = Boolean(

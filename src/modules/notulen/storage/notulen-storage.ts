@@ -1,30 +1,22 @@
+import { z } from "zod";
+import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
 import { NotulenRecord } from "../types";
 
 const STORAGE_KEY = "drg_notulen_records";
-let inMemoryNotulen: NotulenRecord[] | null = null;
+const NotulenSchema: z.ZodType<NotulenRecord> = z.any();
+const NotulenListSchema = z.array(NotulenSchema);
 
-const SEED_NOTULEN: NotulenRecord[] = [];
+let cache: NotulenRecord[] | null = null;
 
 export const NotulenStorage = {
   getNotulen(): NotulenRecord[] {
-    if (typeof window === "undefined" || !window.localStorage) {
-      return inMemoryNotulen ?? SEED_NOTULEN;
-    }
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(SEED_NOTULEN));
-      return SEED_NOTULEN;
-    }
-    try {
-      return JSON.parse(raw);
-    } catch {
-      return SEED_NOTULEN;
-    }
+    if (cache) return cache;
+    const data = safeReadStorage(STORAGE_KEY, NotulenListSchema, []);
+    cache = data;
+    return data;
   },
-  saveNotulen(items: NotulenRecord[]) {
-    inMemoryNotulen = items;
-    if (typeof window !== "undefined" && window.localStorage) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    }
+  saveNotulen(records: NotulenRecord[]): void {
+    cache = records;
+    safeWriteStorage(STORAGE_KEY, records);
   },
 };

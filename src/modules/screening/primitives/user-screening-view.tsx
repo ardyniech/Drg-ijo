@@ -17,8 +17,8 @@ export function UserScreeningView({ myApp, email, nama }: Props) {
   }
 
   if (myApp) {
-    const isAppr = myApp.status === "approved";
-    const isRej = myApp.status === "rejected";
+    const isAppr = myApp.status === "direkomendasikan";
+    const isRej = myApp.status === "ditolak";
 
     return (
       <div className="max-w-2xl space-y-6">

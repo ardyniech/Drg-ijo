@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 import { useMe } from "@/hooks/use-me";
 import { toast } from "sonner";
 import { DaftarDoneState, DaftarFormState, ScreeningQuestion } from "../types";

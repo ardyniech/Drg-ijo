@@ -1,13 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
+import { verifyIdTokenWithCheckRevoked } from "../../server/firebase-admin";
+import { checkRateLimit } from "../server/rate-limit";
 
 const RequestSchema = z.object({
-  category: z.string(),
-  location: z.string(),
-  description: z.string(),
-  driverName: z.string().optional(),
+  category: z.string().min(1).max(60),
+  location: z.string().min(1).max(120),
+  description: z.string().max(1000).optional().default(""),
+  driverName: z.string().max(80).optional(),
 });
+
+const AI_RATE_LIMIT = 20;
+const AI_RATE_WINDOW_MS = 60_000;
+
+function json(payload: unknown, status = 200): Response {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
 
 function getRuleBasedFallback(category: string, location: string) {
   const isMedisOrCrash =
@@ -31,26 +43,47 @@ export const Route = createFileRoute("/api/ai/dispatch")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        const authHeader = request.headers.get("Authorization");
+        const token = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
+        if (!token) return json({ error: "Unauthorized" }, 401);
+
+        let uid: string;
+        let role = "member";
+        let verified = false;
         try {
-          const body = await request.json();
-          const parsed = RequestSchema.safeParse(body);
-          if (!parsed.success) {
-            return new Response(JSON.stringify({ error: "Input analisis tidak valid" }), {
-              status: 400,
-            });
-          }
+          const decoded = await verifyIdTokenWithCheckRevoked(token);
+          uid = decoded.uid;
+          role = String(decoded.role || "member");
+          verified = decoded.verified_member === true;
+        } catch {
+          return json({ error: "Unauthorized" }, 401);
+        }
 
-          const { category, location, description, driverName } = parsed.data;
-          const apiKey = process.env.GEMINI_API_KEY;
+        if (!verified && !["satgas", "korlap", "admin", "super_admin"].includes(role)) {
+          return json({ error: "Forbidden: verified member required" }, 403);
+        }
 
-          if (!apiKey) {
-            const fallback = getRuleBasedFallback(category, location);
-            return new Response(JSON.stringify({ ...fallback, note: "Mesin aturan lokal aktif" }), {
-              headers: { "Content-Type": "application/json" },
-            });
-          }
+        if (!checkRateLimit(`ai:${uid}`, AI_RATE_LIMIT, AI_RATE_WINDOW_MS)) {
+          return json({ error: "Rate limit exceeded" }, 429);
+        }
 
-          const ai = new GoogleGenAI();
+        const parsed = RequestSchema.safeParse(await request.json().catch(() => null));
+        if (!parsed.success) {
+          return json({ error: "Input analisis tidak valid" }, 400);
+        }
+
+        const { category, location, description, driverName } = parsed.data;
+        const apiKey = process.env.GEMINI_API_KEY;
+
+        if (!apiKey) {
+          const fallback = getRuleBasedFallback(category, location);
+          return json({ ...fallback, note: "Mesin aturan lokal aktif" });
+        }
+
+        const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+
+        try {
+          const ai = new GoogleGenAI({ apiKey });
           const prompt = `Anda adalah Sistem Komando Satgas DRG (Driver Riang Gembira), komunitas driver online Malang Raya.
 Analisis laporan berikut:
 - Kategori: ${category}
@@ -68,22 +101,17 @@ Keluarkan JSON valid dengan skema:
 }`;
 
           const res = await ai.models.generateContent({
-            model: "gemini-3.8-flash",
+            model,
             contents: prompt,
             config: { responseMimeType: "application/json" },
           });
 
-          const rawText = res.text || "{}";
-          const data = JSON.parse(rawText);
-
-          return new Response(JSON.stringify({ ...data, isAiGenerated: true }), {
-            headers: { "Content-Type": "application/json" },
-          });
-        } catch {
-          const fallback = getRuleBasedFallback("umum", "Jalur");
-          return new Response(JSON.stringify({ ...fallback, note: "Penyangga darurat offline" }), {
-            headers: { "Content-Type": "application/json" },
-          });
+          const data = JSON.parse(res.text || "{}");
+          return json({ ...data, isAiGenerated: true });
+        } catch (err) {
+          console.error("AI dispatch analysis failed, using rule-based fallback:", err);
+          const fallback = getRuleBasedFallback(category, location);
+          return json({ ...fallback, note: "Penyangga darurat offline" });
         }
       },
     },

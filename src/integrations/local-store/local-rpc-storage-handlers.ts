@@ -54,13 +54,26 @@ export async function handleLocalRpc(fn: string, args?: Record<string, unknown>)
 
 export function createLocalStorageAdapter() {
   return {
-    from() {
+    from(_bucket: string) {
       return {
-        async upload(_path: string, file?: File | Blob) {
+        async upload(
+          _path: string,
+          file?: File | Blob,
+          _opts?: { upsert?: boolean; contentType?: string },
+        ): Promise<{
+          data: { path: string } | null;
+          error: { message: string } | null;
+        }> {
           const url = file ? URL.createObjectURL(file) : "avatar.jpg";
           return { data: { path: url }, error: null };
         },
-        async createSignedUrl(path: string) {
+        async createSignedUrl(
+          path: string,
+          _expiresIn?: number,
+        ): Promise<{
+          data: { signedUrl: string } | null;
+          error: { message: string } | null;
+        }> {
           if (path.startsWith("blob:") || path.startsWith("http")) {
             return { data: { signedUrl: path }, error: null };
           }

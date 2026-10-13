@@ -65,14 +65,12 @@ export function DaftarSuccessView({ done }: Props) {
       </div>
       <div className="mt-6 flex flex-wrap justify-center gap-2">
         <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-          <Link to="/verifikasi/$token" params={{ token: done.token }}>
+          <a href={`/verifikasi/${done.token}`}>
             <CheckCircle2 className="mr-1.5 h-4 w-4" /> Verifikasi Sekarang
-          </Link>
+          </a>
         </Button>
         <Button asChild variant="outline">
-          <Link to="/status/$token" params={{ token: done.token }}>
-            Lihat Status
-          </Link>
+          <a href={`/status/${done.token}`}>Lihat Status</a>
         </Button>
         <Button asChild variant="ghost">
           <Link to="/auth">

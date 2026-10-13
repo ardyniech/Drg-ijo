@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-11T16:57:43.194Z",
+  "generatedAt": "2026-10-12T07:56:39.052Z",
   "source": "codebase automated feature tree inspection",
   "counts": {
-    "siap": 25,
-    "sebagian": 1,
+    "siap": 24,
+    "sebagian": 2,
     "rencana": 1,
     "total": 27
   },
@@ -167,8 +167,7 @@
         },
         {
           "label": "Realtime multi-device channel & broadcast",
-          "status": "siap",
-          "note": "SSE event broadcast instan lintas perangkat dan tab pengemudi."
+          "status": "sebagian"
         },
         {
           "label": "AI Dispatching & Safety Intelligence",

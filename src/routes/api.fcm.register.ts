@@ -2,10 +2,19 @@ import { createFileRoute } from "@tanstack/react-router";
 import { adminDb, verifyIdTokenWithCheckRevoked } from "../../server/firebase-admin";
 import { z } from "zod";
 
+const ALLOWED_DEVICE_ROLES = ["satgas", "korlap", "admin", "super_admin"] as const;
+
 const fcmSchema = z.object({
-  token: z.string().min(1),
-  deviceType: z.string().optional(),
+  token: z.string().min(20).max(4096),
+  deviceType: z.string().max(40).optional(),
 });
+
+function json(payload: unknown, status = 200): Response {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
 
 export const Route = createFileRoute("/api/fcm/register")({
   server: {
@@ -14,25 +23,30 @@ export const Route = createFileRoute("/api/fcm/register")({
         try {
           const authHeader = request.headers.get("Authorization");
           const tokenHeader = authHeader?.startsWith("Bearer ") ? authHeader.substring(7) : null;
-          if (!tokenHeader) {
-            return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
-          }
+          if (!tokenHeader) return json({ error: "Unauthorized" }, 401);
 
           const decoded = await verifyIdTokenWithCheckRevoked(tokenHeader);
-          const body = await request.json();
-          const parsed = fcmSchema.safeParse(body);
-          if (!parsed.success) {
-            return new Response(JSON.stringify({ error: parsed.error.format() }), { status: 400 });
-          }
+          const parsed = fcmSchema.safeParse(await request.json());
+          if (!parsed.success) return json({ error: parsed.error.format() }, 400);
 
           const { token, deviceType } = parsed.data;
+          if (token.startsWith("mock-fcm-token")) {
+            return json({ error: "Invalid FCM token" }, 400);
+          }
 
-          // Fetch user profile to get verified role
           const userDoc = await adminDb.collection("users").doc(decoded.uid).get();
           const userData = userDoc.exists ? userDoc.data() : {};
-          const role = decoded.role || userData?.role || "member";
+          const role = String(decoded.role || userData?.role || "member");
 
-          // Store token in satgas_devices indexed by userId or token
+          // Only field responders receive SOS push; regular members must not register.
+          if (!(ALLOWED_DEVICE_ROLES as readonly string[]).includes(role)) {
+            return json(
+              { error: "Forbidden: hanya satgas/korlap yang menerima notifikasi SOS" },
+              403,
+            );
+          }
+
+          // Keep the doc-ID scheme identical to the client (`<uid>_<token-prefix>`).
           const deviceRef = adminDb
             .collection("satgas_devices")
             .doc(`${decoded.uid}_${token.substring(0, 16)}`);
@@ -47,19 +61,10 @@ export const Route = createFileRoute("/api/fcm/register")({
             { merge: true },
           );
 
-          return new Response(
-            JSON.stringify({ status: "success", message: "FCM token registered successfully" }),
-            {
-              status: 200,
-              headers: { "Content-Type": "application/json" },
-            },
-          );
+          return json({ status: "success", message: "FCM token registered successfully" });
         } catch (e: unknown) {
-          const message = e instanceof Error ? e.message : "Internal server error";
-          return new Response(JSON.stringify({ error: message }), {
-            status: 500,
-            headers: { "Content-Type": "application/json" },
-          });
+          console.error("POST /api/fcm/register failed:", e);
+          return json({ error: "Internal server error" }, 500);
         }
       },
     },

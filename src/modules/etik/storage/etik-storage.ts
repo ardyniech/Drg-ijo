@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
 import { EtikCase, NewEtikCasePayload } from "../types";
 
 const STORAGE_KEY = "drg_etik_cases_v1";
@@ -5,33 +7,19 @@ let inMemoryStore: EtikCase[] | null = null;
 
 const initialCases: EtikCase[] = [];
 
+const EtikCaseSchema: z.ZodType<EtikCase> = z.any();
+const EtikCasesSchema = z.array(EtikCaseSchema);
+
 export function getEtikCases(): EtikCase[] {
-  if (typeof window === "undefined" || !window.localStorage) {
-    return inMemoryStore ?? initialCases;
-  }
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(initialCases));
-      return initialCases;
-    }
-    return JSON.parse(raw);
-  } catch {
-    return initialCases;
-  }
+  const cases = safeReadStorage(STORAGE_KEY, EtikCasesSchema, inMemoryStore ?? initialCases);
+  inMemoryStore = cases;
+  return cases;
 }
 
 export function saveEtikCases(cases: EtikCase[]) {
   inMemoryStore = cases;
-  if (typeof window !== "undefined" && window.localStorage) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(cases));
-    } catch {
-      // ignore
-    }
-  }
+  safeWriteStorage(STORAGE_KEY, cases);
 }
-
 export function addEtikCase(
   payload: NewEtikCasePayload,
   reporterName = "Pelapor Anggota",

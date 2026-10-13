@@ -14,6 +14,8 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiSyncRouteImport } from './routes/api.sync'
+import { Route as ApiIncidentsRouteImport } from './routes/api.incidents'
 import { Route as ApiHealthRouteImport } from './routes/api.health'
 import { Route as ApiAuthRouteImport } from './routes/api.auth'
 import { Route as AuthenticatedScreeningRouteImport } from './routes/_authenticated/screening'
@@ -33,6 +35,8 @@ import { Route as AuthenticatedEtikRouteImport } from './routes/_authenticated/e
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAnggotaRouteImport } from './routes/_authenticated/anggota'
 import { Route as AuthenticatedActivityLogRouteImport } from './routes/_authenticated/activity-log'
+import { Route as ApiFcmRegisterRouteImport } from './routes/api.fcm.register'
+import { Route as ApiAiDispatchRouteImport } from './routes/api.ai.dispatch'
 
 const DaftarRoute = DaftarRouteImport.update({
   id: '/daftar',
@@ -56,6 +60,16 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSyncRoute = ApiSyncRouteImport.update({
+  id: '/api/sync',
+  path: '/api/sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiIncidentsRoute = ApiIncidentsRouteImport.update({
+  id: '/api/incidents',
+  path: '/api/incidents',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiHealthRoute = ApiHealthRouteImport.update({
@@ -155,6 +169,16 @@ const AuthenticatedActivityLogRoute =
     path: '/activity-log',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiFcmRegisterRoute = ApiFcmRegisterRouteImport.update({
+  id: '/api/fcm/register',
+  path: '/api/fcm/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAiDispatchRoute = ApiAiDispatchRouteImport.update({
+  id: '/api/ai/dispatch',
+  path: '/api/ai/dispatch',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -180,6 +204,10 @@ export interface FileRoutesByFullPath {
   '/screening': typeof AuthenticatedScreeningRoute
   '/api/auth': typeof ApiAuthRoute
   '/api/health': typeof ApiHealthRoute
+  '/api/incidents': typeof ApiIncidentsRoute
+  '/api/sync': typeof ApiSyncRoute
+  '/api/ai/dispatch': typeof ApiAiDispatchRoute
+  '/api/fcm/register': typeof ApiFcmRegisterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -205,6 +233,10 @@ export interface FileRoutesByTo {
   '/screening': typeof AuthenticatedScreeningRoute
   '/api/auth': typeof ApiAuthRoute
   '/api/health': typeof ApiHealthRoute
+  '/api/incidents': typeof ApiIncidentsRoute
+  '/api/sync': typeof ApiSyncRoute
+  '/api/ai/dispatch': typeof ApiAiDispatchRoute
+  '/api/fcm/register': typeof ApiFcmRegisterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -232,6 +264,10 @@ export interface FileRoutesById {
   '/_authenticated/screening': typeof AuthenticatedScreeningRoute
   '/api/auth': typeof ApiAuthRoute
   '/api/health': typeof ApiHealthRoute
+  '/api/incidents': typeof ApiIncidentsRoute
+  '/api/sync': typeof ApiSyncRoute
+  '/api/ai/dispatch': typeof ApiAiDispatchRoute
+  '/api/fcm/register': typeof ApiFcmRegisterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -259,6 +295,10 @@ export interface FileRouteTypes {
     | '/screening'
     | '/api/auth'
     | '/api/health'
+    | '/api/incidents'
+    | '/api/sync'
+    | '/api/ai/dispatch'
+    | '/api/fcm/register'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -284,6 +324,10 @@ export interface FileRouteTypes {
     | '/screening'
     | '/api/auth'
     | '/api/health'
+    | '/api/incidents'
+    | '/api/sync'
+    | '/api/ai/dispatch'
+    | '/api/fcm/register'
   id:
     | '__root__'
     | '/'
@@ -310,6 +354,10 @@ export interface FileRouteTypes {
     | '/_authenticated/screening'
     | '/api/auth'
     | '/api/health'
+    | '/api/incidents'
+    | '/api/sync'
+    | '/api/ai/dispatch'
+    | '/api/fcm/register'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -320,6 +368,10 @@ export interface RootRouteChildren {
   DaftarRoute: typeof DaftarRoute
   ApiAuthRoute: typeof ApiAuthRoute
   ApiHealthRoute: typeof ApiHealthRoute
+  ApiIncidentsRoute: typeof ApiIncidentsRoute
+  ApiSyncRoute: typeof ApiSyncRoute
+  ApiAiDispatchRoute: typeof ApiAiDispatchRoute
+  ApiFcmRegisterRoute: typeof ApiFcmRegisterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -357,6 +409,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/sync': {
+      id: '/api/sync'
+      path: '/api/sync'
+      fullPath: '/api/sync'
+      preLoaderRoute: typeof ApiSyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/incidents': {
+      id: '/api/incidents'
+      path: '/api/incidents'
+      fullPath: '/api/incidents'
+      preLoaderRoute: typeof ApiIncidentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/health': {
@@ -492,6 +558,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedActivityLogRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/fcm/register': {
+      id: '/api/fcm/register'
+      path: '/api/fcm/register'
+      fullPath: '/api/fcm/register'
+      preLoaderRoute: typeof ApiFcmRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai/dispatch': {
+      id: '/api/ai/dispatch'
+      path: '/api/ai/dispatch'
+      fullPath: '/api/ai/dispatch'
+      preLoaderRoute: typeof ApiAiDispatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -546,6 +626,10 @@ const rootRouteChildren: RootRouteChildren = {
   DaftarRoute: DaftarRoute,
   ApiAuthRoute: ApiAuthRoute,
   ApiHealthRoute: ApiHealthRoute,
+  ApiIncidentsRoute: ApiIncidentsRoute,
+  ApiSyncRoute: ApiSyncRoute,
+  ApiAiDispatchRoute: ApiAiDispatchRoute,
+  ApiFcmRegisterRoute: ApiFcmRegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

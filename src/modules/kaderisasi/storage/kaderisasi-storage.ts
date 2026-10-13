@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
 import { MemberKaderisasi } from "../types";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { mapUsersToKaderisasi } from "./kaderisasi-mapper";
@@ -5,35 +7,26 @@ import { mapUsersToKaderisasi } from "./kaderisasi-mapper";
 const STORAGE_KEY = "drg_kaderisasi_data_v2";
 let inMemoryStore: MemberKaderisasi[] | null = null;
 
+const KaderisasiSchema: z.ZodType<MemberKaderisasi> = z.any();
+const KaderisasiListSchema = z.array(KaderisasiSchema);
+
 export function getKaderisasiList(): MemberKaderisasi[] {
-  if (typeof window === "undefined" || !window.localStorage) {
-    return inMemoryStore ?? mapUsersToKaderisasi();
+  const fallback = inMemoryStore ?? mapUsersToKaderisasi();
+  const data = safeReadStorage(STORAGE_KEY, KaderisasiListSchema, fallback);
+  if (data.length === 0) {
+    const initial = mapUsersToKaderisasi();
+    inMemoryStore = initial;
+    safeWriteStorage(STORAGE_KEY, initial);
+    return initial;
   }
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      const initial = mapUsersToKaderisasi();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
-      return initial;
-    }
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : mapUsersToKaderisasi();
-  } catch {
-    return mapUsersToKaderisasi();
-  }
+  inMemoryStore = data;
+  return data;
 }
 
 export function saveKaderisasiList(list: MemberKaderisasi[]) {
   inMemoryStore = list;
-  if (typeof window !== "undefined" && window.localStorage) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-    } catch {
-      // ignore
-    }
-  }
+  safeWriteStorage(STORAGE_KEY, list);
 }
-
 export function updateMemberStatus(
   id: string,
   status: MemberKaderisasi["status"],

@@ -75,39 +75,6 @@ export const Route = createFileRoute("/api/auth")({
             });
           }
 
-          if (action === "bootstrap-admin") {
-            // Manual bootstrap script endpoint (secured by a secret or initial setup key)
-            const { secretKey, uid } = body;
-            const configuredSecret = import.meta.env.VITE_ADMIN_BOOTSTRAP_SECRET;
-            if (!configuredSecret || secretKey !== configuredSecret) {
-              return new Response(
-                JSON.stringify({ error: "Invalid bootstrap secret or bootstrap disabled" }),
-                {
-                  status: 403,
-                },
-              );
-            }
-            await adminAuth.setCustomUserClaims(uid, {
-              role: "super_admin",
-              verified_member: true,
-            });
-            await adminAuth.revokeRefreshTokens(uid);
-            await adminDb
-              .collection("users")
-              .doc(uid)
-              .set(
-                { role: "super_admin", verified_member: true, updatedAt: new Date().toISOString() },
-                { merge: true },
-              );
-            return new Response(
-              JSON.stringify({ status: "success", message: "Admin bootstrapped successfully" }),
-              {
-                status: 200,
-                headers: { "Content-Type": "application/json" },
-              },
-            );
-          }
-
           return new Response(JSON.stringify({ error: "Invalid action" }), { status: 400 });
         } catch (e: unknown) {
           const message = e instanceof Error ? e.message : "Internal server error";

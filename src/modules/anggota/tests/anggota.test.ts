@@ -45,7 +45,7 @@ describe("Anggota Storage & Directory Logic (Dynamic Production Mode)", () => {
       email: u.email,
     }));
 
-    expect(members[0].role).toBe("super_admin");
+    expect(members[0].role).toBe("anggota");
     expect(members[0].no_kta).toBe("DRG-2026-001");
     expect(members[1].role).toBe("anggota");
     expect(members[1].no_kta).toBe("DRG-2026-002");

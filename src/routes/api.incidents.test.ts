@@ -1,32 +1,45 @@
 import { describe, it, expect } from "vitest";
+import { evaluateIncidentUpdatePermission } from "@/modules/kejadian/server/incident-rules";
 
-describe("API Incidents Server Handlers & Business Logic", () => {
-  it("should validate status transition rules for owner and satgas", () => {
-    const ownerCanCancel = (
-      role: string,
-      currentStatus: string,
-      newStatus: string,
-      isOwner: boolean,
-    ) => {
-      if (isOwner) {
-        return newStatus === "dibatalkan";
-      }
-      return ["satgas", "korlap", "admin"].includes(role);
-    };
-
-    expect(ownerCanCancel("member", "aktif", "dibatalkan", true)).toBe(true);
-    expect(ownerCanCancel("member", "aktif", "selesai", true)).toBe(false);
-    expect(ownerCanCancel("satgas", "aktif", "selesai", false)).toBe(true);
-    expect(ownerCanCancel("member", "aktif", "ditangani", false)).toBe(false);
+describe("API incidents POST/PATCH authorization", () => {
+  it("allows owners to cancel but not resolve", () => {
+    expect(
+      evaluateIncidentUpdatePermission({
+        userId: "u1",
+        ownerId: "u1",
+        role: "member",
+        newStatus: "dibatalkan",
+      }).allowed,
+    ).toBe(true);
+    expect(
+      evaluateIncidentUpdatePermission({
+        userId: "u1",
+        ownerId: "u1",
+        role: "member",
+        newStatus: "dalam_penanganan",
+      }).allowed,
+    ).toBe(false);
   });
 
-  it("should handle rate-limiting soft threshold for repeated SOS", () => {
-    const checkRateLimit = (lastTime: number, now: number) => {
-      return now - lastTime < 60000;
-    };
+  it("treats super_admin as an incident manager (regression: previously omitted)", () => {
+    expect(
+      evaluateIncidentUpdatePermission({
+        userId: "u2",
+        ownerId: "u1",
+        role: "super_admin",
+        newStatus: "selesai",
+      }).allowed,
+    ).toBe(true);
+  });
 
-    const now = Date.now();
-    expect(checkRateLimit(now - 30000, now)).toBe(true); // Within 1 min -> repeated SOS
-    expect(checkRateLimit(now - 70000, now)).toBe(false); // After 1 min -> normal SOS
+  it("rejects unrelated regular members", () => {
+    expect(
+      evaluateIncidentUpdatePermission({
+        userId: "u2",
+        ownerId: "u1",
+        role: "member",
+        newStatus: "dibatalkan",
+      }).allowed,
+    ).toBe(false);
   });
 });

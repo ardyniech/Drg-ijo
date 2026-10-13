@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 
 export type UserRole =
   | "ketua"

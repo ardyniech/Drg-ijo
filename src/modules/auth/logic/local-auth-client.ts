@@ -95,15 +95,14 @@ export class LocalAuthClient {
       };
     }
 
-    const isFirstUser = users.length === 0;
     const passwordHash = await hashPassword(payload.password);
     const newUser: LocalUser = {
       id: generatePrefixedId("usr"),
       email: cleanEmail,
       nama: cleanName,
       no_hp: payload.no_hp || "",
-      role: isFirstUser ? "super_admin" : "anggota",
-      jenjang: isFirstUser ? "purna" : "calon",
+      role: "anggota",
+      jenjang: "calon",
       status: "aktif",
       passwordHash,
       created_at: new Date().toISOString(),

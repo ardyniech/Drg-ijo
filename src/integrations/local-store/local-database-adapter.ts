@@ -1,4 +1,5 @@
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
+import { LocalSession } from "@/modules/auth/logic/local-auth-store";
 import { createQueryBuilder } from "./local-query-builder";
 import { handleLocalRpc, createLocalStorageAdapter } from "./local-rpc-storage-handlers";
 
@@ -40,8 +41,14 @@ export function createLocalSupabaseAdapter() {
         await LocalAuthClient.signOut();
         return { error: null };
       },
-      async updateUser() {
-        return { data: { user: LocalAuthClient.getSession()?.user ?? null }, error: null };
+      async updateUser(_attrs?: { password?: string; data?: Record<string, unknown> }): Promise<{
+        data: { user: LocalSession["user"] | null };
+        error: { message: string } | null;
+      }> {
+        return {
+          data: { user: LocalAuthClient.getSession()?.user ?? null },
+          error: null,
+        };
       },
       onAuthStateChange(
         callback: (event: string, session: ReturnType<typeof LocalAuthClient.getSession>) => void,

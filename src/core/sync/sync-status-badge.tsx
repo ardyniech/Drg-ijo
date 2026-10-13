@@ -1,5 +1,5 @@
 import { useOutboxWorker } from "./use-outbox-worker";
-import { RefreshCw, CheckCircle2, AlertCircle, CloudOff, Loader2 } from "lucide-react";
+import { RefreshCw, AlertCircle, CloudOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function SyncStatusBadge() {
@@ -61,12 +61,12 @@ export function SyncStatusBadge() {
       title={
         lastSyncedAt
           ? `Terakhir sinkron pukul ${lastSyncedAt}`
-          : "Modul SOS Server-Backed (Cloud Run)"
+          : "Data disimpan lokal di perangkat ini; sinkronisasi server belum diaktifkan"
       }
-      className="hidden md:flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-400"
+      className="hidden md:flex items-center gap-1.5 rounded-full border border-slate-500/30 bg-slate-500/10 px-2.5 py-1 text-[11px] font-medium text-slate-600 dark:text-slate-400"
     >
-      <CheckCircle2 className="h-3 w-3 text-emerald-600" />
-      <span>SOS Server Active</span>
+      <CloudOff className="h-3 w-3" />
+      <span>Mode Lokal</span>
     </div>
   );
 }

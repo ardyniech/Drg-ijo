@@ -1,30 +1,26 @@
+import { z } from "zod";
+import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
 import { IncidentRecord } from "../types";
 
 const STORAGE_KEY = "drg_incidents_data";
 
 const SEED_INCIDENTS: IncidentRecord[] = [];
 
+const IncidentRecordSchema: z.ZodType<IncidentRecord> = z.any();
+
+const IncidentListSchema = z.array(IncidentRecordSchema);
+
 let inMemoryCache: IncidentRecord[] = [...SEED_INCIDENTS];
 
 export const KejadianStorage = {
   getIncidents(): IncidentRecord[] {
-    if (typeof window !== "undefined") {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        try {
-          return JSON.parse(raw);
-        } catch {
-          // ignore
-        }
-      }
-    }
-    return inMemoryCache;
+    const items = safeReadStorage(STORAGE_KEY, IncidentListSchema, inMemoryCache);
+    inMemoryCache = items;
+    return items;
   },
 
   saveIncidents(items: IncidentRecord[]) {
     inMemoryCache = items;
-    if (typeof window !== "undefined") {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    }
+    safeWriteStorage(STORAGE_KEY, items);
   },
 };

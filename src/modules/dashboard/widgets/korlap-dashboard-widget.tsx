@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { useDashboardOverview } from "@/modules/dashboard/logic/use-dashboard-overview";
 import { usePetaRadar } from "@/modules/peta/logic/use-peta-radar";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/local-store/client";
 import { CalendarClock, MapPin, RefreshCw } from "lucide-react";
 
 export function KorlapDashboardWidget() {

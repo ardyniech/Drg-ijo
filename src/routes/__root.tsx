@@ -7,7 +7,6 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { LocalAuthClient } from "@/modules/auth/logic/local-auth-client";
 import { runStorageMigrationGuard } from "@/core/sync";
 import { initSystemThemeSync } from "@/shared/utils/system-theme";
@@ -53,14 +52,8 @@ function AuthSync({ client }: { client: QueryClient }) {
       router.invalidate();
       client.invalidateQueries();
     });
-    const { data } = supabase.auth.onAuthStateChange((event) => {
-      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
-      router.invalidate();
-      if (event !== "SIGNED_OUT") client.invalidateQueries();
-    });
     return () => {
       unsubLocal();
-      data.subscription.unsubscribe();
     };
   }, [router, client]);
   return null;

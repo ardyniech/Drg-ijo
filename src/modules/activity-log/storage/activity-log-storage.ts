@@ -1,18 +1,45 @@
 import { z } from "zod";
-import { ActivityLogEntry } from "../types";
+import { ActivityLogEntry, ActivityModule } from "../types";
+import type { UserRole } from "@/hooks/use-me";
 import { safeReadStorage, safeWriteStorage } from "@/shared/utils/safe-storage";
 import { generatePrefixedId } from "@/shared/utils/id-generator";
 
 const STORAGE_KEY = "drg_system_activity_logs_v1";
 const MAX_LOGS = 150;
 
+const userRoles = [
+  "ketua",
+  "sekretaris",
+  "bendahara",
+  "admin",
+  "super_admin",
+  "korlap",
+  "satgas",
+  "dewan_etik",
+  "anggota",
+  "driver",
+] as const satisfies readonly UserRole[];
+
+const activityModules = [
+  "roles",
+  "kas",
+  "kejadian",
+  "piket",
+  "notulen",
+  "etik",
+  "persetujuan",
+  "auth",
+  "anggota",
+  "organisasi",
+] as const satisfies readonly ActivityModule[];
+
 const ActivityLogSchema = z.object({
   id: z.string(),
   actorId: z.string(),
   actorName: z.string(),
-  actorRole: z.string(),
+  actorRole: z.enum(userRoles),
   action: z.string(),
-  module: z.string(),
+  module: z.enum(activityModules),
   description: z.string(),
   targetId: z.string().optional(),
   timestamp: z.string(),

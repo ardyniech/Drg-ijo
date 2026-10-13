@@ -32,7 +32,7 @@ export function KasExportModal({ rows }: KasExportModalProps) {
         [
           r.tanggal,
           r.ledger,
-          r.tipe,
+          r.jenis,
           `"${(r.kategori ?? "").replace(/"/g, '""')}"`,
           r.jumlah,
           r.status,
@@ -55,10 +55,10 @@ export function KasExportModal({ rows }: KasExportModalProps) {
 
   const handleCopySummary = () => {
     const totalMasuk = rows
-      .filter((r) => r.tipe === "masuk" && r.status === "disetujui")
+      .filter((r) => r.jenis === "masuk" && r.status === "disetujui")
       .reduce((sum, r) => sum + Number(r.jumlah || 0), 0);
     const totalKeluar = rows
-      .filter((r) => r.tipe === "keluar" && r.status === "disetujui")
+      .filter((r) => r.jenis === "keluar" && r.status === "disetujui")
       .reduce((sum, r) => sum + Number(r.jumlah || 0), 0);
 
     const summaryText = `*REKAPITULASI KAS KOMUNITAS DRG*\nTanggal: ${new Date().toLocaleDateString("id-ID")}\nTotal Pemasukan: Rp ${totalMasuk.toLocaleString("id-ID")}\nTotal Pengeluaran: Rp ${totalKeluar.toLocaleString("id-ID")}\nSaldo Bersih: Rp ${(totalMasuk - totalKeluar).toLocaleString("id-ID")}\nTotal Transaksi: ${rows.length} entri\n\n_Transparansi Keuangan Driver Riang Gembira_`;

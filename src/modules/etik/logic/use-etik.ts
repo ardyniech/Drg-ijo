@@ -32,7 +32,7 @@ export function useEtik() {
     setIsReportOpen(false);
     recordActivityLog({
       actorId: "pelapor-etik",
-      actorName: payload.reporterName,
+      actorName: newEntry.reporterName,
       actorRole: "anggota",
       action: "Laporan Pelanggaran Etik",
       module: "etik",

@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { auth } from "@/lib/firebase-client";
 import { AiDispatchAnalysis, AnalyzeDispatchParams } from "./types";
 import { createDefaultSafetyFallback } from "./safety-engine";
 
@@ -12,9 +13,13 @@ export function useSafetyIntelligence() {
     setError(null);
 
     try {
+      const idToken = await auth.currentUser?.getIdToken();
       const res = await fetch("/api/ai/dispatch", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(idToken ? { Authorization: `Bearer ${idToken}` } : {}),
+        },
         body: JSON.stringify(params),
       });
 
