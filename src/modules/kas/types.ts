@@ -43,11 +43,7 @@ export const rupiah = (n: number) =>
   }).format(n);
 
 export type KasSkCategory =
-  | "santunan_laka"
-  | "santunan_duka"
-  | "bantuan_kesehatan"
-  | "bantuan_kendaraan"
-  | "modal_koperasi";
+  "santunan_laka" | "santunan_duka" | "bantuan_kesehatan" | "bantuan_kendaraan" | "modal_koperasi";
 
 export interface KasSkRecord {
   id: string;

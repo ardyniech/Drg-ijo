@@ -1,10 +1,6 @@
 export type IncidentSeverity = "darurat_tinggi" | "sedang" | "ringan";
 export type IncidentCategory =
-  | "kecelakaan"
-  | "begal_kriminal"
-  | "mogok_mesin"
-  | "razia_kendala"
-  | "medis";
+  "kecelakaan" | "begal_kriminal" | "mogok_mesin" | "razia_kendala" | "medis";
 export type IncidentStatus = "aktif" | "dalam_penanganan" | "selesai" | "dibatalkan";
 
 export interface IncidentRecord {
