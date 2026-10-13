@@ -75,4 +75,15 @@ export function assignMemberRole(
     payload: { targetUserId, fromRole, toRole: newRole, skNumber: auditEntry.skNumber },
   });
 
-  return 
+  return {
+    id: targetUserId,
+    nama: target.nama,
+    email: target.email,
+    no_hp: target.no_hp || "-",
+    pangkalan: target.pangkalan || "",
+    role: newRole,
+    jenjang: target.jenjang || "calon",
+    status: (target.status === "aktif" ? "aktif" : "pending_review") as MemberRoleRecord["status"],
+    assignedAt: target.created_at,
+  };
+}
