@@ -25,6 +25,7 @@ export function appendRoleAuditLog(entry: RoleAuditLog) {
   safeWriteStorage(AUDIT_STORAGE_KEY, updated);
   return updated;
 }
+
 export function getMemberRoleRecords(): MemberRoleRecord[] {
   const users = LocalAuthClient.getUsers();
   return users.map((u) => ({
@@ -68,22 +69,18 @@ export function assignMemberRole(
   };
 
   appendRoleAuditLog(auditEntry);
+
   enqueueOperation({
     idempotencyKey: `role-assign-${targetUserId}-${Date.now()}`,
     action: `Penetapan Peran (${newRole})`,
     module: "roles",
-    payload: { targetUserId, fromRole, toRole: newRole, skNumber: auditEntry.skNumber },
+    payload: {
+      targetUserId,
+      fromRole,
+      toRole: newRole,
+      skNumber: auditEntry.skNumber,
+    },
   });
 
-  return {
-    id: targetUserId,
-    nama: target.nama,
-    email: target.email,
-    no_hp: target.no_hp || "-",
-    pangkalan: target.pangkalan || "",
-    role: newRole,
-    jenjang: target.jenjang || "calon",
-    status: (target.status === "aktif" ? "aktif" : "pending_review") as MemberRoleRecord["status"],
-    assignedAt: target.created_at,
-  };
+  return auditEntry;
 }

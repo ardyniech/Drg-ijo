@@ -1,0 +1,42 @@
+name: PR Review & SOP Guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  pr-audit:
+    name: PR Audit & SOP v4.0 Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Audit File Line Limits (SOP v4.0 < 125 Lines)
+        run: |
+          echo "=== Auditing changed files for line limit compliance (< 125 lines) ==="
+          FAIL=0
+          FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(ts|tsx)$' || true)
+          for f in $FILES; do
+            if [ -f "$f" ]; then
+              LINES=$(wc -l < "$f")
+              if [ "$LINES" -gt 125 ]; then
+                echo "⚠️ File exceeds 125 lines: $f ($LINES lines)"
+                FAIL=1
+              else
+                echo "✅ $f ($LINES lines) - OK"
+              fi
+            fi
+          done
+          if [ "$FAIL" -eq 1 ]; then
+            echo "::warning::Some files exceed the SOP v4.0 limit of 125 lines. Please refactor or split."
+          else
+            echo "All changed files comply with SOP v4.0 line limit."
+          fi

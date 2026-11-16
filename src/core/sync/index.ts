@@ -4,3 +4,4 @@ export * from "./outbox-queue";
 export * from "./use-outbox-worker";
 export * from "./sync-status-badge";
 export * from "./storage-migration-guard";
+export * from "./batch-processor";

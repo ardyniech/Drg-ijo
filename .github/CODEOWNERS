@@ -1,0 +1,32 @@
+# GitHub CODEOWNERS for DRG Satu Aspal
+# Enforces automated review requests based on team roles (Admin, Penulis, Maintainer)
+
+# Global fallback: Team Admins review all repository changes
+* @org/admins
+
+# CI/CD Workflows, Docker, and Repository Configuration
+/.github/ @org/admins
+/Dockerfile @org/admins
+/package.json @org/admins
+/vite.config.ts @org/admins
+/server.ts @org/admins
+
+# Core Architecture, Dispatcher, and Synchronization (Outbox & DB Adapters)
+/src/core/ @org/admins @org/architects
+/src/lib/ @org/admins @org/architects
+/src/integrations/ @org/admins @org/architects
+
+# Feature Modules (Penulis / Authors & Maintainers)
+/src/modules/anggota/ @org/authors @org/maintainers
+/src/modules/kas/ @org/authors @org/maintainers
+/src/modules/kejadian/ @org/authors @org/maintainers
+/src/modules/koperasi/ @org/authors @org/maintainers
+/src/modules/organisasi/ @org/authors @org/maintainers
+/src/modules/peta/ @org/authors @org/maintainers
+/src/modules/roles/ @org/admins @org/authors
+/src/modules/auth/ @org/admins @org/authors
+
+# UI Atoms & Shared Layout Components
+/src/components/ @org/ui-leads @org/authors
+/src/shared/atoms/ @org/ui-leads @org/authors
+/src/styles.css @org/ui-leads
