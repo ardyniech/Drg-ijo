@@ -25,7 +25,7 @@ jobs:
           cache: "npm"
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund
 
       - name: Verify Code Style & Lint
         run: npm run lint
